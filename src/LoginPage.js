@@ -6,16 +6,19 @@ import {
 } from "react-router-dom";
 import Auth from './Auth';
 
+
 export default function LoginPage() {
   let history = useHistory();
   let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/groups" } };
-  let login = () => {
-    Auth.authenticate(() => {
-      history.replace(from);
-    });
-  };
+  let { from } = location.state || { from: { pathname: "/contacts" } };
+
+	const handleSubmit = (event) => {
+	  event.preventDefault();
+	  Auth.authenticate(event.target.email.value, event.target.password.value).then(() => {
+	    history.replace(from);
+	  });
+	}
 
   return (
 	  <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -23,18 +26,24 @@ export default function LoginPage() {
 	      <Header as='h2' color='blue' textAlign='center'>
 	        Log-in to your account
 	      </Header>
-	      <Form size='large'>
+	      <Form size='large' onSubmit={handleSubmit}>
 	        <Segment stacked>
-	          <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
+	          <Form.Input
+	          	fluid icon='user'
+	          	iconPosition='left'
+	          	placeholder='E-mail address'
+	          	name='email'
+          	/>
 	          <Form.Input
 	            fluid
 	            icon='lock'
 	            iconPosition='left'
 	            placeholder='Password'
 	            type='password'
+	          	name='password'
 	          />
 
-	          <Button color='blue' fluid size='large' onClick={login}>
+	          <Button color='blue' fluid size='large'>
 	            Login
 	          </Button>
 	        </Segment>

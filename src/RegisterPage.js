@@ -2,20 +2,23 @@ import React from "react";
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react';
 import {
   useHistory,
-  useLocation,
 } from "react-router-dom";
 import Auth from './Auth';
 
 export default function RegisterPage() {
   let history = useHistory();
-  let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/" } };
-  let login = () => {
-    Auth.authenticate(() => {
-      history.replace(from);
-    });
-  };
+	const handleSubmit = (event) => {
+	  event.preventDefault();
+	  Auth.register({
+  		first_name: event.target.first_name.value,
+  		last_name: event.target.last_name.value,
+  		email: event.target.email.value,
+  		new_password: event.target.new_password.value,
+	  }).then(() => {
+	    history.push("/groups");
+	  });
+	}
 
   return (
 	  <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -23,20 +26,39 @@ export default function RegisterPage() {
 	      <Header as='h2' color='blue' textAlign='center'>
 	        Register
 	      </Header>
-	      <Form size='large'>
+	      <Form size='large' onSubmit={handleSubmit}>
 	        <Segment stacked>
-	          <Form.Input fluid icon='user' iconPosition='left' placeholder='First Name' />
-	          <Form.Input fluid icon='user' iconPosition='left' placeholder='Last Name' />
-	          <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
+	          <Form.Input
+	          	fluid
+	          	icon='user'
+	          	iconPosition='left'
+	          	placeholder='First Name'
+	          	name='first_name'
+          	/>
+	          <Form.Input
+	          	fluid
+	          	icon='user'
+	          	iconPosition='left'
+	          	placeholder='Last Name'
+	          	name='last_name'
+          	/>
+	          <Form.Input
+	          	fluid
+	          	icon='user'
+	          	iconPosition='left'
+	          	placeholder='E-mail address'
+	          	name='email'
+          	/>
 	          <Form.Input
 	            fluid
 	            icon='lock'
 	            iconPosition='left'
 	            placeholder='Password'
 	            type='password'
+	          	name='new_password'
 	          />
 
-	          <Button color='blue' fluid size='large' onClick={login}>
+	          <Button color='blue' fluid size='large'>
 	            Register
 	          </Button>
 	        </Segment>

@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import ContactsPage from './ContactsPage';
 import GroupsPage from './GroupsPage';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
@@ -16,16 +17,19 @@ export default function App() {
     <Router>
       <div>
         <Switch>
-          <Route exact path="/">
+          <Route exact path='/'>
           	<HomePage />
           </Route>
-          <Route path="/login">
+          <Route path='/login'>
             <LoginPage />
           </Route>
-          <Route path="/register">
+          <Route path='/register'>
             <RegisterPage />
           </Route>
-      		<PrivateRoute path="/groups">
+      		<PrivateRoute path='/contacts'>
+            <ContactsPage />
+          </PrivateRoute>
+      		<PrivateRoute path='/groups'>
             <GroupsPage />
           </PrivateRoute>
         </Switch>

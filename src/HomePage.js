@@ -13,6 +13,7 @@ import {
   Visibility,
 } from 'semantic-ui-react';
 import LogInAndOutButton from './LogInAndOutButton';
+import Auth from './Auth';
 
 const HomePage = () => {
   return (<ResponsiveContainer>
@@ -69,7 +70,7 @@ const HomepageHeading = ({ mobile }) => (
   <Container text>
     <Header
       as='h1'
-      content='Dream Calendar'
+      content='DreamFactory Calendar'
       inverted
       style={{
         fontSize: mobile ? '2em' : '4em',
@@ -80,10 +81,10 @@ const HomepageHeading = ({ mobile }) => (
     />
     <Header
       as='h2'
-      content='A DreamFactory React Calendar Example Application'
+      content='A Calendar Example Application made with DreamFactory and React'
       inverted
       style={{
-        fontSize: mobile ? '1.5em' : '1.7em',
+        fontSize: mobile ? '1.5em' : '1.4em',
         fontWeight: 'normal',
         marginTop: mobile ? '0.5em' : '1.5em',
       }}
@@ -92,10 +93,14 @@ const HomepageHeading = ({ mobile }) => (
 )
 
 class DesktopContainer extends Component {
-  state = {}
-
+  state = {
+  	isAuthenticated: Auth.isAuthenticated,
+  }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
+  onLogOut = () => {
+  	this.setState({ isAuthenticated: Auth.isAuthenticated });
+  }
 
   render() {
     const { children } = this.props
@@ -125,11 +130,19 @@ class DesktopContainer extends Component {
                 <Menu.Item as='a' active>
                   Home
                 </Menu.Item>
+                {this.state.isAuthenticated && (
+              	<React.Fragment>
+                	<Menu.Item as='a' href='/contacts'>Contacts</Menu.Item>
+        					<Menu.Item as='a' href='/groups'>Groups</Menu.Item>
+      					</React.Fragment>
+        				)}
                 <Menu.Item position='right'>
-                  <LogInAndOutButton />
+                  <LogInAndOutButton onLogOut={this.onLogOut} />
+                	{!this.state.isAuthenticated && (
                   <Button as='a' href='/register' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
                     Register
                   </Button>
+        					)}
                 </Menu.Item>
               </Container>
             </Menu>

@@ -1,11 +1,11 @@
 import React from 'react'
 import {
-	Button,
   Container,
   Image,
   Menu,
 } from 'semantic-ui-react';
 import Footer from './Footer';
+import LogInAndOutButton from './LogInAndOutButton';
 import logo from './logo.svg';
 
 const Layout = ({ children }) =>
@@ -16,10 +16,11 @@ const Layout = ({ children }) =>
           <Image size='mini' src={logo} style={{ marginRight: '1.5em' }} />
           DreamFactory Calendar
         </Menu.Item>
+        <Menu.Item as='a' href='/'>Home</Menu.Item>
+        <Menu.Item as='a' href='/contacts'>Contacts</Menu.Item>
+        <Menu.Item as='a' href='/groups'>Groups</Menu.Item>
         <Menu.Item position='right'>
-          <Button as='a' inverted='true' href='/login'>
-            Log out
-          </Button>
+          <LogInAndOutButton />
         </Menu.Item>
       </Container>
     </Menu>
