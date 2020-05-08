@@ -1,4 +1,8 @@
-import http from './Http';
+import axios from 'axios';
+
+const http = axios.create({
+  baseURL: window.appConfig.INSTANCE_URL,
+});
 
 const tmpErrorHandler = (error) => {
   if (error.response) {
@@ -20,37 +24,36 @@ const tmpErrorHandler = (error) => {
 };
 
 const onAuthenticationSuccess = (response) => {
-	var session_token = response.data.session_token;
-	localStorage.setItem('session_token', session_token);
-	Auth.isAuthenticated = true;
+  var session_token = response.data.session_token;
+  localStorage.setItem('session_token', session_token);
+  Auth.isAuthenticated = true;
 }
 
-console.log(localStorage.getItem('session_token') ? true : false);
 
 const Auth = {
   isAuthenticated: localStorage.getItem('session_token') ? true : false,
   authenticate(email, password) {
     return http.post('/api/v2/user/session', {
-    	email,
-    	password,
+      email,
+      password,
     }).then(onAuthenticationSuccess).catch((error) => {
-    	tmpErrorHandler(error);
-    	Auth.isAuthenticated = false;
+      tmpErrorHandler(error);
+      Auth.isAuthenticated = false;
     });
   },
   signout() {
-  	return http.delete('/api/v2/user/session').then(() => {
-	    Auth.isAuthenticated = false;
-	    localStorage.removeItem('session_token');
-  	});
+    return http.delete('/api/v2/user/session').then(() => {
+      Auth.isAuthenticated = false;
+      localStorage.removeItem('session_token');
+    });
   },
   register({ first_name, last_name, email, new_password }) {
-  	return http.post('/api/v2/user/register?login=true', {
-  		first_name,
-  		last_name,
-  		email,
-  		new_password,
-  	}).then(onAuthenticationSuccess).catch(tmpErrorHandler);
+    return http.post('/api/v2/user/register?login=true', {
+      first_name,
+      last_name,
+      email,
+      new_password,
+    }).then(onAuthenticationSuccess).catch(tmpErrorHandler);
   }
 };
 

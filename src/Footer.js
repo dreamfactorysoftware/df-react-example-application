@@ -8,10 +8,10 @@ import {
 import logo from './logo.svg';
 
 const Footer = ({ children }) =>
-	(<Segment inverted vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
+	(<Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
     <Container textAlign='center'>
       <Image centered size='mini' src={logo} />
-      <List horizontal inverted divided link size='small'>
+      <List horizontal divided link size='small'>
         <List.Item as='a' href='#'>
           Site Map
         </List.Item>

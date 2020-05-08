@@ -6,11 +6,13 @@ import {
   Route,
 } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import ContactPage from './ContactPage';
 import ContactsPage from './ContactsPage';
 import GroupsPage from './GroupsPage';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import HomePage from './HomePage';
+import NoMatchPage from './NoMatchPage';
 
 export default function App() {
   return (
@@ -26,12 +28,18 @@ export default function App() {
           <Route path='/register'>
             <RegisterPage />
           </Route>
-      		<PrivateRoute path='/contacts'>
+          <PrivateRoute path='/contact/:id'>
+            <ContactPage />
+          </PrivateRoute>
+      		<PrivateRoute path='/contact'>
             <ContactsPage />
           </PrivateRoute>
       		<PrivateRoute path='/groups'>
             <GroupsPage />
           </PrivateRoute>
+          <Route path="*">
+            <NoMatchPage />
+          </Route>
         </Switch>
       </div>
     </Router>

@@ -17,7 +17,7 @@ const Layout = ({ children }) =>
           DreamFactory Calendar
         </Menu.Item>
         <Menu.Item as='a' href='/'>Home</Menu.Item>
-        <Menu.Item as='a' href='/contacts'>Contacts</Menu.Item>
+        <Menu.Item as='a' href='/contact'>Contacts</Menu.Item>
         <Menu.Item as='a' href='/groups'>Groups</Menu.Item>
         <Menu.Item position='right'>
           <LogInAndOutButton />

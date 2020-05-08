@@ -81,7 +81,7 @@ const HomepageHeading = ({ mobile }) => (
     />
     <Header
       as='h2'
-      content='A Calendar Example Application made with DreamFactory and React'
+      content='A Calendar Example Application made using DreamFactory and React'
       inverted
       style={{
         fontSize: mobile ? '1.5em' : '1.4em',
@@ -132,7 +132,7 @@ class DesktopContainer extends Component {
                 </Menu.Item>
                 {this.state.isAuthenticated && (
               	<React.Fragment>
-                	<Menu.Item as='a' href='/contacts'>Contacts</Menu.Item>
+                	<Menu.Item as='a' href='/contact'>Contacts</Menu.Item>
         					<Menu.Item as='a' href='/groups'>Groups</Menu.Item>
       					</React.Fragment>
         				)}
