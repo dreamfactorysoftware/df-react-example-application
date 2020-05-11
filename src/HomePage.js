@@ -133,7 +133,7 @@ class DesktopContainer extends Component {
                 {this.state.isAuthenticated && (
               	<React.Fragment>
                 	<Menu.Item as='a' href='/contact'>Contacts</Menu.Item>
-        					<Menu.Item as='a' href='/groups'>Groups</Menu.Item>
+        					<Menu.Item as='a' href='/group'>Groups</Menu.Item>
       					</React.Fragment>
         				)}
                 <Menu.Item position='right'>

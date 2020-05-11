@@ -1,6 +1,7 @@
 import React, {
   useEffect,
   useState,
+  useCallback,
   Fragment,
 } from 'react';
 import {
@@ -19,23 +20,15 @@ export default function ContactPage() {
   let { id } = useParams();
   const [contact, setContact] = useState();
 
-  const getData = (offset = 0, limit = 10, order = 'last_name asc') => {
-    return Promise.all([
-      contacts.getOne(id),
-      contacts.getInfo(id)
-    ]).then((data) => {
-      const [{ data: basic }, { data: { resource: more } }] = data;
-      console.log(basic, more);
-      setContact({
-        basic,
-        more,
-      });
+  const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
+    return contacts.getOneWithInfo(id).then((response) => {
+      setContact(response.data);
     })
-  };
+  }, [id]);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   const contactForm = () => (
     <Fragment>
@@ -47,14 +40,14 @@ export default function ContactPage() {
             control={Input}
             label='First name'
             placeholder='First name'
-            value={contact.basic.first_name}
+            value={contact.first_name}
           />
           <Form.Field
             id='form-input-control-last-name'
             control={Input}
             label='Last name'
             placeholder='Last name'
-            value={contact.basic.last_name}
+            value={contact.last_name}
           />
         </Form.Group>
         <Form.Group widths='equal'>
@@ -63,14 +56,14 @@ export default function ContactPage() {
             control={Input}
             label='Twitter'
             placeholder='Twitter'
-            value={contact.basic.twitter}
+            value={contact.twitter}
           />
           <Form.Field
             id='form-input-control-skype'
             control={Input}
             label='Skype'
             placeholder='Skype'
-            value={contact.basic.skype}
+            value={contact.skype}
           />
         </Form.Group>
         <Form.Field
@@ -78,7 +71,7 @@ export default function ContactPage() {
           control={TextArea}
           label='Notes'
           placeholder='Notes'
-          value={contact.basic.notes}
+          value={contact.notes}
         />
         <Form.Field
           id='form-button-control-public'
@@ -91,7 +84,7 @@ export default function ContactPage() {
 
   return (
     <Layout>
-      {contact && contact.basic && contactForm()}
+      {contact && contactForm()}
     </Layout>
   );
 }

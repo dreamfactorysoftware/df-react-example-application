@@ -11,6 +11,7 @@ import {
 import PrivateRoute from './PrivateRoute';
 import ContactPage from './ContactPage';
 import ContactsPage from './ContactsPage';
+import GroupPage from './GroupPage';
 import GroupsPage from './GroupsPage';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
@@ -47,7 +48,10 @@ export default function App() {
     		<PrivateRoute path='/contact'>
           <ContactsPage />
         </PrivateRoute>
-    		<PrivateRoute path='/groups'>
+        <PrivateRoute path='/group/:id'>
+          <GroupPage />
+        </PrivateRoute>
+    		<PrivateRoute path='/group'>
           <GroupsPage />
         </PrivateRoute>
         <Route path="*">

@@ -13,12 +13,11 @@ const Layout = ({ children }) =>
     <Menu fixed='top' inverted>
       <Container>
         <Menu.Item as='a' href='/' header>
-          <Image size='mini' src={logo} style={{ marginRight: '1.5em' }} />
-          DreamFactory Contacts
+          <Image size='mini' src={logo} />
         </Menu.Item>
         <Menu.Item as='a' href='/'>Home</Menu.Item>
         <Menu.Item as='a' href='/contact'>Contacts</Menu.Item>
-        <Menu.Item as='a' href='/groups'>Groups</Menu.Item>
+        <Menu.Item as='a' href='/group'>Groups</Menu.Item>
         <Menu.Item position='right'>
           <LogInAndOutButton />
         </Menu.Item>
