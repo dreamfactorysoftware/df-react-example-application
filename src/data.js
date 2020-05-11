@@ -11,4 +11,14 @@ export const contacts = {
       }
     });
   },
+  getOne(id) {
+    return dreamFactory().get(`/api/v2/db/_table/contact/${id}`);
+  },
+  getInfo(id) {
+    return dreamFactory().get('/api/v2/db/_table/contact_info', {
+      params: {
+        filter: `contact_id=${id}`,
+      }
+    });
+  }
 };

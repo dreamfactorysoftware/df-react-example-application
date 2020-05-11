@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {
+  useEffect,
+} from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useLocation,
 } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import ContactPage from './ContactPage';
@@ -14,34 +17,43 @@ import RegisterPage from './RegisterPage';
 import HomePage from './HomePage';
 import NoMatchPage from './NoMatchPage';
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <Router>
-      <div>
-        <Switch>
-          <Route exact path='/'>
-          	<HomePage />
-          </Route>
-          <Route path='/login'>
-            <LoginPage />
-          </Route>
-          <Route path='/register'>
-            <RegisterPage />
-          </Route>
-          <PrivateRoute path='/contact/:id'>
-            <ContactPage />
-          </PrivateRoute>
-      		<PrivateRoute path='/contact'>
-            <ContactsPage />
-          </PrivateRoute>
-      		<PrivateRoute path='/groups'>
-            <GroupsPage />
-          </PrivateRoute>
-          <Route path="*">
-            <NoMatchPage />
-          </Route>
-        </Switch>
-      </div>
+      <ScrollToTop />
+      <Switch>
+        <Route exact path='/'>
+        	<HomePage />
+        </Route>
+        <Route path='/login'>
+          <LoginPage />
+        </Route>
+        <Route path='/register'>
+          <RegisterPage />
+        </Route>
+        <PrivateRoute path='/contact/:id'>
+          <ContactPage />
+        </PrivateRoute>
+    		<PrivateRoute path='/contact'>
+          <ContactsPage />
+        </PrivateRoute>
+    		<PrivateRoute path='/groups'>
+          <GroupsPage />
+        </PrivateRoute>
+        <Route path="*">
+          <NoMatchPage />
+        </Route>
+      </Switch>
     </Router>
   );
 }

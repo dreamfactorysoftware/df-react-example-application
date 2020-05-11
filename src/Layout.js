@@ -14,7 +14,7 @@ const Layout = ({ children }) =>
       <Container>
         <Menu.Item as='a' href='/' header>
           <Image size='mini' src={logo} style={{ marginRight: '1.5em' }} />
-          DreamFactory Calendar
+          DreamFactory Contacts
         </Menu.Item>
         <Menu.Item as='a' href='/'>Home</Menu.Item>
         <Menu.Item as='a' href='/contact'>Contacts</Menu.Item>

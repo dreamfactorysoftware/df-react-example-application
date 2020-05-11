@@ -70,7 +70,7 @@ const HomepageHeading = ({ mobile }) => (
   <Container text>
     <Header
       as='h1'
-      content='DreamFactory Calendar'
+      content='Contacts'
       inverted
       style={{
         fontSize: mobile ? '2em' : '4em',
@@ -81,7 +81,7 @@ const HomepageHeading = ({ mobile }) => (
     />
     <Header
       as='h2'
-      content='A Calendar Example Application made using DreamFactory and React'
+      content='An example application made with DreamFactory and React'
       inverted
       style={{
         fontSize: mobile ? '1.5em' : '1.4em',

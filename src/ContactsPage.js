@@ -101,6 +101,4 @@ export default function ContactsPage() {
       />
     </Layout>
   );
-        // paginationPerPage={rowsPerPage}
-        // onChangeRowsPerPage={onChangeRowsPerPage}
 }
