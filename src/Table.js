@@ -13,12 +13,12 @@ export default function Table(props) {
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [sort, setSort] = useState('last_name asc');
+  const [sort, setSort] = useState(props.defaultSortField);
   const getDataAsync = props.getData;
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
+  const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => {
     setLoading(true);
-    return getDataAsync().then((response) => {
+    return getDataAsync(offset, limit, order).then((response) => {
       setData(response.data.resource);
       setTotalRows(response.data.meta.count);
       setLoading(false);

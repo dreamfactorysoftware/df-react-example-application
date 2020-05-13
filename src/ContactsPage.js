@@ -2,6 +2,10 @@ import React from 'react';
 import {
   useHistory,
 } from "react-router-dom";
+import {
+  Icon,
+  Button,
+} from 'semantic-ui-react';
 import Layout from './Layout';
 import { contacts } from './data';
 import Table from './Table';
@@ -21,8 +25,12 @@ export default function ContactsPage() {
   }
 
   return (
-    <Layout>
-      <h3>Contacts</h3>
+    <Layout active='contacts'>
+      <h1>Contacts</h1>
+      <Button floated='right'>
+        <Icon name='add' />
+        New
+      </Button>
       <Table
         columns={columns}
         defaultSortField='last_name'

@@ -30,8 +30,8 @@ export const contacts = {
   getOne(id) {
     return dreamFactory().get(`/api/v2/db/_table/contact/${id}`);
   },
-  getOneWithInfo(id) {
-    return dreamFactory().get(`/api/v2/db/_table/contact/${id}?related=contact_info_by_contact_id`);
+  getOneWithInfoAndGroups(id) {
+    return dreamFactory().get(`/api/v2/db/_table/contact/${id}?related=*`);
   },
 };
 
@@ -42,10 +42,7 @@ export const contact_group_relationship = {
         filter: `contact_group_id=${id}`,
         related: 'contact_by_contact_id',
       }
-    }).then((data) => {
-      console.log(data);
-      return data;
-    })
+    });
   },
 };
 
@@ -73,4 +70,9 @@ export const groups = {
   getOne(id) {
     return dreamFactory().get(`/api/v2/db/_table/contact_group/${id}`);
   },
+  create(name) {
+    return dreamFactory().post(`/api/v2/db/_table/contact_group`, {
+      resource: [{ name }],
+    });
+  }
 }

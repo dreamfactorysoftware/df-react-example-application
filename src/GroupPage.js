@@ -8,10 +8,13 @@ import {
   useParams,
 } from 'react-router-dom';
 import {
+  Icon,
   Input,
   Button,
   Form,
-  Divider, Header,
+  Divider,
+  Header,
+  Segment,
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 import Layout from './Layout';
@@ -21,7 +24,11 @@ import columns from './contactsTableColumns';
 const columnsWithActionButton = columns.concat([
   {
 
-    cell: () => <Button size='mini'>Remove</Button>,
+    cell: () => (
+      <Button size='mini'>
+        <i aria-hidden="true" class="remove user icon"></i>
+        Remove
+      </Button>),
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
@@ -51,41 +58,68 @@ export default function ContactPage() {
     getData();
   }, [getData]);
 
-  const groupForm = () => (
+  const GroupName = (props) => (
     <Fragment>
-      <Form>
-        <Form.Field floated='right'
-            id='form-button-control-public'
-            control={Button}
-            content='Save'
-          />
-        <Header as='h3' floated='left'>
+      <Button size='small' floated='right' icon>
+        <Icon name='delete' />
+      </Button>
+      <Button size='small' floated='right'>
+        <Icon name='edit' />
+        Rename
+      </Button>
+      <Header as='h1'>
+        <Icon name='group' />
+        <Header.Content>
+        {props.name}
+        <Header.Subheader>
           Group
-        </Header>
-        <Divider clearing hidden />
+        </Header.Subheader>
+        </Header.Content>
+      </Header>
+      <Divider fitted clearing hidden />
+    </Fragment>
+  );
+
+  const groupNameEditForm = () => (
+    <Segment>
+      <Form>
         <Form.Field
           id='form-input-control-name'
           control={Input}
-          label='Name'
+          label='Group Name'
           placeholder='Name'
           value={group.name}
         />
+        <Form.Field floated='right'
+          id='form-button-control-public'
+          control={Button}
+          content='Save'
+          icon='save'
+          size='mini'
+        />
       </Form>
-    </Fragment>
+      <Divider fitted clearing hidden />
+    </Segment>
   );
 
   return (
     <Layout>
-      {group && group.name && groupForm()}
+      {group && group.name && <GroupName name={group.name} />}
 
       {groupContacts &&
-      <DataTable
-        columns={columnsWithActionButton}
-        data={groupContacts}
-        noHeader
-        defaultSortField='last_name'
-        pagination
-      />}
+      <Segment>
+        <Button floated='right'>
+          <i aria-hidden="true" class="add user icon"></i>
+          Add contact
+        </Button>
+        <DataTable
+          columns={columnsWithActionButton}
+          data={groupContacts}
+          noHeader
+          defaultSortField='last_name'
+          pagination
+        />
+      </Segment>}
     </Layout>
   );
         // highlightOnHover
