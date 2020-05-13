@@ -4,10 +4,10 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import Auth from './Auth';
+import auth from '../services/auth';
 
 
-export default function LoginPage() {
+export default function Login() {
   let history = useHistory();
   let location = useLocation();
 
@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    Auth.authenticate(event.target.email.value, event.target.password.value).then(() => {
+    auth.authenticate(event.target.email.value, event.target.password.value).then(() => {
       history.replace(from);
     });
   }

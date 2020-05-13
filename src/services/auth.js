@@ -26,11 +26,11 @@ const tmpErrorHandler = (error) => {
 const onAuthenticationSuccess = (response) => {
   var session_token = response.data.session_token;
   localStorage.setItem('session_token', session_token);
-  Auth.isAuthenticated = true;
+  auth.isAuthenticated = true;
 }
 
 
-const Auth = {
+const auth = {
   isAuthenticated: localStorage.getItem('session_token') ? true : false,
   authenticate(email, password) {
     return http.post('/api/v2/user/session', {
@@ -38,12 +38,12 @@ const Auth = {
       password,
     }).then(onAuthenticationSuccess).catch((error) => {
       tmpErrorHandler(error);
-      Auth.isAuthenticated = false;
+      auth.isAuthenticated = false;
     });
   },
   signout() {
     return http.delete('/api/v2/user/session').then(() => {
-      Auth.isAuthenticated = false;
+      auth.isAuthenticated = false;
       localStorage.removeItem('session_token');
     });
   },
@@ -57,4 +57,4 @@ const Auth = {
   }
 };
 
-export default Auth;
+export default auth;

@@ -3,14 +3,14 @@ import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
 import {
   useHistory,
 } from "react-router-dom";
-import Auth from './Auth';
+import auth from '../services/auth';
 
-export default function RegisterPage() {
+export default function Register() {
   let history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    Auth.register({
+    auth.register({
       first_name: event.target.first_name.value,
       last_name: event.target.last_name.value,
       email: event.target.email.value,

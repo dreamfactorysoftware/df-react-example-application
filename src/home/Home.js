@@ -12,8 +12,8 @@ import {
   Sidebar,
   Visibility,
 } from 'semantic-ui-react';
-import LogInAndOutButton from './LogInAndOutButton';
-import Auth from './Auth';
+import LogInAndOutButton from '../common/LogInAndOutButton';
+import auth from '../services/auth';
 
 const HomePage = () => {
   return (<ResponsiveContainer>
@@ -94,12 +94,12 @@ const HomepageHeading = ({ mobile }) => (
 
 class DesktopContainer extends Component {
   state = {
-  	isAuthenticated: Auth.isAuthenticated,
+  	isAuthenticated: auth.isAuthenticated,
   }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
   onLogOut = () => {
-  	this.setState({ isAuthenticated: Auth.isAuthenticated });
+  	this.setState({ isAuthenticated: auth.isAuthenticated });
   }
 
   render() {

@@ -6,12 +6,12 @@ import {
   Icon,
   Button,
 } from 'semantic-ui-react';
-import Layout from './Layout';
-import { contacts } from './data';
-import Table from './Table';
-import columns from './contactsTableColumns';
+import Layout from '../layout/Layout';
+import { contacts } from '../services/data';
+import Table from '../common/Table';
+import columns from '../common/contactsTableColumns';
 
-export default function ContactsPage() {
+export default function ContactList() {
   const history = useHistory();
 
   const getData = (offset = 0, limit = 10, order = 'last_name asc') => contacts.getAll({

@@ -9,14 +9,14 @@ import {
   useLocation,
 } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
-import ContactPage from './ContactPage';
-import ContactsPage from './ContactsPage';
-import GroupPage from './GroupPage';
-import GroupsPage from './GroupsPage';
-import LoginPage from './LoginPage';
-import RegisterPage from './RegisterPage';
-import HomePage from './HomePage';
-import NoMatchPage from './NoMatchPage';
+import Contact from './contacts/Contact';
+import ContactList from './contacts/ContactList';
+import Group from './groups/Group';
+import GroupList from './groups/GroupList';
+import Login from './login/Login';
+import Register from './register/Register';
+import HomePage from './home/Home';
+import NoMatch from './NoMatch';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -37,25 +37,25 @@ export default function App() {
         	<HomePage />
         </Route>
         <Route path='/login'>
-          <LoginPage />
+          <Login />
         </Route>
         <Route path='/register'>
-          <RegisterPage />
+          <Register />
         </Route>
         <PrivateRoute path='/contact/:id'>
-          <ContactPage />
+          <Contact />
         </PrivateRoute>
     		<PrivateRoute path='/contact'>
-          <ContactsPage />
+          <ContactList />
         </PrivateRoute>
         <PrivateRoute path='/group/:id'>
-          <GroupPage />
+          <Group />
         </PrivateRoute>
     		<PrivateRoute path='/group'>
-          <GroupsPage />
+          <GroupList />
         </PrivateRoute>
         <Route path="*">
-          <NoMatchPage />
+          <NoMatch />
         </Route>
       </Switch>
     </Router>

@@ -3,14 +3,14 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Auth from './Auth';
+import auth from './services/auth';
 
 export default function PrivateRoute({ children, ...rest }) {
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        Auth.isAuthenticated ? (
+        auth.isAuthenticated ? (
           children
         ) : (
           <Redirect

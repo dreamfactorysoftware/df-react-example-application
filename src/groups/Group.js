@@ -19,9 +19,9 @@ import {
   Input,
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
-import Layout from './Layout';
-import { groups, contact_group_relationship } from './data';
-import columns from './contactsTableColumns';
+import Layout from '../layout/Layout';
+import { groups, contact_group_relationship } from '../services/data';
+import columns from '../common/contactsTableColumns';
 
 const columnsWithActionButton = columns.concat([
   {
@@ -157,7 +157,7 @@ const GroupName = (props) => (
   </Fragment>
 );
 
-export default function ContactPage() {
+export default function Contact() {
   let { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);

@@ -11,9 +11,9 @@ import {
   Input,
   Modal,
 } from 'semantic-ui-react';
-import Layout from './Layout';
-import { groups } from './data';
-import Table from './Table';
+import Layout from '../layout/Layout';
+import { groups } from '../services/data';
+import Table from '../common/Table';
 
 const columns = [
   {
@@ -86,7 +86,7 @@ const NewGroupModal = (props) => {
     </Fragment>);
 }
 
-export default function GroupsPage() {
+export default function GroupList() {
   const [refresh, setRefresh] = useState(true);
   const history = useHistory();
 

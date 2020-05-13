@@ -7,8 +7,8 @@ import {
   Loader,
 } from 'semantic-ui-react';
 import Footer from './Footer';
-import LogInAndOutButton from './LogInAndOutButton';
-import logo from './logo.svg';
+import LogInAndOutButton from '../common/LogInAndOutButton';
+import logo from '../logo.svg';
 
 const Layout = ({ children, active, loading }) =>
 	(<div>

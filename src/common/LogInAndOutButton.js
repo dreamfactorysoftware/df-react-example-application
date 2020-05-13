@@ -6,13 +6,13 @@ import {
 import {
   Button,
 } from 'semantic-ui-react';
-import Auth from './Auth';
+import auth from '../services/auth';
 
 export default function LogInAndOutButton(props) {
   const history = useHistory();
   const location = useLocation();
   const redirectTo = '/';
-  const logIn = () => Auth.signout().then(() => {
+  const logIn = () => auth.signout().then(() => {
   	if (location.pathname !== redirectTo) {
   		history.push(redirectTo);
   	} else if (typeof props.onLogOut === 'function') {
@@ -20,7 +20,7 @@ export default function LogInAndOutButton(props) {
   	}
 	});
 
-  return Auth.isAuthenticated ? (
+  return auth.isAuthenticated ? (
   	<Button inverted onClick={logIn}>
       Log out
     </Button>

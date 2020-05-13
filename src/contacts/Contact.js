@@ -20,10 +20,10 @@ import {
   Segment,
   TextArea,
 } from 'semantic-ui-react';
-import Layout from './Layout';
-import { contacts } from './data';
+import Layout from '../layout/Layout';
+import { contacts } from '../services/data';
 
-export default function ContactPage() {
+export default function Contact() {
   let { id } = useParams();
   const [contact, setContact] = useState();
 
