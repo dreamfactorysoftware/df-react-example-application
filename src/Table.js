@@ -42,7 +42,7 @@ export default function Table(props) {
 
   useEffect(() => {
     getData();
-  }, [getData]);
+  }, [getData, props.refresh]);
 
   return (
     <DataTable

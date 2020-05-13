@@ -32,7 +32,10 @@ const getData = (offset = 0, limit = 10, order = 'name asc') => groups.getAll({
 const NewGroupModal = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const close = (event) => {
+    event.preventDefault();
+    setIsOpen(false);
+  }
   const handleSubmit = (event) => {
     if (typeof props.onSubmit === 'function') {
       props.onSubmit(event);
@@ -64,6 +67,7 @@ const NewGroupModal = (props) => {
             autoComplete='off'
             name='name'
             required
+            autoFocus
           />
         </Modal.Content>
         <Modal.Actions>
@@ -83,14 +87,20 @@ const NewGroupModal = (props) => {
 }
 
 export default function GroupsPage() {
+  const [refresh, setRefresh] = useState(true);
   const history = useHistory();
+
+  const refreshTable = () => {
+    setRefresh(!refresh);
+  }
 
   const handleRowClick = (selectedRow) => {
     history.push(`/group/${selectedRow.id}`);
   }
 
   const handleSubmit = (event) => {
-    groups.create(event.target.name.value);
+    groups.create(event.target.name.value)
+      .then(refreshTable);
   }
 
   return (
@@ -103,6 +113,7 @@ export default function GroupsPage() {
         defaultSortField='name'
         onRowClicked={handleRowClick}
         getData={getData}
+        refresh={refresh}
       />
     </Layout>
   );

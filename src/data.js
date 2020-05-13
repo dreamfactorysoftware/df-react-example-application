@@ -71,8 +71,16 @@ export const groups = {
     return dreamFactory().get(`/api/v2/db/_table/contact_group/${id}`);
   },
   create(name) {
-    return dreamFactory().post(`/api/v2/db/_table/contact_group`, {
+    return dreamFactory().post('/api/v2/db/_table/contact_group', {
       resource: [{ name }],
+    });
+  },
+  delete(id) {
+    return dreamFactory().delete(`/api/v2/db/_table/contact_group/${id}`);
+  },
+  update(id, name) {
+    return dreamFactory().patch(`/api/v2/db/_table/contact_group/${id}`, {
+      name,
     });
   }
 }

@@ -13,7 +13,6 @@ import {
   Divider,
   Form,
   Header,
-  Label,
   Icon,
   Input,
   Item,
