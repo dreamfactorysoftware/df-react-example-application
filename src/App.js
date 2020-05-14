@@ -17,6 +17,7 @@ import Login from './login/Login';
 import Register from './register/Register';
 import HomePage from './home/Home';
 import NoMatch from './NoMatch';
+import './App.css';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -54,7 +55,7 @@ export default function App() {
     		<PrivateRoute path='/group'>
           <GroupList />
         </PrivateRoute>
-        <Route path="*">
+        <Route path='*'>
           <NoMatch />
         </Route>
       </Switch>

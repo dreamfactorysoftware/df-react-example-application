@@ -5,6 +5,9 @@ import React, {
 } from 'react';
 import {
   Loader,
+  Segment,
+  Icon,
+  Checkbox,
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 
@@ -16,7 +19,7 @@ export default function Table(props) {
   const [sort, setSort] = useState(props.defaultSortField);
   const getDataAsync = props.getData;
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => {
+  const getData = useCallback((offset = 0, limit = 10, order) => {
     setLoading(true);
     return getDataAsync(offset, limit, order).then((response) => {
       setData(response.data.resource);
@@ -46,21 +49,21 @@ export default function Table(props) {
 
   return (
     <DataTable
-      columns={props.columns}
       data={data}
       noHeader
       highlightOnHover
       pointerOnHover
-      defaultSortField={props.defaultSortField}
       pagination
       paginationServer
       progressPending={loading}
-      progressComponent={<Loader active inline='centered' />}
+      progressComponent={<Segment basic padded='very'><Loader active className='workaround' size='big' inline='centered' content='Loading' /></Segment>}
       paginationTotalRows={totalRows}
       onChangeRowsPerPage={handlePerRowsChange}
       onChangePage={handlePageChange}
       onSort={handleSort}
-      onRowClicked={props.onRowClicked}
+      sortIcon={<Icon name='angle down' />}
+      selectableRowsComponent={Checkbox}
+      {...props}
     />
   );
 }

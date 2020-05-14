@@ -36,12 +36,12 @@ const Layout = ({ children, active, loading }) =>
 
     <Container text style={{ marginTop: '7em' }}>
       <Dimmer inverted active={loading}>
-        <Loader content='Loading' />
+        <Loader size='big' content='Loading' />
       </Dimmer>
     	{ children }
     </Container>
 
-    <Footer />
+    {!loading && <Footer />}
   </div>);
 
 export default Layout;

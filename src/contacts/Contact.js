@@ -37,7 +37,7 @@ export default function Contact() {
     getData();
   }, [getData]);
 
-  const contactForm = () => (
+  const ContactForm = () => (
     <Fragment>
       <h3>Edit contact</h3>
       <Form>
@@ -89,12 +89,12 @@ export default function Contact() {
     </Fragment>
   );
 
-  const contactInfoView = (contactInfo) => {
-    if (!contactInfo) {
+  const ContactInfo = (props) => {
+    if (!props.data) {
      return;
     }
 
-    const items = contactInfo.map((info) => {
+    const items = props.data.map((info) => {
       return (
         <Segment>
           <Button size='mini' floated='right' icon>
@@ -146,13 +146,25 @@ export default function Contact() {
     });
 
     return (
-      <Item.Group>
-        {items}
-      </Item.Group>);
+      <Fragment>
+        <Button
+          floated='right'
+          icon='add'
+          size='tiny'
+          content='New' />
+        <Header as='h2'>Info</Header>
+        <Item.Group>
+          {items}
+        </Item.Group>
+      </Fragment>);
   };
 
-  const contactGroups = (groups) => {
-    const items = groups.map((group) => (
+  const ContactGroups = (props) => {
+    if (!props.data) {
+      return;
+    }
+
+    const items = props.data.map((group) => (
       <List.Item>
         <List.Icon name='group' />
         <List.Content>{group.name}</List.Content>
@@ -160,20 +172,22 @@ export default function Contact() {
     ));
 
     return (
-      <List>
-        {items}
-      </List>);
+      <Fragment>
+        <Header as='h2'>Groups</Header>
+        <List>
+          {items}
+        </List>
+      </Fragment>);
   }
 
   const contactView = (contact) => (
     <Fragment>
-      <Button size='small' floated='right' icon>
-        <Icon name='delete' />
-      </Button>
-      <Button size='small' floated='right'>
-        <Icon name='edit' />
-        Edit
-      </Button>
+      <Button size='small' floated='right' icon='delete' />
+      <Button
+        size='small'
+        floated='right'
+        icon='edit'
+        content='Edit' />
       <Header as='h1'>
         <Icon name='user' />
         <Header.Content>
@@ -201,12 +215,9 @@ export default function Contact() {
         <p>Jakieś notatki na temat tej osoby.</p>
       </Container>
 
-      <Header as='h2'>Groups</Header>
-      {contact.contact_group_by_contact_group_relationship &&
-        contactGroups(contact.contact_group_by_contact_group_relationship)}
+      <ContactGroups data={contact.contact_group_by_contact_group_relationship} />
 
-      <Header as='h2'>Info</Header>
-      {contactInfoView(contact.contact_info_by_contact_id)}
+      <ContactInfo data={contact.contact_info_by_contact_id} />
     </Fragment>
   );
 

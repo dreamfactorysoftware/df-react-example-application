@@ -17,14 +17,20 @@ const dreamFactory = () => {
 };
 
 export const contacts = {
-  getAll({ include_count, offset, limit, order }) {
+  getAll({ include_count, offset, limit, order, filter }) {
+    const params = {
+      include_count: include_count || true,
+      offset: Number.isInteger(offset) ? offset : 0,
+      limit: Number.isInteger(limit) ? limit : 10,
+      order: order || 'last_name asc',
+    };
+
+    if (filter) {
+      params.filter = filter;
+    }
+
     return dreamFactory().get('/api/v2/db/_table/contact', {
-      params: {
-        include_count: include_count || true,
-        offset: Number.isInteger(offset) ? offset : 0,
-        limit: Number.isInteger(limit) ? limit : 10,
-        order: order || 'last_name asc',
-      }
+      params,
     });
   },
   getOne(id) {

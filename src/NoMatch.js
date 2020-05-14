@@ -4,14 +4,14 @@ import {
 } from "react-router-dom";
 import Layout from './layout/Layout'
 
-export default function NoMatchPage() {
+export default function NoMatch() {
   let location = useLocation();
 
   return (
     <Layout>
-      <h3>
-        No match for <code>{location.pathname}</code>
-      </h3>
+      <h1>
+        Page not found <code>{location.pathname}</code>
+      </h1>
     </Layout>
   );
 }

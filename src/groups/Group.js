@@ -22,6 +22,7 @@ import DataTable from 'react-data-table-component';
 import Layout from '../layout/Layout';
 import { groups, contact_group_relationship } from '../services/data';
 import columns from '../common/contactsTableColumns';
+import AddContactModal from './AddContactModal';
 
 const columnsWithActionButton = columns.concat([
   {
@@ -209,10 +210,7 @@ export default function Contact() {
 
       {groupContacts &&
       <Segment>
-        <Button floated='right'>
-          <i aria-hidden="true" class="add user icon"></i>
-          Add contact
-        </Button>
+        <AddContactModal group={group} />
         <DataTable
           columns={columnsWithActionButton}
           data={groupContacts}

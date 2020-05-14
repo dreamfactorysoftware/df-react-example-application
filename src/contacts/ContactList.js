@@ -3,7 +3,6 @@ import {
   useHistory,
 } from "react-router-dom";
 import {
-  Icon,
   Button,
 } from 'semantic-ui-react';
 import Layout from '../layout/Layout';
@@ -27,10 +26,7 @@ export default function ContactList() {
   return (
     <Layout active='contacts'>
       <h1>Contacts</h1>
-      <Button floated='right'>
-        <Icon name='add' />
-        New
-      </Button>
+      <Button floated='right' icon='add' content='New' />
       <Table
         columns={columns}
         defaultSortField='last_name'
