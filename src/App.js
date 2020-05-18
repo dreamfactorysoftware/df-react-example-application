@@ -11,6 +11,7 @@ import {
 import PrivateRoute from './PrivateRoute';
 import Contact from './contacts/Contact';
 import ContactList from './contacts/ContactList';
+import NewContact from './contacts/NewContact';
 import Group from './groups/Group';
 import GroupList from './groups/GroupList';
 import Login from './login/Login';
@@ -48,6 +49,9 @@ export default function App() {
         </PrivateRoute>
     		<PrivateRoute path='/contact'>
           <ContactList />
+        </PrivateRoute>
+        <PrivateRoute path='/new-contact'>
+          <NewContact />
         </PrivateRoute>
         <PrivateRoute path='/group/:id'>
           <Group />

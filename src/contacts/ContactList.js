@@ -44,7 +44,7 @@ export default function ContactList() {
 
   return (
     <Layout active='contacts'>
-      <Button floated='right' icon='add' content='New' />
+      <Button floated='right' icon='add' content='New' as='a' href='/new-contact' />
       <h1>Contacts</h1>
       <Divider clearing />
       <Input

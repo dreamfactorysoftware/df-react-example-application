@@ -23,45 +23,50 @@ export default function Register() {
   return (
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as='h2' color='blue' textAlign='center'>
-          Register
-        </Header>
-        <Form size='large' onSubmit={handleSubmit}>
-          <Segment stacked>
-            <Form.Input
-              fluid
-              icon='user'
-              iconPosition='left'
-              placeholder='First Name'
-              name='first_name'
-            />
-            <Form.Input
-              fluid
-              icon='user'
-              iconPosition='left'
-              placeholder='Last Name'
-              name='last_name'
-            />
-            <Form.Input
-              fluid
-              icon='user'
-              iconPosition='left'
-              placeholder='E-mail address'
-              name='email'
-            />
-            <Form.Input
-              fluid
-              icon='lock'
-              iconPosition='left'
-              placeholder='Password'
-              type='password'
-              name='new_password'
-            />
 
-            <Button color='blue' fluid size='large'>
-              Continue
-            </Button>
-          </Segment>
+        <Form size='large' onSubmit={handleSubmit}>
+          <Segment.Group>
+            <Segment>
+              <Header as='h2' color='blue' textAlign='center'>
+                Register
+              </Header>
+            </Segment>
+            <Segment>
+              <Form.Input
+                fluid
+                icon='user'
+                iconPosition='left'
+                placeholder='First Name'
+                name='first_name'
+              />
+              <Form.Input
+                fluid
+                icon='user'
+                iconPosition='left'
+                placeholder='Last Name'
+                name='last_name'
+              />
+              <Form.Input
+                fluid
+                icon='user'
+                iconPosition='left'
+                placeholder='E-mail address'
+                name='email'
+              />
+              <Form.Input
+                fluid
+                icon='lock'
+                iconPosition='left'
+                placeholder='Password'
+                type='password'
+                name='new_password'
+              />
+
+              <Button color='blue' fluid size='large'>
+                Continue
+              </Button>
+            </Segment>
+          </Segment.Group>
         </Form>
         <Message>
           Already have an account? <a href='/login'>Log in</a>
