@@ -61,14 +61,20 @@ export const contact_group_relationship = {
 };
 
 export const groups = {
-  getAll({ include_count, offset, limit, order }) {
+  getAll({ include_count, offset, limit, order, filter }) {
+    const params = {
+      include_count: include_count || true,
+      offset: Number.isInteger(offset) ? offset : 0,
+      limit: Number.isInteger(limit) ? limit : 10,
+      order: order || 'name asc',
+    };
+
+    if (filter) {
+      params.filter = filter;
+    }
+
     return dreamFactory().get('/api/v2/db/_table/contact_group', {
-      params: {
-        include_count: include_count || true,
-        offset: Number.isInteger(offset) ? offset : 0,
-        limit: Number.isInteger(limit) ? limit : 10,
-        order: order || 'name asc',
-      }
+      params,
     });
   },
   getOne(id) {

@@ -10,7 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
-import { contacts, contact_group_relationship } from '../services/data';
+import { contacts } from '../services/data';
 import columns from '../common/contactsTableColumns';
 import Table from '../common/Table';
 
@@ -59,8 +59,6 @@ export default function AddContactModal(props) {
     order,
     filter,
   }), [filter]);
-
-  // const getData = () => contact_group_relationship.getContactsNotInGroupId(props.group.id);
 
   const handleRowSelected = ({ selectedRows }) => {
     setSelected(selectedRows);

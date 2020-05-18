@@ -1,19 +1,19 @@
 import React, {
   useState,
-  Fragment,
+  useCallback,
 } from 'react';
 import {
   useHistory,
 } from "react-router-dom";
 import {
-  Button,
-  Form,
   Input,
-  Modal,
+  Divider,
 } from 'semantic-ui-react';
+import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
 import { groups } from '../services/data';
 import Table from '../common/Table';
+import NewGroupModal from './NewGroupModal';
 
 const columns = [
   {
@@ -23,72 +23,28 @@ const columns = [
   },
 ];
 
-const getData = (offset = 0, limit = 10, order = 'name asc') => groups.getAll({
-  offset,
-  limit,
-  order,
-});
-
-const NewGroupModal = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = (event) => {
-    event.preventDefault();
-    setIsOpen(false);
-  }
-  const handleSubmit = (event) => {
-    if (typeof props.onSubmit === 'function') {
-      props.onSubmit(event);
-    }
-
-    setIsOpen(false);
-  }
-
-  return (
-    <Fragment>
-      <Button
-        floated='right'
-        icon='add'
-        onClick={open}
-        content='New' />
-      <Modal
-        as={Form}
-        size='small'
-        open={isOpen}
-        onSubmit={handleSubmit}
-        onClose={close}>
-        <Modal.Header>Add New Group</Modal.Header>
-        <Modal.Content>
-          <Form.Field
-            id='form-input-control-name'
-            control={Input}
-            label='Name'
-            placeholder='Name'
-            autoComplete='off'
-            name='name'
-            required
-            autoFocus
-          />
-        </Modal.Content>
-        <Modal.Actions>
-          <Button
-            content='Cancel'
-            onClick={close}
-          />
-          <Button
-            positive
-            icon='add'
-            content='Add'
-            type='submit'
-          />
-        </Modal.Actions>
-      </Modal>
-    </Fragment>);
-}
-
 export default function GroupList() {
   const [refresh, setRefresh] = useState(true);
   const history = useHistory();
+  const [filter, setFilter] = useState('');
+
+  const handleInputChange = (event) => {
+    const { target: { value } } = event;
+    if (value) {
+      setFilterDebounced(`(name like ${value}%)`);
+    } else {
+      setFilterDebounced('');
+    }
+  };
+
+  const setFilterDebounced = debounce(setFilter, 500);
+
+  const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => groups.getAll({
+    offset,
+    limit,
+    order,
+    filter,
+  }), [filter]);
 
   const refreshTable = () => {
     setRefresh(!refresh);
@@ -105,9 +61,15 @@ export default function GroupList() {
 
   return (
     <Layout active='groups'>
-      <h1>Groups</h1>
       <NewGroupModal onSubmit={handleSubmit} />
-
+      <h1>Groups</h1>
+      <Divider clearing />
+      <Input
+        fluid
+        placeholder='Search...'
+        icon='search'
+        size='large'
+        onChange={handleInputChange} />
       <Table
         columns={columns}
         defaultSortField='name'
