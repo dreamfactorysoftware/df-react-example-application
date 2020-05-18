@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
 import { groups } from '../services/data';
 import Table from '../common/Table';
-import NewGroupModal from './NewGroupModal';
+import GroupNameModal from './GroupNameModal';
 
 const columns = [
   {
@@ -61,7 +61,23 @@ export default function GroupList() {
 
   return (
     <Layout active='groups'>
-      <NewGroupModal onSubmit={handleSubmit} />
+      <GroupNameModal
+        trigger={{
+          floated:'right',
+          icon:'add',
+          content:'New',
+        }}
+        title='Add New Group'
+        modal={{
+          title: 'Rename Group',
+          confirm: {
+            primary: true,
+            icon: 'add',
+            content: 'Add',
+          },
+          onSubmit: handleSubmit,
+        }}
+        />
       <h1>Groups</h1>
       <Divider clearing />
       <Input

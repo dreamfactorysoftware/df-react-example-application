@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useState,
   useMemo,
-  Fragment,
 } from 'react';
 import {
   useParams,
@@ -112,14 +111,15 @@ export default function Contact() {
 
   return (
     <Layout loading={loading}>
+    <Segment.Group>
       {group && group.name &&
-        (<Fragment>
+        (<Segment>
           <GroupName
             name={group.name}
             onDeleteClick={handleDeleteClick}
             onRenameSubmit={handleRenameSubmit} />
           <Divider fitted clearing hidden />
-        </Fragment>)}
+        </Segment>)}
 
       {groupContacts &&
       <Segment>
@@ -134,6 +134,7 @@ export default function Contact() {
           pagination
         />
       </Segment>}
+    </Segment.Group>
     </Layout>
   );
         // highlightOnHover

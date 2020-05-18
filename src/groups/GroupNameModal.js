@@ -9,7 +9,7 @@ import {
   Input,
 } from 'semantic-ui-react';
 
-export default function RenameGroupModal(props) {
+export default function GroupNameModal(props) {
   const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
   const close = (event) => {
@@ -17,8 +17,8 @@ export default function RenameGroupModal(props) {
     setIsOpen(false);
   };
   const handleSubmit = (event) => {
-    if (typeof props.onRenameSubmit === 'function') {
-      props.onRenameSubmit(event);
+    if (typeof props.modal.onSubmit === 'function') {
+      props.modal.onSubmit(event);
     }
 
     setIsOpen(false);
@@ -27,18 +27,15 @@ export default function RenameGroupModal(props) {
   return (
     <Fragment>
       <Button
-        floated='right'
-        icon='edit'
-        size='small'
-        onClick={open}
-        content='Rename' />
+        {...props.trigger}
+        onClick={open} />
       <Modal
         as={Form}
         size='small'
         open={isOpen}
         onSubmit={handleSubmit}
         onClose={close}>
-        <Modal.Header>Rename Group</Modal.Header>
+        <Modal.Header>{props.title}</Modal.Header>
         <Modal.Content>
           <Form.Field
             id='form-input-control-name'
@@ -47,17 +44,17 @@ export default function RenameGroupModal(props) {
             placeholder='Name'
             autoComplete='off'
             name='name'
-            defaultValue={props.name}
+            defaultValue={props.modal.defaultValue}
             required
             autoFocus
           />
         </Modal.Content>
         <Modal.Actions>
           <Button
-            positive
-            icon='edit'
-            content='Rename'
+            icon='add'
+            content='Add'
             type='submit'
+            {...props.modal.confirm}
           />
           <Button
             content='Cancel'
