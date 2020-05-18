@@ -1,10 +1,12 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
+  Segment,
   Header,
   List,
+  Button,
+  Divider,
 } from 'semantic-ui-react';
+import ConfirmActionModal from '../common/ConfirmActionModal';
 
 export default function ContactGroups(props) {
   if (!props.data) {
@@ -13,16 +15,36 @@ export default function ContactGroups(props) {
 
   const items = props.data.map((group) => (
     <List.Item>
-      <List.Icon name='group' />
-      <List.Content>{group.name}</List.Content>
+      <List.Icon name='group' size='large' />
+      <List.Content>
+        <ConfirmActionModal
+          trigger={{
+            icon: 'remove group',
+            size: 'mini',
+            floated: 'right',
+          }}
+          modal={{
+            title: 'Delete Contact',
+            message: `Are you sure, you want remove contact from "${group.name}"?`,
+            confirm: {
+              negative: true,
+              icon: 'delete',
+              content: 'Delete',
+              onClick: props.onDeleteGroupClick,
+            },
+          }}/>
+        {group.name}
+      </List.Content>
     </List.Item>
   ));
 
   return (
-    <Fragment>
-      <Header as='h2'>Groups</Header>
-      <List>
+    <Segment>
+      <Button icon='add' content='Add' floated='right' size='small' />
+      <Header as='h2' floated='left'>Groups</Header>
+      <Divider fitted clearing hidden />
+      <List relaxed>
         {items}
       </List>
-    </Fragment>);
+    </Segment>);
 }

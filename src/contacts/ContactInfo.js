@@ -4,7 +4,6 @@ import React, {
 import {
   Button,
   Header,
-  Icon,
   Item,
   List,
   Segment,
@@ -19,10 +18,10 @@ export default function ContactInfo(props) {
   const items = props.data.map((info) => {
     return (
       <Segment>
-
         <ConfirmActionModal
           trigger={{
             floated: 'right',
+            content: 'Delete',
             icon: 'delete',
             size: 'mini',
           }}
@@ -83,12 +82,12 @@ export default function ContactInfo(props) {
       <Button
         floated='right'
         icon='add'
-        size='tiny'
-        style={{ marginTop: '0.8em' }}
+        size='small'
+        style={{ marginTop: '0.6em' }}
         content='New' />
       <Header as='h2'>Info</Header>
-      <Item.Group>
+      <Segment.Group>
         {items}
-      </Item.Group>
+      </Segment.Group>
     </Fragment>);
   };

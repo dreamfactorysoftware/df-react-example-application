@@ -5,15 +5,29 @@ import {
   Icon,
   Header,
 } from 'semantic-ui-react';
-import DeleteGroupModal from './DeleteGroupModal';
+import ConfirmActionModal from '../common/ConfirmActionModal';
 import GroupNameModal from './GroupNameModal';
 
 export default function GroupName(props) {
   return (
     <Fragment>
-      <DeleteGroupModal
-        name={props.name}
-        onDeleteClick={props.onDeleteClick} />
+      <ConfirmActionModal
+        trigger={{
+          floated: 'right',
+          icon: 'delete',
+          content: 'Delete',
+          size: 'small',
+        }}
+        modal={{
+          title: 'Delete Group',
+          message: `Are you sure, you want to delete "${props.name}"?`,
+          confirm: {
+            negative: true,
+            icon: 'delete',
+            content: 'Delete',
+            onClick: props.onDeleteClick,
+          },
+        }}/>
       <GroupNameModal
         trigger={{
           floated:'right',
