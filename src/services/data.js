@@ -50,15 +50,13 @@ export const contact_group_relationship = {
       }
     });
   },
-};
-
-export const contact_info = {
-  getInfo(id) {
-    return dreamFactory().get('/api/v2/db/_table/contact_info', {
-      params: {
-        filter: `contact_id=${id}`,
-      }
+  create(resource) {
+    return dreamFactory().post('/api/v2/db/_table/contact_group_relationship', {
+      resource,
     });
+  },
+  delete(id) {
+    return dreamFactory().delete(`/api/v2/db/_table/contact_group_relationship/${id}`);
   },
 };
 

@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useEffect,
   useState,
+  useMemo,
   Fragment,
 } from 'react';
 import {
@@ -9,154 +10,16 @@ import {
   useHistory,
 } from 'react-router-dom';
 import {
-  Icon,
-  Button,
-  Divider,
-  Header,
   Segment,
-  Modal,
-  Form,
-  Input,
+  Divider,
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 import Layout from '../layout/Layout';
 import { groups, contact_group_relationship } from '../services/data';
 import columns from '../common/contactsTableColumns';
 import AddContactModal from './AddContactModal';
-
-const columnsWithActionButton = columns.concat([
-  {
-
-    cell: () => (<Button size='mini' icon='remove user' content='Remove' />),
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-  }
-]);
-
-const DeleteGroupModal = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
-
-  const handleDeleteClick = (event) => {
-    if (typeof props.onDeleteClick === 'function') {
-      props.onDeleteClick(event);
-    }
-
-    close();
-  };
-
-  return (
-    <Fragment>
-      <Button
-        floated='right'
-        icon='delete'
-        size='small'
-        onClick={open} />
-      <Modal
-        size='small'
-        open={isOpen}
-        onClose={close}>
-        <Modal.Header>Delete Group</Modal.Header>
-          <Modal.Content>
-            <p>Are you sure, you want to delete "{props.name}"?</p>
-          </Modal.Content>
-        <Modal.Actions>
-          <Button
-            content='Cancel'
-            onClick={close}
-          />
-          <Button
-            negative
-            icon='delete'
-            content='Delete'
-            onClick={handleDeleteClick}
-          />
-        </Modal.Actions>
-      </Modal>
-    </Fragment>);
-}
-
-const RenameGroupModal = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = (event) => {
-    event.preventDefault();
-    setIsOpen(false);
-  };
-  const handleSubmit = (event) => {
-    if (typeof props.onRenameSubmit === 'function') {
-      props.onRenameSubmit(event);
-    }
-
-    setIsOpen(false);
-  };
-
-  return (
-    <Fragment>
-      <Button
-        floated='right'
-        icon='edit'
-        size='small'
-        onClick={open}
-        content='Rename' />
-      <Modal
-        as={Form}
-        size='small'
-        open={isOpen}
-        onSubmit={handleSubmit}
-        onClose={close}>
-        <Modal.Header>Rename Group</Modal.Header>
-        <Modal.Content>
-          <Form.Field
-            id='form-input-control-name'
-            control={Input}
-            label='Name'
-            placeholder='Name'
-            autoComplete='off'
-            name='name'
-            defaultValue={props.name}
-            required
-            autoFocus
-          />
-        </Modal.Content>
-        <Modal.Actions>
-          <Button
-            positive
-            icon='edit'
-            content='Rename'
-            type='submit'
-          />
-          <Button
-            content='Cancel'
-            onClick={close}
-          />
-        </Modal.Actions>
-      </Modal>
-    </Fragment>);
-}
-
-const GroupName = (props) => (
-  <Fragment>
-    <DeleteGroupModal
-      name={props.name}
-      onDeleteClick={props.onDeleteClick} />
-    <RenameGroupModal
-      name={props.name}
-      onRenameSubmit={props.onRenameSubmit} />
-    <Header as='h1'>
-      <Icon name='group' />
-      <Header.Content>
-      {props.name}
-      <Header.Subheader>
-        Group
-      </Header.Subheader>
-      </Header.Content>
-    </Header>
-    <Divider fitted clearing hidden />
-  </Fragment>
-);
+import TableActionButton from '../common/TableActionButton';
+import GroupName from './GroupName';
 
 export default function Contact() {
   let { id } = useParams();
@@ -171,12 +34,50 @@ export default function Contact() {
       contact_group_relationship.getContactsByGroupId(id),
     ]).then((responses) => {
       const [{ data: group }, { data: { resource: contactsByGroupId } }] = responses;
-      const groupContacts = contactsByGroupId.map((contact) => contact.contact_by_contact_id);
+      const groupContacts = contactsByGroupId.map((contact) => {
+        contact.contact_by_contact_id.connection_id = contact.id;
+        return contact.contact_by_contact_id;
+      });
       setGroup(group);
       setGroupContacts(groupContacts);
       setLoading(false);
     })
   }, [id]);
+
+  const handleRemoveContactClick = useCallback(({ connection_id }) => {
+    setLoading(true);
+    contact_group_relationship.delete(connection_id)
+      .then(getData);
+  }, [getData]);
+
+  const columnsWithActionButton = useMemo(() => columns.concat([
+    {
+      cell: (data) => {
+        return (
+          <TableActionButton
+            data={data}
+            trigger={{
+              size: 'mini',
+              icon: 'remove user',
+              content: 'Remove',
+            }}
+            modal={{
+              title: 'Delete Group',
+              message: `Are you sure, you want to remove ${data.first_name} ${data.last_name} from this group?`,
+              confirm: {
+                negative: true,
+                icon: 'remove user',
+                content: 'Remove',
+              },
+            }}
+            onClick={handleRemoveContactClick} />
+        );
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    }
+  ]), [handleRemoveContactClick]);
 
   const handleDeleteClick = () => {
     setLoading(true);
@@ -189,28 +90,42 @@ export default function Contact() {
     if (group.name !== event.target.name.value) {
       setLoading(true);
       groups.update(id, event.target.name.value)
-        .then(() => {
-          getData();
-        });
+        .then(getData);
     }
-  }
+  };
+
+  const handleAddClick = (selectedRows) => {
+    if (selectedRows && selectedRows.length) {
+      setLoading(true);
+      contact_group_relationship.create(selectedRows.map((contact) => {
+        return {
+          contact_id: contact.id,
+          contact_group_id: group.id,
+        };
+      })).then(getData);
+    }
+  };
 
   useEffect(() => {
     getData();
   }, [getData]);
 
-
   return (
     <Layout loading={loading}>
       {group && group.name &&
-        <GroupName
-          name={group.name}
-          onDeleteClick={handleDeleteClick}
-          onRenameSubmit={handleRenameSubmit} />}
+        (<Fragment>
+          <GroupName
+            name={group.name}
+            onDeleteClick={handleDeleteClick}
+            onRenameSubmit={handleRenameSubmit} />
+          <Divider fitted clearing hidden />
+        </Fragment>)}
 
       {groupContacts &&
       <Segment>
-        <AddContactModal group={group} />
+        <AddContactModal
+          group={group}
+          onAddClick={handleAddClick} />
         <DataTable
           columns={columnsWithActionButton}
           data={groupContacts}

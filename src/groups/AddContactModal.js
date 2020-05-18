@@ -7,15 +7,14 @@ import {
   Button,
   Input,
   Modal,
-  Divider,
   Message,
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
-import { contacts } from '../services/data';
+import { contacts, contact_group_relationship } from '../services/data';
 import columns from '../common/contactsTableColumns';
 import Table from '../common/Table';
 
-const ModalMessage = (props) => {
+const SelectedElementsMessage = (props) => {
   let message;
 
   if (!props.selectedCount) {
@@ -36,17 +35,12 @@ const ModalMessage = (props) => {
 export default function AddContactModal(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('');
-  const [selectedCount, setSelectedCount] = useState(0);
+  const [selected, setSelected] = useState([]);
   const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
-
-  const handleDeleteClick = (event) => {
-    if (typeof props.onDeleteClick === 'function') {
-      props.onDeleteClick(event);
-    }
-
-    close();
-  };
+  const close = () => {
+    setIsOpen(false);
+    setSelected([]);
+  }
 
   const setFilterDebounced = debounce(setFilter, 500);
 
@@ -66,9 +60,19 @@ export default function AddContactModal(props) {
     filter,
   }), [filter]);
 
-  const handleRowSelected = ({ allSelected, selectedCount, selectedRows }) => {
-    setSelectedCount(selectedCount);
+  // const getData = () => contact_group_relationship.getContactsNotInGroupId(props.group.id);
+
+  const handleRowSelected = ({ selectedRows }) => {
+    setSelected(selectedRows);
   }
+
+  const handleAddClick = (event) => {
+    if (typeof props.onAddClick === 'function') {
+      props.onAddClick(selected);
+    }
+
+    close();
+  };
 
   return (
     <Fragment>
@@ -90,7 +94,7 @@ export default function AddContactModal(props) {
             icon='search'
             size='large'
             onChange={handleInputChange} />
-          <ModalMessage selectedCount={selectedCount} groupName={props.group.name} />
+          <SelectedElementsMessage selectedCount={selected.length} groupName={props.group.name} />
           <Table
             columns={columns}
             defaultSortField='last_name'
@@ -112,7 +116,7 @@ export default function AddContactModal(props) {
             positive
             icon='add user'
             content='Add'
-            onClick={handleDeleteClick}
+            onClick={handleAddClick}
           />
         </Modal.Actions>
       </Modal>
