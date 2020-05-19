@@ -2,12 +2,9 @@ import React, {
   Fragment,
 } from 'react';
 import {
-  Button,
   Form,
   Input,
   TextArea,
-  Divider,
-  Header,
 } from 'semantic-ui-react';
 
 export default function ContactForm(props) {
@@ -19,10 +16,9 @@ export default function ContactForm(props) {
 
   return (
     <Fragment>
-      <Divider fitted clearing hidden />
-      <Form>
         <Form.Group widths='equal'>
           <Form.Field
+            name='first_name'
             id='form-input-control-first-name'
             control={Input}
             label='First name'
@@ -31,6 +27,7 @@ export default function ContactForm(props) {
             required
           />
           <Form.Field
+            name='last_name'
             id='form-input-control-last-name'
             control={Input}
             label='Last name'
@@ -41,6 +38,7 @@ export default function ContactForm(props) {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field
+            name='twitter'
             id='form-input-control-twitter'
             control={Input}
             label='Twitter'
@@ -48,6 +46,7 @@ export default function ContactForm(props) {
             value={contact.twitter}
           />
           <Form.Field
+            name='skype'
             id='form-input-control-skype'
             control={Input}
             label='Skype'
@@ -56,12 +55,12 @@ export default function ContactForm(props) {
           />
         </Form.Group>
         <Form.Field
+          name='notes'
           id='form-textarea-control-notes'
           control={TextArea}
           label='Notes'
           placeholder='Notes'
           value={contact.notes}
         />
-      </Form>
     </Fragment>);
   }

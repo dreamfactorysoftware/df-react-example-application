@@ -2,7 +2,7 @@ import React from 'react';
 import {
   useHistory,
   useLocation,
-} from "react-router-dom";
+} from 'react-router-dom';
 import {
   Button,
 } from 'semantic-ui-react';

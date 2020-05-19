@@ -9,10 +9,10 @@ import {
   useLocation,
 } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
-import Contact from './contacts/Contact';
+import Contact from './contact/Contact';
 import ContactList from './contacts/ContactList';
-import NewContact from './contacts/NewContact';
-import Group from './groups/Group';
+import NewContact from './new-contact/NewContact';
+import Group from './group/Group';
 import GroupList from './groups/GroupList';
 import Login from './login/Login';
 import Register from './register/Register';

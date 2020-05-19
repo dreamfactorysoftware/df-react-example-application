@@ -6,7 +6,7 @@ import {
   Header,
 } from 'semantic-ui-react';
 import ConfirmActionModal from '../common/ConfirmActionModal';
-import GroupNameModal from './GroupNameModal';
+import GroupNameModal from '../groups/GroupNameModal';
 
 export default function GroupName(props) {
   return (
