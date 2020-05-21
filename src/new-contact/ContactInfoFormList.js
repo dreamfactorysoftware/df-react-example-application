@@ -7,7 +7,7 @@ import {
   Header,
   Segment,
 } from 'semantic-ui-react';
-import { isFunction } from 'lodash.isfunction';
+import isFunction from 'lodash.isfunction';
 import ContactInfoForm from './ContactInfoForm';
 import ContactInfoFormPlaceholder from './ContactInfoFormPlaceholder';
 
@@ -24,6 +24,10 @@ export default function ContactInfoFormList(props) {
     let newData = data.slice()
     newData.splice(index, 1);
     setData(newData);
+
+    if (isFunction(props.onChange)) {
+      props.onChange(newData);
+    }
   }
 
   const handleInfoFormChange = (index, infoData) => {

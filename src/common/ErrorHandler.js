@@ -28,10 +28,17 @@ export default function ErrorHandler({ error, redirect }) {
       message = [];
 
       for (const property in data.error.context) {
-        message = message.concat(data.error.context[property]);
+        if (typeof data.error.context[property] === 'string') {
+          message = message.concat(data.error.context[property]);
+        }
       }
 
-      header = data.error.message;
+      if (message.length) {
+        header = data.error.message;
+      } else {
+        message = data.error.message;
+        header = `Error ${status}`;
+      }
     } else if (data.error.message) {
       message = data.error.message;
       header = `Error ${status}`;

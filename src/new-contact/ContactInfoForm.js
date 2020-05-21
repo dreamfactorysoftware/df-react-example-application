@@ -51,7 +51,7 @@ export default function NewContact(props) {
         content='remove'
         onClick={handleRemoveInfoClick} />
       <Form.Select
-        name={`type-${index}`}
+        name={`info_type-${index}`}
         id='form-select-control-type'
         onChange={handleChange}
         fluid
@@ -59,6 +59,7 @@ export default function NewContact(props) {
         options={options}
         placeholder='Info type'
         value={props.data.type}
+        required
       />
       <Form.Field
         name={`address-${index}`}
@@ -68,6 +69,7 @@ export default function NewContact(props) {
         label='Address'
         placeholder='Address'
         value={props.data.address}
+        required
       />
       <Form.Group widths='equal'>
         <Form.Field
@@ -78,6 +80,7 @@ export default function NewContact(props) {
           label='City'
           placeholder='City'
           value={props.data.city}
+          required
         />
         <Form.Field
           name={`state-${index}`}
@@ -87,6 +90,7 @@ export default function NewContact(props) {
           label='State'
           placeholder='State'
           value={props.data.state}
+          required
         />
         <Form.Field
           name={`zip-${index}`}
@@ -96,6 +100,7 @@ export default function NewContact(props) {
           label='Zip'
           placeholder='Zip'
           value={props.data.zip}
+          required
         />
       </Form.Group>
      <Form.Field
@@ -106,6 +111,7 @@ export default function NewContact(props) {
         label='Country'
         placeholder='Country'
         value={props.data.country}
+        required
       />
       <Form.Field
         name={`email-${index}`}
@@ -115,6 +121,7 @@ export default function NewContact(props) {
         label='Email'
         placeholder='Email'
         value={props.data.email}
+        required
       />
       <Form.Field
         name={`phone-${index}`}
@@ -124,6 +131,7 @@ export default function NewContact(props) {
         label='Phone'
         placeholder='Phone'
         value={props.data.phone}
+        required
       />
     </Segment>
   );

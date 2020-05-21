@@ -16,7 +16,7 @@ const dreamFactory = () => {
   })
 };
 
-export const contacts = {
+export const contact = {
   getAll({ include_count, offset, limit, order, filter }) {
     const params = {
       include_count: include_count || true,
@@ -39,6 +39,11 @@ export const contacts = {
   getOneWithInfoAndGroups(id) {
     return dreamFactory().get(`/api/v2/db/_table/contact/${id}?related=*`);
   },
+  create(resource) {
+    return dreamFactory().post('/api/v2/db/_table/contact?rollback=true', {
+      resource,
+    });
+  },
 };
 
 export const contact_group_relationship = {
@@ -60,7 +65,7 @@ export const contact_group_relationship = {
   },
 };
 
-export const groups = {
+export const contact_group = {
   getAll({ include_count, offset, limit, order, filter }) {
     const params = {
       include_count: include_count || true,

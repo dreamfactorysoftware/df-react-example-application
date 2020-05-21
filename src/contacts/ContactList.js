@@ -13,7 +13,7 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
-import { contacts } from '../services/data';
+import * as data from '../services/data';
 import Table from '../common/Table';
 import columns from '../common/contactsTableColumns';
 import ErrorHandler from '../common/ErrorHandler';
@@ -37,7 +37,7 @@ export default function ContactList() {
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => {
     setMessage('');
 
-    return contacts.getAll({
+    return data.contact.getAll({
       offset,
       limit,
       order,

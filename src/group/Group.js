@@ -14,7 +14,7 @@ import {
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 import Layout from '../layout/Layout';
-import { groups, contact_group_relationship } from '../services/data';
+import * as data from '../services/data';
 import columns from '../common/contactsTableColumns';
 import AddContactModal from './AddContactModal';
 import TableActionButton from '../common/TableActionButton';
@@ -33,8 +33,8 @@ export default function Contact() {
     setMessage('');
 
     return Promise.all([
-      groups.getOne(id),
-      contact_group_relationship.getContactsByGroupId(id),
+      data.contact_group.getOne(id),
+      data.contact_group_relationship.getContactsByGroupId(id),
     ]).then((responses) => {
       const [{ data: group }, { data: { resource: contactsByGroupId } }] = responses;
       const groupContacts = contactsByGroupId.map((contact) => {
@@ -51,14 +51,19 @@ export default function Contact() {
   }, [id]);
 
   const handleRemoveContactClick = useCallback(({ connection_id }) => {
+    setMessage('');
     setLoading(true);
-    contact_group_relationship.delete(connection_id)
-      .then(getData);
+    data.contact_group_relationship.delete(connection_id)
+      .then(getData)
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
   }, [getData]);
 
   const columnsWithActionButton = useMemo(() => columns.concat([
     {
-      cell: (data) => {
+      cell: (rowData) => {
         return (
           <TableActionButton
             data={data}
@@ -69,7 +74,7 @@ export default function Contact() {
             }}
             modal={{
               title: 'Delete Group',
-              message: `Are you sure, you want to remove ${data.first_name} ${data.last_name} from this group?`,
+              message: `Are you sure, you want to remove ${rowData.first_name} ${rowData.last_name} from this group?`,
               confirm: {
                 negative: true,
                 icon: 'remove user',
@@ -86,29 +91,45 @@ export default function Contact() {
   ]), [handleRemoveContactClick]);
 
   const handleDeleteClick = () => {
+    setMessage('');
     setLoading(true);
-    groups.delete(group.id).then(() => {
-      history.push('/group');
-    });
+    data.contact_group.delete(group.id).then(() => {
+        history.push('/group');
+      })
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
   };
 
   const handleRenameSubmit = (event) => {
     if (group.name !== event.target.name.value) {
+      setMessage('');
       setLoading(true);
-      groups.update(id, event.target.name.value)
-        .then(getData);
+      data.contact_group.update(id, event.target.name.value)
+        .then(getData)
+        .catch((error) => {
+          setLoading(false);
+          setMessage(<ErrorHandler error={error} />)
+        });
     }
   };
 
   const handleAddClick = (selectedRows) => {
     if (selectedRows && selectedRows.length) {
+      setMessage('');
       setLoading(true);
-      contact_group_relationship.create(selectedRows.map((contact) => {
-        return {
-          contact_id: contact.id,
-          contact_group_id: group.id,
-        };
-      })).then(getData);
+      data.contact_group_relationship.create(selectedRows.map((contact) => {
+          return {
+            contact_id: contact.id,
+            contact_group_id: group.id,
+          };
+        }))
+        .then(getData)
+        .catch((error) => {
+          setLoading(false);
+          setMessage(<ErrorHandler error={error} />)
+        });
     }
   };
 

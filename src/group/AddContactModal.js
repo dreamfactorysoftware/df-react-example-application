@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import isFunction from 'lodash.isfunction';
-import { contacts } from '../services/data';
+import * as data from '../services/data';
 import columns from '../common/contactsTableColumns';
 import Table from '../common/Table';
 
@@ -54,7 +54,7 @@ export default function AddContactModal(props) {
     }
   };
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => contacts.getAll({
+  const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => data.contact.getAll({
     offset,
     limit,
     order,

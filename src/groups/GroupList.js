@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
-import { groups } from '../services/data';
+import * as data from '../services/data';
 import Table from '../common/Table';
 import GroupNameModal from './GroupNameModal';
 import ErrorHandler from '../common/ErrorHandler';
@@ -27,9 +27,8 @@ const columns = [
 export default function GroupList() {
   const [refresh, setRefresh] = useState(true);
   const [message, setMessage] = useState();
-
-  const history = useHistory();
   const [filter, setFilter] = useState('');
+  const history = useHistory();
 
   const handleInputChange = (event) => {
     const { target: { value } } = event;
@@ -45,7 +44,7 @@ export default function GroupList() {
   const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => {
     setMessage('');
 
-    return groups.getAll({
+    return data.contact_group.getAll({
       offset,
       limit,
       order,
@@ -62,7 +61,7 @@ export default function GroupList() {
   }
 
   const handleSubmit = (event) => {
-    groups.create(event.target.name.value)
+    data.contact_group.create(event.target.name.value)
       .then(refreshTable)
       .catch((error) => setMessage(<ErrorHandler error={error} />));
   }

@@ -43,8 +43,6 @@ export default function ContactGroups(props) {
       <Button icon='add' content='Add' floated='right' size='small' />
       <Header as='h2' floated='left'>Groups</Header>
       <Divider fitted clearing hidden />
-      <List relaxed>
-        {items}
-      </List>
+      {items && <List relaxed>{items}</List>}
     </Segment>);
 }

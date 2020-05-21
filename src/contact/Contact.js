@@ -7,7 +7,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import Layout from '../layout/Layout';
-import { contacts } from '../services/data';
+import * as data from '../services/data';
 import ContactView from './ContactView';
 import ErrorHandler from '../common/ErrorHandler';
 
@@ -20,7 +20,7 @@ export default function Contact() {
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
     setMessage('');
 
-    return contacts.getOneWithInfoAndGroups(id)
+    return data.contact.getOneWithInfoAndGroups(id)
       .then((response) => {
         setContact(response.data);
         setLoading(false);

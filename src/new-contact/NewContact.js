@@ -2,6 +2,9 @@ import React, {
   useState,
 } from 'react';
 import {
+  useHistory,
+} from 'react-router-dom';
+import {
   Button,
   Form,
   Divider,
@@ -10,30 +13,56 @@ import {
 import Layout from '../layout/Layout';
 import ContactForm from './ContactForm';
 import ContactInfoFormList from './ContactInfoFormList';
-
-          // count={infoForms.length}
-          // onAddInfoClick={handleAddInfoClick}
-          // onRemoveInfoClick={handleRemoveInfoClick}
+import * as data from '../services/data';
+import ErrorHandler from '../common/ErrorHandler';
 
 export default function NewContact() {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState();
   const [infoListData, setInfoListData] = useState([]);
+  const history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target.first_name.value);
-    console.log(event.target.last_name.value);
-    console.log(event.target.twitter.value);
-    console.log(event.target.skype.value);
-    console.log(event.target.notes.value);
-    console.log(infoListData);
+    window.scrollTo(0, 0);
+    setMessage('');
+    setLoading(true);
+
+    const formFieldNames = [
+      'first_name',
+      'last_name',
+      'twitter',
+      'skype',
+      'notes',
+    ];
+
+    const contact = {
+      contact_info_by_contact_id: infoListData
+    };
+
+    formFieldNames.forEach((name) => {
+      contact[name] = event.target[name].value;
+    });
+
+    const resource = [contact];
+
+    data.contact.create(resource)
+      .then((response) => {
+        const { data: { resource: [{ id }] } } = response;
+        history.push(`/contact/${id}`);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
   }
 
-  const handleInfoFormListChange = (data) => {
-    setInfoListData(data);
+  const handleInfoFormListChange = (newData) => {
+    setInfoListData(newData);
   }
 
   return (
-    <Layout>
+    <Layout loading={loading} message={message}>
       <Header as='h1'>New Contact</Header>
       <Form onSubmit={handleSubmit}>
         <ContactForm />

@@ -56,16 +56,19 @@ export default function ContactView(props) {
             </Header>
             <Divider fitted clearing hidden />
 
-            <Label as='a' color='teal'>
-              <Icon name='twitter' />
-              Twitter
-              <Label.Detail>{props.contact.twitter}</Label.Detail>
-            </Label>
-            <Label as='a' color='blue'>
-              <Icon name='skype' />
-              Skype
-              <Label.Detail>{props.contact.skype}</Label.Detail>
-            </Label>
+            {props.contact.twitter &&
+              <Label as='a' color='teal'>
+                <Icon name='twitter' />
+                Twitter
+                <Label.Detail>{props.contact.twitter}</Label.Detail>
+              </Label>}
+
+            {props.contact.skype &&
+              <Label as='a' color='blue'>
+                <Icon name='skype' />
+                Skype
+                <Label.Detail>{props.contact.skype}</Label.Detail>
+              </Label>}
 
             {props.contact.notes && (
               <Fragment>
