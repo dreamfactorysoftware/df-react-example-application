@@ -14,7 +14,7 @@ import Layout from '../layout/Layout';
 import { groups } from '../services/data';
 import Table from '../common/Table';
 import GroupNameModal from './GroupNameModal';
-import ErrorHandler from '../ErrorHandler';
+import ErrorHandler from '../common/ErrorHandler';
 
 const columns = [
   {

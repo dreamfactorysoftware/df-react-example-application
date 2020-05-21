@@ -1,12 +1,24 @@
-import React from "react";
-import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react';
+import React, {
+  useState,
+} from 'react';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Icon,
+} from 'semantic-ui-react';
 import {
   useHistory,
+  Link,
 } from "react-router-dom";
 import auth from '../services/auth';
+import ErrorHandler from '../common/ErrorHandler';
 
 export default function Register() {
   let history = useHistory();
+  const [message, setMessage] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,59 +29,55 @@ export default function Register() {
       new_password: event.target.new_password.value,
     }).then(() => {
       history.push('/contact');
+    }).catch((error) => {
+      setMessage(<ErrorHandler error={error} redirect={false} />);
     });
   }
 
   return (
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
-
-        <Form size='large' onSubmit={handleSubmit}>
-          <Segment.Group>
-            <Segment>
-              <Header as='h2' color='blue' textAlign='center'>
-                Register
-              </Header>
-            </Segment>
-            <Segment>
-              <Form.Input
-                fluid
-                icon='user'
-                iconPosition='left'
-                placeholder='First Name'
-                name='first_name'
-              />
-              <Form.Input
-                fluid
-                icon='user'
-                iconPosition='left'
-                placeholder='Last Name'
-                name='last_name'
-              />
-              <Form.Input
-                fluid
-                icon='user'
-                iconPosition='left'
-                placeholder='E-mail address'
-                name='email'
-              />
-              <Form.Input
-                fluid
-                icon='lock'
-                iconPosition='left'
-                placeholder='Password'
-                type='password'
-                name='new_password'
-              />
-
-              <Button color='blue' fluid size='large'>
-                Continue
-              </Button>
-            </Segment>
-          </Segment.Group>
+        <div style={{ textAlign: 'left' }}>{message}</div>
+        <Header as='h2' attached='top'>
+          Register
+        </Header>
+        <Form className='attached fluid segment' size='large' onSubmit={handleSubmit}>
+          <Form.Input
+            fluid
+            icon='user'
+            iconPosition='left'
+            placeholder='First Name'
+            name='first_name'
+          />
+          <Form.Input
+            fluid
+            icon='user'
+            iconPosition='left'
+            placeholder='Last Name'
+            name='last_name'
+          />
+          <Form.Input
+            fluid
+            icon='user'
+            iconPosition='left'
+            placeholder='E-mail address'
+            name='email'
+          />
+          <Form.Input
+            fluid
+            icon='lock'
+            iconPosition='left'
+            placeholder='Password'
+            type='password'
+            name='new_password'
+          />
+          <Button color='blue' fluid size='large'>
+            Continue
+          </Button>
         </Form>
-        <Message>
-          Already have an account? <a href='/login'>Log in</a>
+        <Message attached='bottom' warning style={{ textAlign: 'left' }}>
+          <Icon name='help' />
+          Already have an account? <Link to='/login'>Log in here </Link> instead.
         </Message>
       </Grid.Column>
     </Grid>

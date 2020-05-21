@@ -19,7 +19,7 @@ import columns from '../common/contactsTableColumns';
 import AddContactModal from './AddContactModal';
 import TableActionButton from '../common/TableActionButton';
 import GroupName from './GroupName';
-import ErrorHandler from '../ErrorHandler';
+import ErrorHandler from '../common/ErrorHandler';
 
 export default function Contact() {
   let { id } = useParams();

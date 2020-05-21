@@ -4,7 +4,7 @@ const http = axios.create({
   baseURL: window.appConfig.INSTANCE_URL,
 });
 
-const tmpErrorHandler = (error) => {
+const devErrorHandler = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -35,20 +35,21 @@ export const removeToken = () => {
 }
 
 const auth = {
-  isAuthenticated: localStorage.getItem('session_token') ? true : false,
+  isAuthenticated: !!localStorage.getItem('session_token'),
   authenticate(email, password) {
     return http.post('/api/v2/user/session', {
       email,
       password,
-    }).then(onAuthenticationSuccess).catch((error) => {
-      tmpErrorHandler(error);
-      auth.isAuthenticated = false;
-    });
+    }).then(onAuthenticationSuccess)
+      .catch((error) => {
+        auth.isAuthenticated = false;
+        throw error;
+      });
   },
   signout() {
-    return http.delete('/api/v2/user/session').then(() => {
-      removeToken();
-    });
+    return http.delete('/api/v2/user/session')
+      .then(removeToken)
+      .catch(removeToken);
   },
   register({ first_name, last_name, email, new_password }) {
     return http.post('/api/v2/user/register?login=true', {
@@ -56,7 +57,7 @@ const auth = {
       last_name,
       email,
       new_password,
-    }).then(onAuthenticationSuccess).catch(tmpErrorHandler);
+    }).then(onAuthenticationSuccess);
   }
 };
 

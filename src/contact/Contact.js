@@ -9,7 +9,7 @@ import {
 import Layout from '../layout/Layout';
 import { contacts } from '../services/data';
 import ContactView from './ContactView';
-import ErrorHandler from '../ErrorHandler';
+import ErrorHandler from '../common/ErrorHandler';
 
 export default function Contact() {
   let { id } = useParams();
