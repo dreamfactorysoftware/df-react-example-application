@@ -29,6 +29,10 @@ const onAuthenticationSuccess = (response) => {
   auth.isAuthenticated = true;
 }
 
+export const removeToken = () => {
+  auth.isAuthenticated = false;
+  localStorage.removeItem('session_token');
+}
 
 const auth = {
   isAuthenticated: localStorage.getItem('session_token') ? true : false,
@@ -43,8 +47,7 @@ const auth = {
   },
   signout() {
     return http.delete('/api/v2/user/session').then(() => {
-      auth.isAuthenticated = false;
-      localStorage.removeItem('session_token');
+      removeToken();
     });
   },
   register({ first_name, last_name, email, new_password }) {

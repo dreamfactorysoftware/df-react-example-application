@@ -2,10 +2,12 @@ import React from 'react';
 import {
   useHistory,
   useLocation,
+  Link,
 } from 'react-router-dom';
 import {
   Button,
 } from 'semantic-ui-react';
+import isFunction from 'lodash.isfunction';
 import auth from '../services/auth';
 
 export default function LogInAndOutButton(props) {
@@ -15,7 +17,7 @@ export default function LogInAndOutButton(props) {
   const logIn = () => auth.signout().then(() => {
   	if (location.pathname !== redirectTo) {
   		history.push(redirectTo);
-  	} else if (typeof props.onLogOut === 'function') {
+  	} else if (isFunction(props.onLogOut)) {
   		props.onLogOut();
   	}
 	});
@@ -25,7 +27,7 @@ export default function LogInAndOutButton(props) {
       Log out
     </Button>
   ) : (
-    <Button as='a' href='/login' inverted>
+    <Button as={Link} to='/login' inverted>
       Log in
     </Button>
   );

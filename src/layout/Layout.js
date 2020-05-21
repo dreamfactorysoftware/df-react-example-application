@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   Container,
   Image,
@@ -14,18 +15,18 @@ const Layout = ({ children, active, loading }) =>
 	(<div>
     <Menu fixed='top' inverted style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as='a' href='/' header>
+        <Menu.Item as={Link} to='/' header>
           <Image size='mini' src={logo} />
         </Menu.Item>
-        <Menu.Item as='a' href='/'>Home</Menu.Item>
+        <Menu.Item as={Link} to='/'>Home</Menu.Item>
         <Menu.Item
-          as='a'
-          href='/contact'
+          as={Link}
+          to='/contact'
           active={active === 'contacts'}
         >Contacts</Menu.Item>
         <Menu.Item
-          as='a'
-          href='/group'
+          as={Link}
+          to='/group'
           active={active === 'groups'}
         >Groups</Menu.Item>
         <Menu.Item position='right'>

@@ -3,10 +3,11 @@ import {
   Button,
 } from 'semantic-ui-react';
 import ConfirmActionModal from './ConfirmActionModal';
+import isFunction from 'lodash.isfunction';
 
 export default function TableActionButton(props) {
   const handleButtonClick = () => {
-    if (typeof props.onClick === 'function') {
+    if (isFunction(props.onClick)) {
       props.onClick(props.data);
     }
   };

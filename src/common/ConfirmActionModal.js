@@ -6,6 +6,7 @@ import {
   Button,
   Modal,
 } from 'semantic-ui-react';
+import isFunction from 'lodash.isfunction';
 
 export default function ConfirmActionModal(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function ConfirmActionModal(props) {
     if (
       props.modal &&
       props.modal.confirm &&
-      typeof props.modal.confirm.onClick === 'function'
+      isFunction(props.modal.confirm.onClick)
     ) {
       props.modal.confirm.onClick();
     }

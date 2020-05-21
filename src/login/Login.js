@@ -1,5 +1,12 @@
-import React from "react";
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import React from 'react';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment
+} from 'semantic-ui-react';
 import {
   useHistory,
   useLocation,
@@ -7,11 +14,11 @@ import {
 import auth from '../services/auth';
 
 
-export default function Login() {
-  let history = useHistory();
-  let location = useLocation();
+export default function Login(props) {
+  const history = useHistory();
+  const location = useLocation();
 
-  let { from } = location.state || { from: { pathname: '/contact' } };
+  const { from } = location.state || { from: { pathname: '/contact' } };
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -8,6 +8,7 @@ import {
   Form,
   Input,
 } from 'semantic-ui-react';
+import isFunction from 'lodash.isfunction';
 
 export default function GroupNameModal(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function GroupNameModal(props) {
     setIsOpen(false);
   };
   const handleSubmit = (event) => {
-    if (typeof props.modal.onSubmit === 'function') {
+    if (isFunction(props.modal.onSubmit)) {
       props.modal.onSubmit(event);
     }
 

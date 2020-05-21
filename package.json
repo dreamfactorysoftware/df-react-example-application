@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "lodash.debounce": "^4.0.8",
+    "lodash.isfunction": "^3.0.9",
     "react": "^16.13.1",
     "react-data-table-component": "^6.9.1",
     "react-dom": "^16.13.1",

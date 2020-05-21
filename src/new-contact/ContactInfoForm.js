@@ -8,6 +8,7 @@ import {
   Input,
   Segment,
 } from 'semantic-ui-react';
+import isFunction from 'lodash.isfunction';
 
 const options = [
   { key: 'w', text: 'Work', value: 'work' },
@@ -23,7 +24,7 @@ export default function NewContact(props) {
   const handleRemoveInfoClick = useCallback((event) => {
     event.preventDefault();
 
-    if (typeof onRemoveInfoClick === 'function') {
+    if (isFunction(onRemoveInfoClick)) {
       onRemoveInfoClick(event, index);
     }
   }, [onRemoveInfoClick, index])
@@ -35,7 +36,7 @@ export default function NewContact(props) {
     };
     setData(newData);
 
-    if (typeof props.onChange === 'function') {
+    if (isFunction(props.onChange)) {
       props.onChange(index, newData);
     }
   }

@@ -10,6 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
+import isFunction from 'lodash.isfunction';
 import { contacts } from '../services/data';
 import columns from '../common/contactsTableColumns';
 import Table from '../common/Table';
@@ -65,7 +66,7 @@ export default function AddContactModal(props) {
   }
 
   const handleAddClick = (event) => {
-    if (typeof props.onAddClick === 'function') {
+    if (isFunction(props.onAddClick)) {
       props.onAddClick(selected);
     }
 
