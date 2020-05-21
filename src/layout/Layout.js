@@ -11,7 +11,7 @@ import Footer from './Footer';
 import LogInAndOutButton from '../common/LogInAndOutButton';
 import logo from '../logo.svg';
 
-const Layout = ({ children, active, loading }) =>
+const Layout = ({ children, active, loading, message }) =>
 	(<div>
     <Menu fixed='top' inverted style={{ zIndex: 10000 }}>
       <Container>
@@ -39,6 +39,7 @@ const Layout = ({ children, active, loading }) =>
       <Dimmer inverted active={loading}>
         <Loader size='big' content='Loading' />
       </Dimmer>
+      { message }
     	{ children }
     </Container>
 

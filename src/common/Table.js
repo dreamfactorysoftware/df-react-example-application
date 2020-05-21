@@ -22,8 +22,11 @@ export default function Table(props) {
   const getData = useCallback((offset = 0, limit = 10, order) => {
     setLoading(true);
     return getDataAsync(offset, limit, order).then((response) => {
-      setData(response.data.resource);
-      setTotalRows(response.data.meta.count);
+      if (response && response.data && response.data.resource) {
+        setData(response.data.resource);
+        setTotalRows(response.data.meta.count);
+      }
+
       setLoading(false);
     });
   }, [getDataAsync]);

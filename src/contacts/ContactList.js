@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import {
   useHistory,
+  Link,
 } from 'react-router-dom';
 import {
   Button,
@@ -15,10 +16,12 @@ import Layout from '../layout/Layout';
 import { contacts } from '../services/data';
 import Table from '../common/Table';
 import columns from '../common/contactsTableColumns';
+import ErrorHandler from '../ErrorHandler';
 
 export default function ContactList() {
   const history = useHistory();
   const [filter, setFilter] = useState('');
+  const [message, setMessage] = useState();
 
   const handleInputChange = (event) => {
     const { target: { value } } = event;
@@ -31,20 +34,24 @@ export default function ContactList() {
 
   const setFilterDebounced = debounce(setFilter, 500);
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => contacts.getAll({
-    offset,
-    limit,
-    order,
-    filter,
-  }), [filter]);
+  const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => {
+    setMessage('');
+
+    return contacts.getAll({
+      offset,
+      limit,
+      order,
+      filter,
+    }).catch((error) => setMessage(<ErrorHandler error={error} />));
+  }, [filter]);
 
   const handleRowClick = (selectedRow) => {
     history.push(`/contact/${selectedRow.id}`);
   }
 
   return (
-    <Layout active='contacts'>
-      <Button floated='right' icon='add' content='New' as='a' href='/new-contact' />
+    <Layout active='contacts' message={message}>
+      <Button floated='right' icon='add' content='New' as={Link} to='/new-contact' />
       <h1>Contacts</h1>
       <Divider clearing />
       <Input

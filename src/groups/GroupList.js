@@ -14,6 +14,7 @@ import Layout from '../layout/Layout';
 import { groups } from '../services/data';
 import Table from '../common/Table';
 import GroupNameModal from './GroupNameModal';
+import ErrorHandler from '../ErrorHandler';
 
 const columns = [
   {
@@ -25,6 +26,8 @@ const columns = [
 
 export default function GroupList() {
   const [refresh, setRefresh] = useState(true);
+  const [message, setMessage] = useState();
+
   const history = useHistory();
   const [filter, setFilter] = useState('');
 
@@ -39,12 +42,16 @@ export default function GroupList() {
 
   const setFilterDebounced = debounce(setFilter, 500);
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => groups.getAll({
-    offset,
-    limit,
-    order,
-    filter,
-  }), [filter]);
+  const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => {
+    setMessage('');
+
+    return groups.getAll({
+      offset,
+      limit,
+      order,
+      filter,
+    }).catch((error) => setMessage(<ErrorHandler error={error} />));
+  }, [filter]);
 
   const refreshTable = () => {
     setRefresh(!refresh);
@@ -56,11 +63,12 @@ export default function GroupList() {
 
   const handleSubmit = (event) => {
     groups.create(event.target.name.value)
-      .then(refreshTable);
+      .then(refreshTable)
+      .catch((error) => setMessage(<ErrorHandler error={error} />));
   }
 
   return (
-    <Layout active='groups'>
+    <Layout active='groups' message={message}>
       <GroupNameModal
         trigger={{
           floated:'right',

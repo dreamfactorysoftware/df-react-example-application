@@ -1,13 +1,10 @@
-import React, {
-  useEffect,
-} from 'react';
-import 'semantic-ui-css/semantic.min.css';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useLocation,
 } from 'react-router-dom';
+import ScrollToTop from './common/ScrollToTop';
 import PrivateRoute from './PrivateRoute';
 import Contact from './contact/Contact';
 import ContactList from './contacts/ContactList';
@@ -18,17 +15,10 @@ import Login from './login/Login';
 import Register from './register/Register';
 import HomePage from './home/Home';
 import NoMatch from './NoMatch';
+
+import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
 
 export default function App() {
   return (

@@ -19,15 +19,19 @@ import columns from '../common/contactsTableColumns';
 import AddContactModal from './AddContactModal';
 import TableActionButton from '../common/TableActionButton';
 import GroupName from './GroupName';
+import ErrorHandler from '../ErrorHandler';
 
 export default function Contact() {
   let { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState();
   const [group, setGroup] = useState();
   const [groupContacts, setGroupContacts] = useState();
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
+    setMessage('');
+
     return Promise.all([
       groups.getOne(id),
       contact_group_relationship.getContactsByGroupId(id),
@@ -40,7 +44,10 @@ export default function Contact() {
       setGroup(group);
       setGroupContacts(groupContacts);
       setLoading(false);
-    })
+    }).catch((error) => {
+      setLoading(false);
+      setMessage(<ErrorHandler error={error} />)
+    });
   }, [id]);
 
   const handleRemoveContactClick = useCallback(({ connection_id }) => {
@@ -110,31 +117,32 @@ export default function Contact() {
   }, [getData]);
 
   return (
-    <Layout loading={loading}>
-    <Segment.Group>
-      {group && group.name &&
-        (<Segment>
-          <GroupName
-            name={group.name}
-            onDeleteClick={handleDeleteClick}
-            onRenameSubmit={handleRenameSubmit} />
-          <Divider fitted clearing hidden />
-        </Segment>)}
+    <Layout loading={loading} message={message}>
+      {group &&
+      <Segment.Group>
+        {group.name &&
+          (<Segment>
+            <GroupName
+              name={group.name}
+              onDeleteClick={handleDeleteClick}
+              onRenameSubmit={handleRenameSubmit} />
+            <Divider fitted clearing hidden />
+          </Segment>)}
 
-      {groupContacts &&
-      <Segment>
-        <AddContactModal
-          group={group}
-          onAddClick={handleAddClick} />
-        <DataTable
-          columns={columnsWithActionButton}
-          data={groupContacts}
-          noHeader
-          defaultSortField='last_name'
-          pagination
-        />
-      </Segment>}
-    </Segment.Group>
+        {groupContacts &&
+        <Segment>
+          <AddContactModal
+            group={group}
+            onAddClick={handleAddClick} />
+          <DataTable
+            columns={columnsWithActionButton}
+            data={groupContacts}
+            noHeader
+            defaultSortField='last_name'
+            pagination
+          />
+        </Segment>}
+      </Segment.Group>}
     </Layout>
   );
         // highlightOnHover
