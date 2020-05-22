@@ -44,6 +44,9 @@ export const contact = {
       resource,
     });
   },
+  delete(id) {
+    return dreamFactory().delete(`/api/v2/db/_table/contact/${id}`);
+  },
 };
 
 export const contact_group_relationship = {
@@ -63,6 +66,12 @@ export const contact_group_relationship = {
   delete(id) {
     return dreamFactory().delete(`/api/v2/db/_table/contact_group_relationship/${id}`);
   },
+};
+
+export const contact_info = {
+  delete(id) {
+    return dreamFactory().delete(`/api/v2/db/_table/contact_info/${id}`);
+  }
 };
 
 export const contact_group = {

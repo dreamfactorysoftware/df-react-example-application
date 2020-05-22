@@ -9,6 +9,7 @@ import {
   Form,
   Divider,
   Header,
+  Icon,
 } from 'semantic-ui-react';
 import Layout from '../layout/Layout';
 import ContactForm from './ContactForm';
@@ -36,13 +37,15 @@ export default function NewContact() {
       'notes',
     ];
 
-    const contact = {
-      contact_info_by_contact_id: infoListData
-    };
+    const contact = {}
 
     formFieldNames.forEach((name) => {
       contact[name] = event.target[name].value;
     });
+
+    if (infoListData.length) {
+      contact.contact_info_by_contact_id = infoListData;
+    }
 
     const resource = [contact];
 
@@ -63,7 +66,10 @@ export default function NewContact() {
 
   return (
     <Layout loading={loading} message={message}>
-      <Header as='h1'>New Contact</Header>
+      <Header as='h1'>
+        <Icon name='user' />
+        New Contact
+      </Header>
       <Form onSubmit={handleSubmit}>
         <ContactForm />
         <Divider clearing hidden />

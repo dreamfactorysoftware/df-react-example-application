@@ -3,23 +3,24 @@ import {
   Segment,
   Header,
   List,
-  Button,
   Divider,
 } from 'semantic-ui-react';
+import isFunction from 'lodash.isfunction';
 import ConfirmActionModal from '../common/ConfirmActionModal';
+import AddToGroupModal from './AddToGroupModal';
 
 export default function ContactGroups(props) {
-  if (!props.data) {
+  if (!props.groups) {
     return null;
   }
 
-  const items = props.data.map((group) => (
-    <List.Item>
+  const items = props.groups.map((group, index) => (
+    <List.Item key={index}>
       <List.Icon name='group' size='large' />
       <List.Content>
         <ConfirmActionModal
           trigger={{
-            icon: 'remove group',
+            icon: 'delete',
             size: 'mini',
             floated: 'right',
           }}
@@ -30,7 +31,11 @@ export default function ContactGroups(props) {
               negative: true,
               icon: 'delete',
               content: 'Delete',
-              onClick: props.onDeleteGroupClick,
+              onClick: () => {
+                if (isFunction(props.onDeleteClick)) {
+                  props.onDeleteClick(group);
+                }
+              },
             },
           }}/>
         {group.name}
@@ -38,9 +43,11 @@ export default function ContactGroups(props) {
     </List.Item>
   ));
 
+  const disabledGroups = props.groups.map((group) => group.id);
+
   return (
     <Segment>
-      <Button icon='add' content='Add' floated='right' size='small' />
+      <AddToGroupModal disabledGroups={disabledGroups} onAddClick={props.onAddClick} />
       <Header as='h2' floated='left'>Groups</Header>
       <Divider fitted clearing hidden />
       {items && <List relaxed>{items}</List>}

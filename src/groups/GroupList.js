@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import {
   useHistory,
-} from "react-router-dom";
+} from 'react-router-dom';
 import {
   Input,
   Divider,
@@ -15,14 +15,7 @@ import * as data from '../services/data';
 import Table from '../common/Table';
 import GroupNameModal from './GroupNameModal';
 import ErrorHandler from '../common/ErrorHandler';
-
-const columns = [
-  {
-    name: 'Name',
-    selector: 'name',
-    sortable: true,
-  },
-];
+import columns from '../common/groupTableColumns';
 
 export default function GroupList() {
   const [refresh, setRefresh] = useState(true);

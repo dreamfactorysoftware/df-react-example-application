@@ -49,9 +49,6 @@ export default function ContactView(props) {
               <Icon name='user' />
               <Header.Content>
               {props.contact.first_name} {props.contact.last_name}
-              <Header.Subheader>
-                Contact
-              </Header.Subheader>
               </Header.Content>
             </Header>
             <Divider fitted clearing hidden />
@@ -79,7 +76,10 @@ export default function ContactView(props) {
               </Fragment>
             )}
           </Segment>
-          <ContactGroups data={props.contact.contact_group_by_contact_group_relationship} />
+          <ContactGroups
+            onAddClick={props.onAddGroupClick}
+            onDeleteClick={props.onDeleteGroupClick}
+            groups={props.contact.contact_group_by_contact_group_relationship} />
         </Segment.Group>
 
         <Divider clearing hidden />

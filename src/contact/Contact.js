@@ -4,6 +4,7 @@ import React, {
   useCallback,
 } from 'react';
 import {
+  useHistory,
   useParams,
 } from 'react-router-dom';
 import Layout from '../layout/Layout';
@@ -13,6 +14,7 @@ import ErrorHandler from '../common/ErrorHandler';
 
 export default function Contact() {
   let { id } = useParams();
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState();
   const [contact, setContact] = useState();
@@ -24,20 +26,79 @@ export default function Contact() {
       .then((response) => {
         setContact(response.data);
         setLoading(false);
+      });
+  }, [id]);
+
+  const handleDeleteContactClick = () => {
+    setLoading(true);
+    data.contact.delete(contact.id)
+      .then(() => {
+        history.push('/contact');
       })
       .catch((error) => {
         setLoading(false);
         setMessage(<ErrorHandler error={error} />)
       });
-  }, [id]);
+  };
+
+  const handleAddGroupClick = (selectedRows) => {
+    if (selectedRows && selectedRows.length) {
+      setLoading(true);
+      data.contact_group_relationship.create(selectedRows.map((group) => {
+          return {
+            contact_id: id,
+            contact_group_id: group.id,
+          };
+        }))
+        .then(getData)
+        .catch((error) => {
+          setLoading(false);
+          setMessage(<ErrorHandler error={error} />)
+        });
+    }
+  };
+
+  const handleDeleteGroupClick = (groupToRemove) => {
+    setLoading(true);
+    const relationToRemove = contact.contact_group_relationship_by_contact_id.find((element) => {
+      return element.contact_group_id === groupToRemove.id;
+    });
+
+    data.contact_group_relationship.delete(relationToRemove.id)
+      .then(getData)
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
+  };
+
+  const handleDeleteInfoClick = (contactInfoToDelete) => {
+    setLoading(true);
+    data.contact_info.delete(contactInfoToDelete.id)
+      .then(getData)
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
+  }
 
   useEffect(() => {
-    getData();
+    getData()
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
   }, [getData]);
 
   return (
     <Layout loading={loading} message={message}>
-      <ContactView contact={contact} />
+      <ContactView
+        contact={contact}
+        onDeleteContactClick={handleDeleteContactClick}
+        onAddGroupClick={handleAddGroupClick}
+        onDeleteGroupClick={handleDeleteGroupClick}
+        onDeleteInfoClick={handleDeleteInfoClick}
+      />
     </Layout>
   );
 }

@@ -15,7 +15,7 @@ import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
 import * as data from '../services/data';
 import Table from '../common/Table';
-import columns from '../common/contactsTableColumns';
+import columns from '../common/contactTableColumns';
 import ErrorHandler from '../common/ErrorHandler';
 
 export default function ContactList() {

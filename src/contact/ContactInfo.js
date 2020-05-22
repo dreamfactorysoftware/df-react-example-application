@@ -8,6 +8,7 @@ import {
   List,
   Segment,
 } from 'semantic-ui-react';
+import isFunction from 'lodash.isfunction';
 import ConfirmActionModal from '../common/ConfirmActionModal';
 
 export default function ContactInfo(props) {
@@ -15,9 +16,9 @@ export default function ContactInfo(props) {
    return null;
   }
 
-  const items = props.data.map((info) => {
+  const items = props.data.map((info, index) => {
     return (
-      <Segment>
+      <Segment key={index}>
         <ConfirmActionModal
           trigger={{
             floated: 'right',
@@ -32,7 +33,11 @@ export default function ContactInfo(props) {
               negative: true,
               icon: 'delete',
               content: 'Delete',
-              onClick: props.onDeleteInfoClick,
+              onClick: () => {
+                if (isFunction(props.onDeleteInfoClick)) {
+                  props.onDeleteInfoClick(info);
+                }
+              },
             },
           }}/>
         <Button size='mini' floated='right' icon='edit' content='Edit' />
@@ -79,15 +84,25 @@ export default function ContactInfo(props) {
 
   return (
     <Fragment>
-      <Button
-        floated='right'
-        icon='add'
-        size='small'
-        style={{ marginTop: '0.6em' }}
-        content='New' />
-      <Header as='h2'>Info</Header>
-      <Segment.Group>
-        {items}
-      </Segment.Group>
+      {!!items.length &&
+      <Fragment>
+        <Button
+          floated='right'
+          icon='add'
+          size='small'
+          style={{ marginTop: '0.6em' }}
+          content='New' />
+        <Header as='h2'>Info</Header>
+        <Segment.Group>
+          {items}
+        </Segment.Group>
+      </Fragment>}
+      {!items.length &&
+        <Segment basic textAlign={"center"}>
+          <Button
+            content='Add Info'
+            icon='add'
+            style={{textAlign: "center"}} />
+        </Segment>}
     </Fragment>);
   };

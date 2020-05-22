@@ -12,6 +12,9 @@ import {
   Sidebar,
   Visibility,
 } from 'semantic-ui-react';
+import {
+  Link,
+} from 'react-router-dom';
 import LogInAndOutButton from '../common/LogInAndOutButton';
 import auth from '../services/auth';
 
@@ -30,19 +33,19 @@ const HomePage = () => {
             <Grid.Column width={3}>
               <Header inverted as='h4' content='About' />
               <List link inverted>
-                <List.Item as='a'>Sitemap</List.Item>
-                <List.Item as='a'>Contact Us</List.Item>
-                <List.Item as='a'>Religious Ceremonies</List.Item>
-                <List.Item as='a'>Gazebo Plans</List.Item>
+                <List.Item as={Link}>Sitemap</List.Item>
+                <List.Item as={Link}>Contact Us</List.Item>
+                <List.Item as={Link}>Religious Ceremonies</List.Item>
+                <List.Item as={Link}>Gazebo Plans</List.Item>
               </List>
             </Grid.Column>
             <Grid.Column width={3}>
               <Header inverted as='h4' content='Services' />
               <List link inverted>
-                <List.Item as='a'>Banana Pre-Order</List.Item>
-                <List.Item as='a'>DNA FAQ</List.Item>
-                <List.Item as='a'>How To Access</List.Item>
-                <List.Item as='a'>Favorite X-Men</List.Item>
+                <List.Item as={Link}>Banana Pre-Order</List.Item>
+                <List.Item as={Link}>DNA FAQ</List.Item>
+                <List.Item as={Link}>How To Access</List.Item>
+                <List.Item as={Link}>Favorite X-Men</List.Item>
               </List>
             </Grid.Column>
             <Grid.Column width={7}>
@@ -127,19 +130,19 @@ class DesktopContainer extends Component {
               size='large'
             >
               <Container>
-                <Menu.Item as='a' active>
+                <Menu.Item as={Link} active>
                   Home
                 </Menu.Item>
                 {this.state.isAuthenticated && (
               	<React.Fragment>
-                	<Menu.Item as='a' href='/contact'>Contacts</Menu.Item>
-        					<Menu.Item as='a' href='/group'>Groups</Menu.Item>
+                	<Menu.Item as={Link} to='/contact'>Contacts</Menu.Item>
+        					<Menu.Item as={Link} to='/group'>Groups</Menu.Item>
       					</React.Fragment>
         				)}
                 <Menu.Item position='right'>
                   <LogInAndOutButton onLogOut={this.onLogOut} />
                 	{!this.state.isAuthenticated && (
-                  <Button as='a' href='/register' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
+                  <Button as={Link} to='/register' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
                     Register
                   </Button>
         					)}
@@ -181,14 +184,14 @@ class MobileContainer extends Component {
           vertical
           visible={sidebarOpened}
         >
-          <Menu.Item as='a' active>
+          <Menu.Item as={Link} active>
             Home
           </Menu.Item>
-          <Menu.Item as='a'>Work</Menu.Item>
-          <Menu.Item as='a'>Company</Menu.Item>
-          <Menu.Item as='a'>Careers</Menu.Item>
-          <Menu.Item as='a'>Log in</Menu.Item>
-          <Menu.Item as='a'>Sign Up</Menu.Item>
+          <Menu.Item as={Link}>Work</Menu.Item>
+          <Menu.Item as={Link}>Company</Menu.Item>
+          <Menu.Item as={Link}>Careers</Menu.Item>
+          <Menu.Item as={Link}>Log in</Menu.Item>
+          <Menu.Item as={Link}>Sign Up</Menu.Item>
         </Sidebar>
 
         <Sidebar.Pusher dimmed={sidebarOpened}>
@@ -204,10 +207,10 @@ class MobileContainer extends Component {
                   <Icon name='sidebar' />
                 </Menu.Item>
                 <Menu.Item position='right'>
-                  <Button as='a' inverted>
+                  <Button as={Link} inverted>
                     Log in
                   </Button>
-                  <Button as='a' inverted style={{ marginLeft: '0.5em' }}>
+                  <Button as={Link} inverted style={{ marginLeft: '0.5em' }}>
                     Sign Up
                   </Button>
                 </Menu.Item>

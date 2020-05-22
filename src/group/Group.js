@@ -11,11 +11,12 @@ import {
 import {
   Segment,
   Divider,
+  Icon,
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 import Layout from '../layout/Layout';
 import * as data from '../services/data';
-import columns from '../common/contactsTableColumns';
+import columns from '../common/contactTableColumns';
 import AddContactModal from './AddContactModal';
 import TableActionButton from '../common/TableActionButton';
 import GroupName from './GroupName';
@@ -73,7 +74,7 @@ export default function Contact() {
               content: 'Remove',
             }}
             modal={{
-              title: 'Delete Group',
+              title: 'Remove Contact',
               message: `Are you sure, you want to remove ${rowData.first_name} ${rowData.last_name} from this group?`,
               confirm: {
                 negative: true,
@@ -137,6 +138,10 @@ export default function Contact() {
     getData();
   }, [getData]);
 
+  const handleRowClick = (selectedRow) => {
+    history.push(`/contact/${selectedRow.id}`);
+  }
+
   return (
     <Layout loading={loading} message={message}>
       {group &&
@@ -161,12 +166,13 @@ export default function Contact() {
             noHeader
             defaultSortField='last_name'
             pagination
+            highlightOnHover
+            pointerOnHover
+            sortIcon={<Icon name='angle down' />}
+            onRowClicked={handleRowClick}
           />
         </Segment>}
       </Segment.Group>}
     </Layout>
   );
-        // highlightOnHover
-        // pointerOnHover
-        // onRowClicked={props.onRowClicked}
 }
