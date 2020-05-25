@@ -1,12 +1,10 @@
 import React, {
   useState,
-  useCallback,
+  Fragment,
 } from 'react';
 import {
-  Button,
   Form,
   Input,
-  Segment,
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
 
@@ -17,39 +15,38 @@ const options = [
   { key: 'o', text: 'Other', value: 'other' },
 ]
 
-export default function NewContact(props) {
-  const [data, setData] = useState({});
-  const { index, onRemoveInfoClick } = props;
+export default function ContactInfoForm(props) {
+  const [contactInfo, setContactInfo] = useState({});
+  let { index } = props;
 
-  const handleRemoveInfoClick = useCallback((event) => {
-    event.preventDefault();
+  if (typeof index !== 'number') {
+    index = 0;
+  }
 
-    if (isFunction(onRemoveInfoClick)) {
-      onRemoveInfoClick(event, index);
-    }
-  }, [onRemoveInfoClick, index])
+  let data = {};
+
+  if (props.data) {
+    data = props.data;
+  }
 
   const handleChange = (event, { value, name }) => {
-    const newData = {
-      ...data,
-      [name.replace(/-\d+$/, '')]: value,
+    const dataName = name.replace(/-\d+$/, '');
+    const newContactInfo = {
+      ...contactInfo,
+      [dataName]: value,
     };
-    setData(newData);
+
+    setContactInfo(newContactInfo);
 
     if (isFunction(props.onChange)) {
-      props.onChange(index, newData);
+      props.onChange(index, newContactInfo);
     }
+
+    data[dataName] = value;
   }
 
   return (
-    <Segment>
-      <Button
-        name={`delete-${index}`}
-        size='mini'
-        floated='right'
-        icon='delete'
-        content='remove'
-        onClick={handleRemoveInfoClick} />
+    <Fragment>
       <Form.Select
         name={`info_type-${index}`}
         id='form-select-control-type'
@@ -58,7 +55,7 @@ export default function NewContact(props) {
         label='Info type'
         options={options}
         placeholder='Info type'
-        value={props.data.type}
+        value={data.info_type}
         required
       />
       <Form.Field
@@ -68,7 +65,7 @@ export default function NewContact(props) {
         control={Input}
         label='Address'
         placeholder='Address'
-        value={props.data.address}
+        value={data.address}
         required
       />
       <Form.Group widths='equal'>
@@ -79,7 +76,7 @@ export default function NewContact(props) {
           control={Input}
           label='City'
           placeholder='City'
-          value={props.data.city}
+          value={data.city}
           required
         />
         <Form.Field
@@ -89,7 +86,7 @@ export default function NewContact(props) {
           control={Input}
           label='State'
           placeholder='State'
-          value={props.data.state}
+          value={data.state}
           required
         />
         <Form.Field
@@ -99,7 +96,7 @@ export default function NewContact(props) {
           control={Input}
           label='Zip'
           placeholder='Zip'
-          value={props.data.zip}
+          value={data.zip}
           required
         />
       </Form.Group>
@@ -110,7 +107,7 @@ export default function NewContact(props) {
         control={Input}
         label='Country'
         placeholder='Country'
-        value={props.data.country}
+        value={data.country}
         required
       />
       <Form.Field
@@ -120,7 +117,7 @@ export default function NewContact(props) {
         control={Input}
         label='Email'
         placeholder='Email'
-        value={props.data.email}
+        value={data.email}
         required
       />
       <Form.Field
@@ -130,9 +127,9 @@ export default function NewContact(props) {
         control={Input}
         label='Phone'
         placeholder='Phone'
-        value={props.data.phone}
+        value={data.phone}
         required
       />
-    </Segment>
+    </Fragment>
   );
 }

@@ -14,6 +14,7 @@ import isFunction from 'lodash.isfunction';
 import * as data from '../services/data';
 import columns from '../common/contactTableColumns';
 import Table from '../common/Table';
+import ErrorHandler from '../common/ErrorHandler';
 
 const SelectedElementsMessage = (props) => {
   let message;
@@ -35,6 +36,7 @@ const SelectedElementsMessage = (props) => {
 
 export default function AddContactModal(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState();
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState([]);
   const open = () => setIsOpen(true);
@@ -55,11 +57,13 @@ export default function AddContactModal(props) {
   };
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => data.contact.getAll({
-    offset,
-    limit,
-    order,
-    filter,
-  }), [filter]);
+      offset,
+      limit,
+      order,
+      filter,
+    }).catch((error) => {
+      setMessage(<ErrorHandler error={error} />);
+    }), [filter]);
 
   const handleRowSelected = ({ selectedRows }) => {
     setSelected(selectedRows);
@@ -93,7 +97,8 @@ export default function AddContactModal(props) {
             icon='search'
             size='large'
             onChange={handleInputChange} />
-          <SelectedElementsMessage selectedCount={selected.length} groupName={props.group.name} />
+          {!!message && message}
+          {!message && <SelectedElementsMessage selectedCount={selected.length} />}
           <Table
             columns={columns}
             defaultSortField='last_name'

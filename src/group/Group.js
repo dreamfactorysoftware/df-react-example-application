@@ -104,6 +104,7 @@ export default function Contact() {
   };
 
   const handleRenameSubmit = (event) => {
+    event.preventDefault();
     if (group.name !== event.target.name.value) {
       setMessage('');
       setLoading(true);

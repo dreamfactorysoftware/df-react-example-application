@@ -23,7 +23,7 @@ export default function ContactForm(props) {
             control={Input}
             label='First name'
             placeholder='First name'
-            value={contact.first_name}
+            defaultValue={contact.first_name}
             required
           />
           <Form.Field
@@ -32,7 +32,7 @@ export default function ContactForm(props) {
             control={Input}
             label='Last name'
             placeholder='Last name'
-            value={contact.last_name}
+            defaultValue={contact.last_name}
             required
           />
         </Form.Group>
@@ -43,7 +43,7 @@ export default function ContactForm(props) {
             control={Input}
             label='Twitter'
             placeholder='Twitter'
-            value={contact.twitter}
+            defaultValue={contact.twitter}
           />
           <Form.Field
             name='skype'
@@ -51,7 +51,7 @@ export default function ContactForm(props) {
             control={Input}
             label='Skype'
             placeholder='Skype'
-            value={contact.skype}
+            defaultValue={contact.skype}
           />
         </Form.Group>
         <Form.Field
@@ -60,7 +60,7 @@ export default function ContactForm(props) {
           control={TextArea}
           label='Notes'
           placeholder='Notes'
-          value={contact.notes}
+          defaultValue={contact.notes}
         />
     </Fragment>);
   }

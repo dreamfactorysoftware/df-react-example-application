@@ -8,7 +8,7 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
-import ContactInfoForm from './ContactInfoForm';
+import NewContactInfoForm from './NewContactInfoForm';
 import ContactInfoFormPlaceholder from './ContactInfoFormPlaceholder';
 
 export default function ContactInfoFormList(props) {
@@ -48,7 +48,7 @@ export default function ContactInfoFormList(props) {
   }
 
   for (let i = 0; i < data.length; i += 1) {
-    forms.push(<ContactInfoForm
+    forms.push(<NewContactInfoForm
       index={i}
       data={data[i]}
       onChange={handleInfoFormChange}

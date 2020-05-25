@@ -2,7 +2,6 @@ import React, {
   Fragment,
 } from 'react';
 import {
-  Button,
   Header,
   Item,
   List,
@@ -10,6 +9,7 @@ import {
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
 import ConfirmActionModal from '../common/ConfirmActionModal';
+import EditContactInfoModal from './EditContactInfoModal';
 
 export default function ContactInfo(props) {
   if (!props.data) {
@@ -40,7 +40,24 @@ export default function ContactInfo(props) {
               },
             },
           }}/>
-        <Button size='mini' floated='right' icon='edit' content='Edit' />
+        <EditContactInfoModal
+          trigger={{
+            size: 'mini',
+            floated:'right',
+            icon:'edit',
+            content:'Edit',
+          }}
+          modal={{
+            title: 'Edit Contact Info',
+            confirm: {
+              primary: true,
+              icon: 'save',
+              content: 'Save',
+            },
+            onSubmit: props.onEditContactInfoSubmit,
+          }}
+          data={info}
+          />
         <Item>
           <Item.Content>
             <Item.Header as='h4'>{info.info_type}</Item.Header>
@@ -86,12 +103,24 @@ export default function ContactInfo(props) {
     <Fragment>
       {!!items.length &&
       <Fragment>
-        <Button
-          floated='right'
-          icon='add'
-          size='small'
-          style={{ marginTop: '0.6em' }}
-          content='New' />
+        <EditContactInfoModal
+          trigger={{
+            icon:'add',
+            size: 'small',
+            content:'New',
+            floated: 'right',
+            style: { marginTop: '0.6em' },
+          }}
+          modal={{
+            title: 'Edit Contact Info',
+            confirm: {
+              primary: true,
+              icon: 'save',
+              content: 'Save',
+            },
+            onSubmit: props.onNewContactInfoSubmit,
+          }}
+          />
         <Header as='h2'>Info</Header>
         <Segment.Group>
           {items}
@@ -99,10 +128,22 @@ export default function ContactInfo(props) {
       </Fragment>}
       {!items.length &&
         <Segment basic textAlign={"center"}>
-          <Button
-            content='Add Info'
-            icon='add'
-            style={{textAlign: "center"}} />
+          <EditContactInfoModal
+            trigger={{
+              icon:'add',
+              content:'Add Info',
+              style: { textAlign: 'center' }
+            }}
+            modal={{
+              title: 'Edit Contact Info',
+              confirm: {
+                primary: true,
+                icon: 'save',
+                content: 'Save',
+              },
+              onSubmit: props.onNewContactInfoSubmit,
+            }}
+            />
         </Segment>}
     </Fragment>);
   };

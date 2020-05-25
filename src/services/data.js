@@ -44,6 +44,9 @@ export const contact = {
       resource,
     });
   },
+  update(id, data) {
+    return dreamFactory().patch(`/api/v2/db/_table/contact/${id}`, data);
+  },
   delete(id) {
     return dreamFactory().delete(`/api/v2/db/_table/contact/${id}`);
   },
@@ -71,7 +74,15 @@ export const contact_group_relationship = {
 export const contact_info = {
   delete(id) {
     return dreamFactory().delete(`/api/v2/db/_table/contact_info/${id}`);
-  }
+  },
+  create(resource) {
+    return dreamFactory().post('/api/v2/db/_table/contact_info', {
+      resource,
+    });
+  },
+  update(id, data) {
+    return dreamFactory().patch(`/api/v2/db/_table/contact_info/${id}`, data);
+  },
 };
 
 export const contact_group = {

@@ -18,6 +18,7 @@ import isFunction from 'lodash.isfunction';
 import * as data from '../services/data';
 import columns from '../common/groupTableColumns';
 import DataTable from 'react-data-table-component';
+import ErrorHandler from '../common/ErrorHandler';
 
 const SelectedElementsMessage = (props) => {
   let message;
@@ -39,6 +40,7 @@ const SelectedElementsMessage = (props) => {
 
 export default function AddToGroupModal(props) {
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState([]);
@@ -67,6 +69,7 @@ export default function AddToGroupModal(props) {
 
   const getData = useCallback((offset = 0, limit = 10, order = 'name') => {
     setLoading(true);
+    setMessage();
     return data.contact_group.getAll({
       offset,
       limit,
@@ -85,9 +88,13 @@ export default function AddToGroupModal(props) {
 
         setGroups(filteredGroups);
       }
-
       setLoading(false);
     })
+    .catch((error) => {
+      setLoading(false);
+      setMessage(<ErrorHandler error={error} />);
+      setGroups([]);
+    });
   }, [filter, disabledGroups]);
 
   const handleRowSelected = ({ selectedRows }) => {
@@ -123,7 +130,8 @@ export default function AddToGroupModal(props) {
             icon='search'
             size='large'
             onChange={handleInputChange} />
-          <SelectedElementsMessage selectedCount={selected.length} />
+          {!!message && message}
+          {!message && <SelectedElementsMessage selectedCount={selected.length} />}
           <DataTable
             columns={columns}
             data={groups}

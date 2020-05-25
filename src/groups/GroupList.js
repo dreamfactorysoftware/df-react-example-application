@@ -54,6 +54,7 @@ export default function GroupList() {
   }
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     data.contact_group.create(event.target.name.value)
       .then(refreshTable)
       .catch((error) => setMessage(<ErrorHandler error={error} />));
@@ -67,9 +68,8 @@ export default function GroupList() {
           icon:'add',
           content:'New',
         }}
-        title='Add New Group'
         modal={{
-          title: 'Rename Group',
+          title: 'Add New Group',
           confirm: {
             primary: true,
             icon: 'add',

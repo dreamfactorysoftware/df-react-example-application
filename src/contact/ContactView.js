@@ -2,7 +2,6 @@ import React, {
   Fragment,
 } from 'react';
 import {
-  Button,
   Container,
   Divider,
   Header,
@@ -12,6 +11,7 @@ import {
 } from 'semantic-ui-react';
 import ContactGroups from './ContactGroups';
 import ContactInfo from './ContactInfo';
+import EditContactModal from './EditContactModal';
 import ConfirmActionModal from '../common/ConfirmActionModal';
 
 export default function ContactView(props) {
@@ -40,11 +40,24 @@ export default function ContactView(props) {
                   onClick: props.onDeleteContactClick,
                 },
               }}/>
-            <Button
-              size='small'
-              floated='right'
-              icon='edit'
-              content='Edit' />
+            <EditContactModal
+              trigger={{
+                size: 'small',
+                floated:'right',
+                icon:'edit',
+                content:'Edit',
+              }}
+              modal={{
+                title: 'Edit contact',
+                confirm: {
+                  primary: true,
+                  icon: 'save',
+                  content: 'Save',
+                },
+                onSubmit: props.onContactEditSubmit,
+              }}
+              contact={props.contact}
+              />
             <Header as='h1' floated='left'>
               <Icon name='user' />
               <Header.Content>
@@ -86,7 +99,9 @@ export default function ContactView(props) {
 
         <ContactInfo
           data={props.contact.contact_info_by_contact_id}
-          onDeleteInfoClick={props.onDeleteInfoClick} />
+          onDeleteInfoClick={props.onDeleteInfoClick}
+          onEditContactInfoSubmit={props.onEditContactInfoSubmit}
+          onNewContactInfoSubmit={props.onNewContactInfoSubmit} />
       </Fragment>
     );
   }

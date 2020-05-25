@@ -12,10 +12,11 @@ import {
   Icon,
 } from 'semantic-ui-react';
 import Layout from '../layout/Layout';
-import ContactForm from './ContactForm';
+import ContactForm from '../common/ContactForm';
 import ContactInfoFormList from './ContactInfoFormList';
 import * as data from '../services/data';
 import ErrorHandler from '../common/ErrorHandler';
+import formFieldNames from '../common/contactFormFieldNames';
 
 export default function NewContact() {
   const [loading, setLoading] = useState(false);
@@ -29,15 +30,7 @@ export default function NewContact() {
     setMessage('');
     setLoading(true);
 
-    const formFieldNames = [
-      'first_name',
-      'last_name',
-      'twitter',
-      'skype',
-      'notes',
-    ];
-
-    const contact = {}
+    const contact = {};
 
     formFieldNames.forEach((name) => {
       contact[name] = event.target[name].value;

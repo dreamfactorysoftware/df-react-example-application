@@ -6,11 +6,11 @@ import {
   Button,
   Modal,
   Form,
-  Input,
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
+import ContactForm from '../common/ContactForm';
 
-export default function GroupNameModal(props) {
+export default function EditContactModal(props) {
   const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
   const close = (event) => {
@@ -38,22 +38,12 @@ export default function GroupNameModal(props) {
         onClose={close}>
         <Modal.Header>{props.modal.title}</Modal.Header>
         <Modal.Content>
-          <Form.Field
-            id='form-input-control-name'
-            control={Input}
-            label='Name'
-            placeholder='Name'
-            autoComplete='off'
-            name='name'
-            defaultValue={props.modal.defaultValue}
-            required
-            autoFocus
-          />
+          <ContactForm contact={props.contact} />
         </Modal.Content>
         <Modal.Actions>
           <Button
             icon='add'
-            content='Add'
+            content='Save'
             type='submit'
             {...props.modal.confirm}
           />
@@ -65,3 +55,6 @@ export default function GroupNameModal(props) {
       </Modal>
     </Fragment>);
 }
+
+
+

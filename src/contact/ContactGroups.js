@@ -50,6 +50,7 @@ export default function ContactGroups(props) {
       <AddToGroupModal disabledGroups={disabledGroups} onAddClick={props.onAddClick} />
       <Header as='h2' floated='left'>Groups</Header>
       <Divider fitted clearing hidden />
-      {items && <List relaxed>{items}</List>}
+      {!!items.length && <List relaxed>{items}</List>}
+      {!items.length && <p>This contact doesn't belong to any group</p>}
     </Segment>);
 }

@@ -35,13 +35,12 @@ export default function GroupName(props) {
           size:'small',
           content:'Rename',
         }}
-        title='Rename Group'
         modal={{
           title: 'Rename Group',
           defaultValue: props.name,
           confirm: {
             positive: true,
-            icon: 'edit',
+            icon: 'save',
             content: 'Rename',
           },
           onSubmit: props.onRenameSubmit,

@@ -11,6 +11,7 @@ import Layout from '../layout/Layout';
 import * as data from '../services/data';
 import ContactView from './ContactView';
 import ErrorHandler from '../common/ErrorHandler';
+import contactFormFieldNames from '../common/contactFormFieldNames';
 
 export default function Contact() {
   let { id } = useParams();
@@ -82,6 +83,58 @@ export default function Contact() {
       });
   }
 
+  const handleContactEditSubmit = (event) => {
+    event.preventDefault();
+    window.scrollTo(0, 0);
+    setMessage('');
+    setLoading(true);
+
+    const contact = {};
+
+    contactFormFieldNames.forEach((name) => {
+      contact[name] = event.target[name].value;
+    });
+
+    data.contact.update(id, contact)
+      .then(getData)
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
+  }
+
+  const handleEditContactInfoSubmit = (event, contactInfo) => {
+    event.preventDefault();
+    window.scrollTo(0, 0);
+    setMessage('');
+    setLoading(true);
+
+    data.contact_info.update(contactInfo.id, {
+      ...contactInfo,
+      contact_id: id,
+    }).then(getData)
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
+  }
+
+  const handleNewContactInfoSubmit = (event, contactInfo) => {
+    event.preventDefault();
+    window.scrollTo(0, 0);
+    setMessage('');
+    setLoading(true);
+
+    data.contact_info.create({
+      ...contactInfo,
+      contact_id: id,
+    }).then(getData)
+      .catch((error) => {
+        setLoading(false);
+        setMessage(<ErrorHandler error={error} />)
+      });
+  }
+
   useEffect(() => {
     getData()
       .catch((error) => {
@@ -98,6 +151,9 @@ export default function Contact() {
         onAddGroupClick={handleAddGroupClick}
         onDeleteGroupClick={handleDeleteGroupClick}
         onDeleteInfoClick={handleDeleteInfoClick}
+        onContactEditSubmit={handleContactEditSubmit}
+        onEditContactInfoSubmit={handleEditContactInfoSubmit}
+        onNewContactInfoSubmit={handleNewContactInfoSubmit}
       />
     </Layout>
   );

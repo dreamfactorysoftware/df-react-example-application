@@ -6,23 +6,33 @@ import {
   Button,
   Modal,
   Form,
-  Input,
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
+import ContactInfoForm from '../common/ContactInfoForm';
 
-export default function GroupNameModal(props) {
+export default function EditContactInfoModal(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState({});
   const open = () => setIsOpen(true);
+
   const close = (event) => {
     event.preventDefault();
     setIsOpen(false);
   };
+
   const handleSubmit = (event) => {
     if (isFunction(props.modal.onSubmit)) {
-      props.modal.onSubmit(event);
+      props.modal.onSubmit(event, {
+        ...props.data,
+        ...data,
+      });
     }
 
     setIsOpen(false);
+  };
+
+  const handleContactInfoChange = (index, contactInfo) => {
+    setData(contactInfo);
   };
 
   return (
@@ -38,22 +48,12 @@ export default function GroupNameModal(props) {
         onClose={close}>
         <Modal.Header>{props.modal.title}</Modal.Header>
         <Modal.Content>
-          <Form.Field
-            id='form-input-control-name'
-            control={Input}
-            label='Name'
-            placeholder='Name'
-            autoComplete='off'
-            name='name'
-            defaultValue={props.modal.defaultValue}
-            required
-            autoFocus
-          />
+          <ContactInfoForm data={props.data} onChange={handleContactInfoChange} />
         </Modal.Content>
         <Modal.Actions>
           <Button
             icon='add'
-            content='Add'
+            content='Save'
             type='submit'
             {...props.modal.confirm}
           />
@@ -65,3 +65,6 @@ export default function GroupNameModal(props) {
       </Modal>
     </Fragment>);
 }
+
+
+
