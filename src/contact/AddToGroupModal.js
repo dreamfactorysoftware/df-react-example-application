@@ -38,14 +38,13 @@ const SelectedElementsMessage = (props) => {
   );
 }
 
-export default function AddToGroupModal(props) {
+export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState([]);
   const [groups, setGroups] = useState([]);
-  const disabledGroups = Array.isArray(props.disabledGroups) ? props.disabledGroups : [];
 
   const open = () => {
     getData();
@@ -56,16 +55,17 @@ export default function AddToGroupModal(props) {
     setSelected([]);
   }
 
-  const setFilterDebounced = debounce(setFilter, 500);
+  const setFilterDebounced = useCallback(debounce(setFilter, 500), []);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = useCallback((event) => {
     const { target: { value } } = event;
+
     if (value) {
       setFilterDebounced(`(name like ${value}%)`);
     } else {
       setFilterDebounced('');
     }
-  };
+  }, [setFilterDebounced]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'name') => {
     setLoading(true);
@@ -81,7 +81,7 @@ export default function AddToGroupModal(props) {
 
         for (let i = 0; i < response.data.resource.length; i += 1) {
           const group = response.data.resource[i];
-          if (disabledGroups.indexOf(group.id) === -1) {
+          if ((Array.isArray(disabledGroups) ? disabledGroups : []).indexOf(group.id) === -1) {
             filteredGroups.push(group);
           }
         }
@@ -97,17 +97,17 @@ export default function AddToGroupModal(props) {
     });
   }, [filter, disabledGroups]);
 
-  const handleRowSelected = ({ selectedRows }) => {
+  const handleRowSelected = useCallback(({ selectedRows }) => {
     setSelected(selectedRows);
-  }
+  }, []);
 
-  const handleAddClick = (event) => {
-    if (isFunction(props.onAddClick)) {
-      props.onAddClick(selected);
+  const handleAddClick = useCallback((event) => {
+    if (isFunction(onAddClick)) {
+      onAddClick(selected);
     }
 
     close();
-  };
+  }, [onAddClick, selected]);
 
   return (
     <Fragment>

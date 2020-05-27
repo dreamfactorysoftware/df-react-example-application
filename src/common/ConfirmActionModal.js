@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useState,
   Fragment,
 } from 'react';
@@ -10,8 +11,8 @@ import isFunction from 'lodash.isfunction';
 
 export default function ConfirmActionModal(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const open = useCallback(() => setIsOpen(true), []);
+  const close = useCallback(() => setIsOpen(false), []);
 
   const modal = Object.assign({
     cancel: {
@@ -21,9 +22,9 @@ export default function ConfirmActionModal(props) {
       icon: 'checkmark',
       content: 'Yes',
     },
-  }, props.modal)
+  }, props.modal);
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = useCallback(() => {
     if (
       props.modal &&
       props.modal.confirm &&
@@ -33,7 +34,7 @@ export default function ConfirmActionModal(props) {
     }
 
     close();
-  };
+  }, [close, props.modal]);
 
   return (
     <Fragment>

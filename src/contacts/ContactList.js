@@ -23,16 +23,16 @@ export default function ContactList() {
   const [filter, setFilter] = useState('');
   const [message, setMessage] = useState();
 
-  const handleInputChange = (event) => {
+  const setFilterDebounced = useCallback(debounce(setFilter, 500));
+
+  const handleInputChange = useCallback((event) => {
     const { target: { value } } = event;
     if (value) {
       setFilterDebounced(`(first_name like ${value}%) or (last_name like ${value}%)`);
     } else {
       setFilterDebounced('');
     }
-  };
-
-  const setFilterDebounced = debounce(setFilter, 500);
+  }, [setFilterDebounced]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => {
     setMessage('');
@@ -45,9 +45,9 @@ export default function ContactList() {
     }).catch((error) => setMessage(<ErrorHandler error={error} />));
   }, [filter]);
 
-  const handleRowClick = (selectedRow) => {
+  const handleRowClick = useCallback((selectedRow) => {
     history.push(`/contact/${selectedRow.id}`);
-  }
+  }, [history]);
 
   return (
     <Layout active='contacts' message={message}>

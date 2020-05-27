@@ -15,7 +15,7 @@ import EditContactModal from './EditContactModal';
 import ConfirmActionModal from '../common/ConfirmActionModal';
 
 export default function ContactView(props) {
-    if (!props.contact) {
+    if (!props.contact || !props.contact.first_name) {
       return null;
     }
 
@@ -54,10 +54,10 @@ export default function ContactView(props) {
                   icon: 'save',
                   content: 'Save',
                 },
-                onSubmit: props.onContactEditSubmit,
+                onChange: props.onEditContactChange,
+                onSubmit: props.onEditContactSubmit,
               }}
-              contact={props.contact}
-              />
+              contact={props.contact} />
             <Header as='h1' floated='left'>
               <Icon name='user' />
               <Header.Content>
@@ -92,16 +92,19 @@ export default function ContactView(props) {
           <ContactGroups
             onAddClick={props.onAddGroupClick}
             onDeleteClick={props.onDeleteGroupClick}
-            groups={props.contact.contact_group_by_contact_group_relationship} />
+            groups={props.groups} />
         </Segment.Group>
 
         <Divider clearing hidden />
 
         <ContactInfo
-          data={props.contact.contact_info_by_contact_id}
+          data={props.contactInfo}
+          newContactInfo={props.newContactInfo}
           onDeleteInfoClick={props.onDeleteInfoClick}
           onEditContactInfoSubmit={props.onEditContactInfoSubmit}
-          onNewContactInfoSubmit={props.onNewContactInfoSubmit} />
+          onEditContactInfoChange={props.onEditContactInfoChange}
+          onNewContactInfoSubmit={props.onNewContactInfoSubmit}
+          onNewContactInfoChange={props.onNewContactInfoChange} />
       </Fragment>
     );
   }

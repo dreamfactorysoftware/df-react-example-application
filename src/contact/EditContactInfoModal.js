@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useState,
   Fragment,
 } from 'react';
@@ -12,28 +13,20 @@ import ContactInfoForm from '../common/ContactInfoForm';
 
 export default function EditContactInfoModal(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({});
-  const open = () => setIsOpen(true);
+  const open = useCallback(() => setIsOpen(true), []);
 
-  const close = (event) => {
+  const close = useCallback((event) => {
     event.preventDefault();
     setIsOpen(false);
-  };
+  }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = useCallback((event) => {
     if (isFunction(props.modal.onSubmit)) {
-      props.modal.onSubmit(event, {
-        ...props.data,
-        ...data,
-      });
+      props.modal.onSubmit(event, props.index);
     }
 
     setIsOpen(false);
-  };
-
-  const handleContactInfoChange = (index, contactInfo) => {
-    setData(contactInfo);
-  };
+  }, [props.modal, props.index]);
 
   return (
     <Fragment>
@@ -48,7 +41,7 @@ export default function EditContactInfoModal(props) {
         onClose={close}>
         <Modal.Header>{props.modal.title}</Modal.Header>
         <Modal.Content>
-          <ContactInfoForm data={props.data} onChange={handleContactInfoChange} />
+          <ContactInfoForm index={props.index} data={props.data} onChange={props.modal.onChange} />
         </Modal.Content>
         <Modal.Actions>
           <Button

@@ -18,7 +18,7 @@ export default function ContactInfo(props) {
 
   const items = props.data.map((info, index) => {
     return (
-      <Segment key={index}>
+      <Segment key={info.id}>
         <ConfirmActionModal
           trigger={{
             floated: 'right',
@@ -35,7 +35,7 @@ export default function ContactInfo(props) {
               content: 'Delete',
               onClick: () => {
                 if (isFunction(props.onDeleteInfoClick)) {
-                  props.onDeleteInfoClick(info);
+                  props.onDeleteInfoClick(index, info);
                 }
               },
             },
@@ -55,7 +55,9 @@ export default function ContactInfo(props) {
               content: 'Save',
             },
             onSubmit: props.onEditContactInfoSubmit,
+            onChange: props.onEditContactInfoChange,
           }}
+          index={index}
           data={info}
           />
         <Item>
@@ -119,7 +121,10 @@ export default function ContactInfo(props) {
               content: 'Save',
             },
             onSubmit: props.onNewContactInfoSubmit,
+            onChange: props.onNewContactInfoChange,
           }}
+          data={props.newContactInfo}
+          index={0}
           />
         <Header as='h2'>Info</Header>
         <Segment.Group>
@@ -142,7 +147,10 @@ export default function ContactInfo(props) {
                 content: 'Save',
               },
               onSubmit: props.onNewContactInfoSubmit,
+              onChange: props.onNewContactInfoChange,
             }}
+            data={props.newContactInfo}
+            index={0}
             />
         </Segment>}
     </Fragment>);

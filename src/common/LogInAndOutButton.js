@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useCallback,
+} from 'react';
 import {
   useHistory,
   useLocation,
@@ -10,17 +12,18 @@ import {
 import isFunction from 'lodash.isfunction';
 import auth from '../services/auth';
 
-export default function LogInAndOutButton(props) {
+export default function LogInAndOutButton({ onLogOut }) {
   const history = useHistory();
   const location = useLocation();
   const redirectTo = '/';
-  const logIn = () => auth.signout().then(() => {
+
+  const logIn = useCallback(() => auth.signout().then(() => {
   	if (location.pathname !== redirectTo) {
   		history.push(redirectTo);
-  	} else if (isFunction(props.onLogOut)) {
-  		props.onLogOut();
+  	} else if (isFunction(onLogOut)) {
+  		onLogOut();
   	}
-	});
+	}), [onLogOut, history, location.pathname]);
 
   return auth.isAuthenticated ? (
   	<Button inverted onClick={logIn}>

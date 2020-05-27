@@ -8,31 +8,27 @@ import {
 } from 'semantic-ui-react';
 
 export default function ContactForm(props) {
-  let contact = {};
-
-  if (props.contact) {
-    contact = props.contact;
-  }
-
   return (
     <Fragment>
         <Form.Group widths='equal'>
           <Form.Field
             name='first_name'
             id='form-input-control-first-name'
+            onChange={props.onChange}
             control={Input}
             label='First name'
             placeholder='First name'
-            defaultValue={contact.first_name}
+            defaultValue={props.first_name}
             required
           />
           <Form.Field
             name='last_name'
             id='form-input-control-last-name'
+            onChange={props.onChange}
             control={Input}
             label='Last name'
             placeholder='Last name'
-            defaultValue={contact.last_name}
+            defaultValue={props.last_name}
             required
           />
         </Form.Group>
@@ -40,27 +36,30 @@ export default function ContactForm(props) {
           <Form.Field
             name='twitter'
             id='form-input-control-twitter'
+            onChange={props.onChange}
             control={Input}
             label='Twitter'
             placeholder='Twitter'
-            defaultValue={contact.twitter}
+            defaultValue={props.twitter}
           />
           <Form.Field
             name='skype'
             id='form-input-control-skype'
+            onChange={props.onChange}
             control={Input}
             label='Skype'
             placeholder='Skype'
-            defaultValue={contact.skype}
+            defaultValue={props.skype}
           />
         </Form.Group>
         <Form.Field
           name='notes'
           id='form-textarea-control-notes'
+          onChange={props.onChange}
           control={TextArea}
           label='Notes'
           placeholder='Notes'
-          defaultValue={contact.notes}
+          defaultValue={props.notes}
         />
     </Fragment>);
   }

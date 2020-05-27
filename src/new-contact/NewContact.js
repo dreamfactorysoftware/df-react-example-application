@@ -1,5 +1,6 @@
 import React, {
   useState,
+  useCallback,
 } from 'react';
 import {
   useHistory,
@@ -16,28 +17,60 @@ import ContactForm from '../common/ContactForm';
 import ContactInfoFormList from './ContactInfoFormList';
 import * as data from '../services/data';
 import ErrorHandler from '../common/ErrorHandler';
-import formFieldNames from '../common/contactFormFieldNames';
 
 export default function NewContact() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState();
-  const [infoListData, setInfoListData] = useState([]);
+  const [contactData, setContactData] = useState({});
+  const [contactInfoData, setContactInfoData] = useState([]);
   const history = useHistory();
 
-  const handleSubmit = (event) => {
+  const handleAddInfoClick = useCallback((event) => {
+    event.preventDefault();
+    setContactInfoData((infoData) => infoData.concat({}));
+  }, []);
+
+  const handleRemoveInfoClick = useCallback((event, index) => {
+    event.preventDefault();
+    setContactInfoData((infoData) => {
+      const newInfoData = infoData.slice();
+      newInfoData.splice(index, 1);
+      return newInfoData;
+    });
+  }, []);
+
+  const handleInfoFormListChange = useCallback((index, name, value) => {
+    setContactInfoData((infoData) => {
+      const newInfoData = infoData.slice();
+      newInfoData.splice(index, 1, {
+        ...infoData[index],
+        [name]: value,
+      });
+      return newInfoData;
+    });
+  }, []);
+
+  const handleContactFormChange = useCallback((event, { value, name }) => {
+    setContactData((contact) => {
+      return {
+        ...contact,
+        [name]: value,
+      };
+    })
+  }, []);
+
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
     window.scrollTo(0, 0);
     setMessage('');
     setLoading(true);
 
-    const contact = {};
+    const contact = {
+      ...contactData,
+    };
 
-    formFieldNames.forEach((name) => {
-      contact[name] = event.target[name].value;
-    });
-
-    if (infoListData.length) {
-      contact.contact_info_by_contact_id = infoListData;
+    if (contactInfoData.length) {
+      contact.contact_info_by_contact_id = contactInfoData;
     }
 
     const resource = [contact];
@@ -51,11 +84,7 @@ export default function NewContact() {
         setLoading(false);
         setMessage(<ErrorHandler error={error} />)
       });
-  }
-
-  const handleInfoFormListChange = (newData) => {
-    setInfoListData(newData);
-  }
+  }, [history, contactData, contactInfoData]);
 
   return (
     <Layout loading={loading} message={message}>
@@ -64,10 +93,16 @@ export default function NewContact() {
         New Contact
       </Header>
       <Form onSubmit={handleSubmit}>
-        <ContactForm />
+        <ContactForm
+          data={contactData}
+          onChange={handleContactFormChange} />
         <Divider clearing hidden />
 
-        <ContactInfoFormList onChange={handleInfoFormListChange} />
+        <ContactInfoFormList
+          data={contactInfoData}
+          onAddInfoClick={handleAddInfoClick}
+          onRemoveInfoClick={handleRemoveInfoClick}
+          onChange={handleInfoFormListChange} />
         <Divider clearing hidden />
         <Button
           primary

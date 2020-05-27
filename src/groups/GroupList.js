@@ -23,16 +23,16 @@ export default function GroupList() {
   const [filter, setFilter] = useState('');
   const history = useHistory();
 
-  const handleInputChange = (event) => {
+  const setFilterDebounced = useCallback(debounce(setFilter, 500));
+
+  const handleInputChange = useCallback((event) => {
     const { target: { value } } = event;
     if (value) {
       setFilterDebounced(`(name like ${value}%)`);
     } else {
       setFilterDebounced('');
     }
-  };
-
-  const setFilterDebounced = debounce(setFilter, 500);
+  }, [setFilterDebounced]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => {
     setMessage('');
@@ -45,20 +45,20 @@ export default function GroupList() {
     }).catch((error) => setMessage(<ErrorHandler error={error} />));
   }, [filter]);
 
-  const refreshTable = () => {
-    setRefresh(!refresh);
-  }
 
   const handleRowClick = (selectedRow) => {
     history.push(`/group/${selectedRow.id}`);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
+
+    const refreshTable = () => setRefresh((refresh) => !refresh);
+
     data.contact_group.create(event.target.name.value)
       .then(refreshTable)
       .catch((error) => setMessage(<ErrorHandler error={error} />));
-  }
+  }, []);
 
   return (
     <Layout active='groups' message={message}>
