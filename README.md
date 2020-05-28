@@ -1,68 +1,39 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# DreamFactory Example React Application
 
-## Available Scripts
+There are two ways to interact with this application.
 
-In the project directory, you can run:
+## Installing the Application Inside DreamFactory
 
-### `yarn start`
+TODO: Add section about how to install this application via the DreamFactory administration console.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Configuring the Application Locally
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Every DreamFactory instance includes a SQLite database exposed through an API named `db`. To view this API, login to your DreamFactory instance, navigate to the `Services` tab, and select the `db` service.
 
-### `yarn test`
+### Creating a Role and API Key
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Talk about creating a role for `db` service here and corresponding API key.
 
-### `yarn build`
+For Role access be sure to select All because the application is CRUD-capable.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Configuring the Users Service
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+https://share.getcloudapp.com/YEu1L9wN
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Adding Your DreamFactory URL and API Key
 
-### `yarn eject`
+Next, you'll want to specify your DreamFactory instance's URL and API key. To do so, copy `config.js.example` to `config.js`, and update the following fields:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* `INSTANCE_URL`:
+* `APP_API_KEY`:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Using the Application
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Application users will need to first register before interacting with the address book. These accounts are managed inside the DreamFactory `Users` tab. For security purposes, user registration is disabled by default therefore you'll need to login to your DreamFactory instance, navigate to the `Users` tab, click `Config`, and enable the `Allow Open Registration` tab.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+To start the application, run this command:
 
-## Learn More
+    $ yarn start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Next, open your browser and navigate to `http://localhost:3000/`. Click the `Register` button to create a new account. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
