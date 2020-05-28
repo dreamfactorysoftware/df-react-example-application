@@ -12,7 +12,7 @@ import {
 import isFunction from 'lodash.isfunction';
 import auth from '../services/auth';
 
-export default function LogInAndOutButton({ onLogOut }) {
+export default function LogInAndOutButton({ onLogOut, inverted }) {
   const history = useHistory();
   const location = useLocation();
   const redirectTo = '/';
@@ -26,11 +26,11 @@ export default function LogInAndOutButton({ onLogOut }) {
 	}), [onLogOut, history, location.pathname]);
 
   return auth.isAuthenticated ? (
-  	<Button inverted onClick={logIn}>
+  	<Button inverted={inverted} onClick={logIn}>
       Log out
     </Button>
   ) : (
-    <Button as={Link} to='/login' inverted>
+    <Button as={Link} to='/login' inverted={inverted}>
       Log in
     </Button>
   );

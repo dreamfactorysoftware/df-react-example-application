@@ -9,6 +9,7 @@ import {
   Header,
   Message,
   Icon,
+  Input,
 } from 'semantic-ui-react';
 import {
   useHistory,
@@ -51,24 +52,25 @@ export default function Login(props) {
         <Header as='h2' attached='top'>
           Log-in to your account
         </Header>
-        <Form className='attached fluid segment' size='large' onSubmit={handleSubmit}>
-          <Form.Input
-            fluid icon='user'
+        <Form className='attached fluid segment' style={{ textAlign: 'left' }} size='large' onSubmit={handleSubmit}>
+          <Form.Field
+            control={Input}
+            label='E-mail address'
+            icon='user'
             iconPosition='left'
             placeholder='E-mail address'
             name='email'
             onChange={handleChange}
-            required
           />
-          <Form.Input
-            fluid
+          <Form.Field
+            control={Input}
+            label='Password'
             icon='lock'
             iconPosition='left'
             placeholder='Password'
             type='password'
             name='password'
             onChange={handleChange}
-            required
           />
           <Button primary fluid size='large'>
             Log in

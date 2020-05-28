@@ -30,7 +30,7 @@ const Layout = ({ children, active, loading, message }) =>
           active={active === 'groups'}
         >Groups</Menu.Item>
         <Menu.Item position='right'>
-          <LogInAndOutButton />
+          <LogInAndOutButton inverted />
         </Menu.Item>
       </Container>
     </Menu>

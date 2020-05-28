@@ -9,6 +9,7 @@ import {
   Header,
   Message,
   Icon,
+  Input,
 } from 'semantic-ui-react';
 import {
   useHistory,
@@ -24,8 +25,10 @@ export default function Register() {
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
-    auth.register(data).then(() => {
-      history.push('/contact');
+    auth.register(data).then((isAuthenticated) => {
+      if (isAuthenticated) {
+        history.push('/contact');
+      }
     }).catch((error) => {
       setMessage(<ErrorHandler error={error} redirect={false} />);
     });
@@ -45,25 +48,28 @@ export default function Register() {
         <Header as='h2' attached='top'>
           Register
         </Header>
-        <Form className='attached fluid segment' size='large' onSubmit={handleSubmit}>
-          <Form.Input
-            fluid
-            icon='user'
-            iconPosition='left'
+        <Form
+          style={{ textAlign: 'left' }}
+          className='attached fluid segment'
+          size='large'
+          onSubmit={handleSubmit}>
+          <Form.Field
+            control={Input}
+            label='First name'
             placeholder='First Name'
             name='first_name'
             onChange={handleChange}
           />
-          <Form.Input
-            fluid
-            icon='user'
-            iconPosition='left'
+          <Form.Field
+            control={Input}
+            label='Last name'
             placeholder='Last Name'
             name='last_name'
             onChange={handleChange}
           />
-          <Form.Input
-            fluid
+          <Form.Field
+            control={Input}
+            label='E-mail address'
             icon='user'
             iconPosition='left'
             placeholder='E-mail address'
@@ -71,8 +77,9 @@ export default function Register() {
             onChange={handleChange}
             required
           />
-          <Form.Input
-            fluid
+          <Form.Field
+            control={Input}
+            label='Password'
             icon='lock'
             iconPosition='left'
             placeholder='Password'

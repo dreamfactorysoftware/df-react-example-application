@@ -5,9 +5,12 @@ const http = axios.create({
 });
 
 const onAuthenticationSuccess = (response) => {
-  var session_token = response.data.session_token;
-  localStorage.setItem('session_token', session_token);
-  auth.isAuthenticated = true;
+  if (response.data.session_token) {
+    localStorage.setItem('session_token', response.data.session_token);
+    auth.isAuthenticated = true;
+  }
+
+  return auth.isAuthenticated;
 }
 
 export const removeToken = () => {

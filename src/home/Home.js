@@ -225,7 +225,7 @@ class DesktopContainer extends Component {
       					</React.Fragment>
         				)}
                 <Menu.Item position='right'>
-                  <LogInAndOutButton onLogOut={this.onLogOut} />
+                  <LogInAndOutButton inverted={!fixed} onLogOut={this.onLogOut} />
                 	{!this.state.isAuthenticated && (
                   <Button as={Link} to='/register' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
                     Register
