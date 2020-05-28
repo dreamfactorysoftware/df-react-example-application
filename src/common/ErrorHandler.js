@@ -29,7 +29,7 @@ export default function ErrorHandler({ error, redirect }) {
     }
 
     if (data.error) {
-      if(data.error.message && data.error.context) {
+      if(!!data.error.message && !!data.error.context) {
         errorMessage = [];
 
         for (const property in data.error.context) {
@@ -48,13 +48,19 @@ export default function ErrorHandler({ error, redirect }) {
         errorMessage = data.error.message;
         errorHeader = `Error ${status}`;
       } else {
-        errorMessage = 'Error';
-        errorHeader = 'An unexpected error occurred.';
+        errorMessage = 'An unexpected error occurred.';
+        errorHeader = 'Error';
       }
-
-      setMessage(errorMessage);
-      setHeader(errorHeader);
+    } else if(error.message) {
+        errorMessage = error.message;
+        errorHeader = 'Error';
+    } else {
+        errorMessage = 'An unexpected error occurred.';
+        errorHeader = 'Error';
     }
+
+    setMessage(errorMessage);
+    setHeader(errorHeader);
   }, [error, history, redirect]);
 
   return (

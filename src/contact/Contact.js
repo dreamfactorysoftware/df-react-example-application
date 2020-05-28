@@ -103,13 +103,17 @@ export default function Contact() {
 
   const handleContactEditSubmit = useCallback((event) => {
     event.preventDefault();
+    console.log(contactForm);
     window.scrollTo(0, 0);
     setMessage('');
     setLoading(true);
 
     data.contact.update(id, contactForm)
       .then(() => {
-        setContact(contactForm);
+        setContact((contact) => ({
+          ...contact,
+          ...contactForm,
+        }));
         setLoading(false);
       })
       .catch((error) => {

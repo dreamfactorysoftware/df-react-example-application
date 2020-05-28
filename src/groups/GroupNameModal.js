@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useState,
   Fragment,
 } from 'react';
@@ -12,18 +13,21 @@ import isFunction from 'lodash.isfunction';
 
 export default function GroupNameModal(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = (event) => {
+
+  const open = useCallback(() => setIsOpen(true), []);
+
+  const close = useCallback((event) => {
     event.preventDefault();
     setIsOpen(false);
-  };
-  const handleSubmit = (event) => {
+  }, []);
+
+  const handleSubmit = useCallback((event) => {
     if (isFunction(props.modal.onSubmit)) {
       props.modal.onSubmit(event);
     }
 
     setIsOpen(false);
-  };
+  }, [props.modal]);
 
   return (
     <Fragment>
@@ -46,6 +50,7 @@ export default function GroupNameModal(props) {
             autoComplete='off'
             name='name'
             defaultValue={props.modal.defaultValue}
+            onChange={props.modal.onChange}
             required
             autoFocus
           />

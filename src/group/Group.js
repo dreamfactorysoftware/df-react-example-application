@@ -18,7 +18,7 @@ import Layout from '../layout/Layout';
 import * as data from '../services/data';
 import columns from '../common/contactTableColumns';
 import AddContactModal from './AddContactModal';
-import TableActionButton from '../common/TableActionButton';
+import ConfirmActionModal from '../common/ConfirmActionModal';
 import GroupName from './GroupName';
 import ErrorHandler from '../common/ErrorHandler';
 
@@ -27,7 +27,8 @@ export default function Contact() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState();
-  const [group, setGroup] = useState();
+  const [group, setGroup] = useState({});
+  const [newName, setNewName] = useState();
   const [groupContacts, setGroupContacts] = useState();
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
@@ -52,6 +53,7 @@ export default function Contact() {
   }, [id]);
 
   const handleRemoveContactClick = useCallback(({ connection_id }) => {
+    console.log(connection_id);
     setMessage('');
     setLoading(true);
     data.contact_group_relationship.delete(connection_id)
@@ -66,8 +68,7 @@ export default function Contact() {
     {
       cell: (rowData) => {
         return (
-          <TableActionButton
-            data={data}
+          <ConfirmActionModal
             trigger={{
               size: 'mini',
               icon: 'remove user',
@@ -80,9 +81,9 @@ export default function Contact() {
                 negative: true,
                 icon: 'remove user',
                 content: 'Remove',
+                onClick: () => handleRemoveContactClick(rowData),
               },
-            }}
-            onClick={handleRemoveContactClick} />
+            }} />
         );
       },
       ignoreRowClick: true,
@@ -91,40 +92,46 @@ export default function Contact() {
     }
   ]), [handleRemoveContactClick]);
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = useCallback(() => {
     setMessage('');
     setLoading(true);
-    data.contact_group.delete(group.id).then(() => {
+    data.contact_group.delete(id).then(() => {
         history.push('/group');
       })
       .catch((error) => {
         setLoading(false);
         setMessage(<ErrorHandler error={error} />)
       });
-  };
+  }, [id, history]);
 
-  const handleRenameSubmit = (event) => {
+  const handleRenameSubmit = useCallback((event) => {
     event.preventDefault();
-    if (group.name !== event.target.name.value) {
+    if (group.name !== newName) {
       setMessage('');
       setLoading(true);
-      data.contact_group.update(id, event.target.name.value)
-        .then(getData)
+      data.contact_group.update(id, newName)
+        .then(() => {
+          setGroup((group) => ({
+            ...group,
+            name: newName,
+          }));
+          setLoading(false);
+        })
         .catch((error) => {
           setLoading(false);
           setMessage(<ErrorHandler error={error} />)
         });
     }
-  };
+  } , [id, group.name, newName]);
 
-  const handleAddClick = (selectedRows) => {
+  const handleAddClick = useCallback((selectedRows) => {
     if (selectedRows && selectedRows.length) {
       setMessage('');
       setLoading(true);
       data.contact_group_relationship.create(selectedRows.map((contact) => {
           return {
             contact_id: contact.id,
-            contact_group_id: group.id,
+            contact_group_id: id,
           };
         }))
         .then(getData)
@@ -133,15 +140,21 @@ export default function Contact() {
           setMessage(<ErrorHandler error={error} />)
         });
     }
-  };
+  }, [id, getData]);
+
+  const handleNameChange = useCallback((event, { name, value }) => {
+    setNewName(value);
+  }, []);
 
   useEffect(() => {
     getData();
   }, [getData]);
 
-  const handleRowClick = (selectedRow) => {
+  const handleRowClick = useCallback((selectedRow) => {
     history.push(`/contact/${selectedRow.id}`);
-  }
+  }, [history]);
+
+  const filterContacts = useMemo(() => groupContacts && groupContacts.map((contact) => contact.id), [groupContacts]);
 
   return (
     <Layout loading={loading} message={message}>
@@ -151,6 +164,7 @@ export default function Contact() {
           (<Segment>
             <GroupName
               name={group.name}
+              onNameChange={handleNameChange}
               onDeleteClick={handleDeleteClick}
               onRenameSubmit={handleRenameSubmit} />
             <Divider fitted clearing hidden />
@@ -159,7 +173,8 @@ export default function Contact() {
         {groupContacts &&
         <Segment>
           <AddContactModal
-            group={group}
+            groupName={group.name}
+            filterContacts={filterContacts}
             onAddClick={handleAddClick} />
           <DataTable
             columns={columnsWithActionButton}

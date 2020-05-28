@@ -21,6 +21,7 @@ export default function GroupList() {
   const [refresh, setRefresh] = useState(true);
   const [message, setMessage] = useState();
   const [filter, setFilter] = useState('');
+  const [newName, setNewName] = useState();
   const history = useHistory();
 
   const setFilterDebounced = useCallback(debounce(setFilter, 500));
@@ -46,18 +47,25 @@ export default function GroupList() {
   }, [filter]);
 
 
-  const handleRowClick = (selectedRow) => {
+  const handleRowClick = useCallback((selectedRow) => {
     history.push(`/group/${selectedRow.id}`);
-  }
+  }, [history]);
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
 
     const refreshTable = () => setRefresh((refresh) => !refresh);
 
-    data.contact_group.create(event.target.name.value)
-      .then(refreshTable)
+    data.contact_group.create(newName)
+      .then(() => {
+        setNewName();
+        refreshTable();
+      })
       .catch((error) => setMessage(<ErrorHandler error={error} />));
+  }, [newName]);
+
+  const handleNameChange = useCallback((event, { name, value }) => {
+    setNewName(value);
   }, []);
 
   return (
@@ -76,6 +84,7 @@ export default function GroupList() {
             content: 'Add',
           },
           onSubmit: handleSubmit,
+          onChange: handleNameChange,
         }}
         />
       <h1>Groups</h1>

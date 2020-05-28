@@ -22,7 +22,7 @@ export default function NewContactInfoForm(props) {
   return (
     <Segment>
       <Button
-        name={`delete-${index}`}
+        name={`delete[${index}]`}
         size='mini'
         floated='right'
         icon='delete'

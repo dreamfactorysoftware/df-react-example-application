@@ -44,6 +44,7 @@ export default function GroupName(props) {
             content: 'Rename',
           },
           onSubmit: props.onRenameSubmit,
+          onChange: props.onNameChange,
         }}
         />
       <Header as='h1' floated='left'>

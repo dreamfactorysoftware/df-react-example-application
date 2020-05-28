@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useState,
 } from 'react';
 import {
@@ -19,20 +20,23 @@ import ErrorHandler from '../common/ErrorHandler';
 export default function Register() {
   let history = useHistory();
   const [message, setMessage] = useState();
+  const [data, setData] = useState({});
 
-  const handleSubmit = (event) => {
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
-    auth.register({
-      first_name: event.target.first_name.value,
-      last_name: event.target.last_name.value,
-      email: event.target.email.value,
-      new_password: event.target.new_password.value,
-    }).then(() => {
+    auth.register(data).then(() => {
       history.push('/contact');
     }).catch((error) => {
       setMessage(<ErrorHandler error={error} redirect={false} />);
     });
-  }
+  }, [data, history]);
+
+  const handleChange = useCallback((event, { name, value }) => {
+    setData((data) => ({
+      ...data,
+      [name]: value,
+    }));
+  }, []);
 
   return (
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -48,6 +52,7 @@ export default function Register() {
             iconPosition='left'
             placeholder='First Name'
             name='first_name'
+            onChange={handleChange}
           />
           <Form.Input
             fluid
@@ -55,6 +60,7 @@ export default function Register() {
             iconPosition='left'
             placeholder='Last Name'
             name='last_name'
+            onChange={handleChange}
           />
           <Form.Input
             fluid
@@ -62,6 +68,8 @@ export default function Register() {
             iconPosition='left'
             placeholder='E-mail address'
             name='email'
+            onChange={handleChange}
+            required
           />
           <Form.Input
             fluid
@@ -70,6 +78,8 @@ export default function Register() {
             placeholder='Password'
             type='password'
             name='new_password'
+            onChange={handleChange}
+            required
           />
           <Button color='blue' fluid size='large'>
             Continue

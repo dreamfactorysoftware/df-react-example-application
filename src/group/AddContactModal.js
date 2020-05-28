@@ -8,12 +8,16 @@ import {
   Input,
   Modal,
   Message,
+  Checkbox,
+  Icon,
+  Loader,
+  Segment,
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import isFunction from 'lodash.isfunction';
 import * as data from '../services/data';
 import columns from '../common/contactTableColumns';
-import Table from '../common/Table';
+import DataTable from 'react-data-table-component';
 import ErrorHandler from '../common/ErrorHandler';
 
 const SelectedElementsMessage = (props) => {
@@ -34,48 +38,69 @@ const SelectedElementsMessage = (props) => {
   );
 }
 
-export default function AddContactModal(props) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function AddContactModal({ groupName, onAddClick, filterContacts }) {
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState([]);
-  const open = () => setIsOpen(true);
-  const close = () => {
-    setIsOpen(false);
-    setSelected([]);
-  }
-
-  const setFilterDebounced = debounce(setFilter, 500);
-
-  const handleInputChange = (event) => {
-    const { target: { value } } = event;
-    if (value) {
-      setFilterDebounced(`(first_name like ${value}%) or (last_name like ${value}%)`);
-    } else {
-      setFilterDebounced('');
-    }
-  };
+  const [contacts, setContacts] = useState([]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => data.contact.getAll({
       offset,
       limit,
       order,
       filter,
+    }).then((response) => {
+      if (response && response.data && response.data.resource) {
+        const filteredContacts = [];
+
+        for (let i = 0; i < response.data.resource.length; i += 1) {
+          const contact = response.data.resource[i];
+          if ((Array.isArray(filterContacts) ? filterContacts : []).indexOf(contact.id) === -1) {
+            filteredContacts.push(contact);
+          }
+        }
+
+        setContacts(filteredContacts);
+      }
+      setLoading(false);
     }).catch((error) => {
       setMessage(<ErrorHandler error={error} />);
-    }), [filter]);
+    }), [filter, filterContacts]);
 
-  const handleRowSelected = ({ selectedRows }) => {
-    setSelected(selectedRows);
-  }
+  const open = useCallback(() => {
+    setContacts([]);
+    getData();
+    setLoading(true);
+    setIsOpen(true);
+  }, [getData]);
 
-  const handleAddClick = (event) => {
-    if (isFunction(props.onAddClick)) {
-      props.onAddClick(selected);
+  const close = useCallback(() => {
+    setIsOpen(false);
+    setSelected([]);
+  }, []);
+
+  const setFilterDebounced = useCallback(debounce(setFilter, 500), []);
+
+  const handleInputChange = useCallback((event) => {
+    const { target: { value } } = event;
+    if (value) {
+      setFilterDebounced(`(first_name like ${value}%) or (last_name like ${value}%)`);
+    } else {
+      setFilterDebounced('');
+    }
+  }, [setFilterDebounced]);
+
+  const handleRowSelected = useCallback(({ selectedRows }) => setSelected(selectedRows), []);
+
+  const handleAddClick = useCallback((event) => {
+    if (isFunction(onAddClick)) {
+      onAddClick(selected);
     }
 
     close();
-  };
+  }, [onAddClick, selected, close]);
 
   return (
     <Fragment>
@@ -89,7 +114,7 @@ export default function AddContactModal(props) {
         size='small'
         open={isOpen}
         onClose={close}>
-        <Modal.Header>Add Contacts to "{props.group.name}"</Modal.Header>
+        <Modal.Header>Add Contacts to "{groupName}"</Modal.Header>
         <Modal.Content>
           <Input
             fluid
@@ -98,17 +123,21 @@ export default function AddContactModal(props) {
             size='large'
             onChange={handleInputChange} />
           {!!message && message}
-          {!message && <SelectedElementsMessage selectedCount={selected.length} />}
-          <Table
+          {!message && <SelectedElementsMessage selectedCount={selected.length} groupName={groupName} />}
+          <DataTable
             columns={columns}
-            defaultSortField='last_name'
-            getData={getData}
+            data={contacts}
+            noHeader
+            highlightOnHover
+            pointerOnHover
+            pagination
+            progressPending={loading}
+            progressComponent={<Segment basic padded='very'><Loader active className='workaround' size='big' inline='centered' content='Loading' /></Segment>}
+            sortIcon={<Icon name='angle down' />}
             selectableRows
+            selectableRowsComponent={Checkbox}
             onSelectedRowsChange={handleRowSelected}
-            paginationServerOptions={{
-              persistSelectedOnPageChange: true,
-              persistSelectedOnSort: true,
-            }}
+            defaultSortField='name'
           />
         </Modal.Content>
         <Modal.Actions>

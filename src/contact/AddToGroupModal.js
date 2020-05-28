@@ -46,27 +46,6 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   const [selected, setSelected] = useState([]);
   const [groups, setGroups] = useState([]);
 
-  const open = () => {
-    getData();
-    setIsOpen(true);
-  }
-  const close = () => {
-    setIsOpen(false);
-    setSelected([]);
-  }
-
-  const setFilterDebounced = useCallback(debounce(setFilter, 500), []);
-
-  const handleInputChange = useCallback((event) => {
-    const { target: { value } } = event;
-
-    if (value) {
-      setFilterDebounced(`(name like ${value}%)`);
-    } else {
-      setFilterDebounced('');
-    }
-  }, [setFilterDebounced]);
-
   const getData = useCallback((offset = 0, limit = 10, order = 'name') => {
     setLoading(true);
     setMessage();
@@ -97,6 +76,28 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
     });
   }, [filter, disabledGroups]);
 
+  const open = useCallback(() => {
+    getData();
+    setIsOpen(true);
+  }, [getData]);
+
+  const close = useCallback(() => {
+    setIsOpen(false);
+    setSelected([]);
+  }, []);
+
+  const setFilterDebounced = useCallback(debounce(setFilter, 500), []);
+
+  const handleInputChange = useCallback((event) => {
+    const { target: { value } } = event;
+
+    if (value) {
+      setFilterDebounced(`(name like ${value}%)`);
+    } else {
+      setFilterDebounced('');
+    }
+  }, [setFilterDebounced]);
+
   const handleRowSelected = useCallback(({ selectedRows }) => {
     setSelected(selectedRows);
   }, []);
@@ -107,7 +108,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
     }
 
     close();
-  }, [onAddClick, selected]);
+  }, [onAddClick, selected, close]);
 
   return (
     <Fragment>

@@ -33,8 +33,8 @@ export default function ConfirmActionModal(props) {
       props.modal.confirm.onClick();
     }
 
-    close();
-  }, [close, props.modal]);
+    setIsOpen(false);
+  }, [props.modal]);
 
   return (
     <Fragment>

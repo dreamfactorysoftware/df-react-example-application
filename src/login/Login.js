@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useState,
 } from 'react';
 import {
@@ -21,17 +22,27 @@ export default function Login(props) {
   const history = useHistory();
   const location = useLocation();
   const [message, setMessage] = useState();
+  const [data, setData] = useState({});
 
-  const { from } = location.state || { from: { pathname: '/contact' } };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
-    auth.authenticate(event.target.email.value, event.target.password.value)
+
+    const { from } = location.state || { from: { pathname: '/contact' } };
+
+    auth.authenticate(data.email, data.password)
       .then(() => history.replace(from))
       .catch((error) => {
         setMessage(<ErrorHandler error={error} />);
       });
-  }
+  }, [data.email, data.password, history, location.state]);
+
+  const handleChange = useCallback((event, { name, value }) => {
+    setData((data) => ({
+      ...data,
+      [name]: value,
+    }));
+  }, []);
 
   return (
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -46,6 +57,8 @@ export default function Login(props) {
             iconPosition='left'
             placeholder='E-mail address'
             name='email'
+            onChange={handleChange}
+            required
           />
           <Form.Input
             fluid
@@ -54,6 +67,8 @@ export default function Login(props) {
             placeholder='Password'
             type='password'
             name='password'
+            onChange={handleChange}
+            required
           />
           <Button primary fluid size='large'>
             Log in
