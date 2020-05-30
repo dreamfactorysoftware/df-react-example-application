@@ -15,7 +15,7 @@ import {
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 import Layout from '../layout/Layout';
-import * as data from '../services/data';
+import * as data from '../../services/data';
 import columns from '../common/contactTableColumns';
 import AddContactModal from './AddContactModal';
 import ConfirmActionModal from '../common/ConfirmActionModal';

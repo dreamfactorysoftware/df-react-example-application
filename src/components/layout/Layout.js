@@ -9,7 +9,7 @@ import {
 } from 'semantic-ui-react';
 import Footer from './Footer';
 import LogInAndOutButton from '../common/LogInAndOutButton';
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 
 const Layout = ({ children, active, loading, message }) =>
 	(<div>

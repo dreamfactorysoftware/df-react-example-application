@@ -13,7 +13,7 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
-import * as data from '../services/data';
+import * as data from '../../services/data';
 import Table from '../common/Table';
 import columns from '../common/contactTableColumns';
 import ErrorHandler from '../common/ErrorHandler';

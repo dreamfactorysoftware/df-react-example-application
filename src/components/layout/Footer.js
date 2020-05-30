@@ -5,7 +5,7 @@ import {
   List,
   Segment,
 } from 'semantic-ui-react';
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 
 const Footer = ({ children }) =>
 	(<Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>

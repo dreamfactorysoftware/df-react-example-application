@@ -5,7 +5,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import auth from './services/auth';
+import auth from '../../services/auth';
 
 export default function PrivateRoute({ children, ...rest }) {
   const render = ({ location }) => {

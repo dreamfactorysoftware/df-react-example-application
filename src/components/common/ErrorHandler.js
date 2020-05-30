@@ -10,7 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react';
 import ScrollToTop from './ScrollToTop';
-import { removeToken } from '../services/auth';
+import { removeToken } from '../../services/auth';
 
 export default function ErrorHandler({ error, redirect }) {
   const history = useHistory();

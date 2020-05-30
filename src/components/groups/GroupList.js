@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import Layout from '../layout/Layout';
-import * as data from '../services/data';
+import * as data from '../../services/data';
 import Table from '../common/Table';
 import GroupNameModal from './GroupNameModal';
 import ErrorHandler from '../common/ErrorHandler';

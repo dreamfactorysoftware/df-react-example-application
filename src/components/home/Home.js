@@ -17,7 +17,7 @@ import {
   Link,
 } from 'react-router-dom';
 import LogInAndOutButton from '../common/LogInAndOutButton';
-import auth from '../services/auth';
+import auth from '../../services/auth';
 
 const HomePage = () => {
   return (<ResponsiveContainer>

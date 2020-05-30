@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 import ScrollToTop from './common/ScrollToTop';
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './common/PrivateRoute';
 import Contact from './contact/Contact';
 import ContactList from './contacts/ContactList';
 import NewContact from './new-contact/NewContact';

@@ -13,30 +13,26 @@ import {
 } from 'semantic-ui-react';
 import {
   useHistory,
-  useLocation,
   Link,
-} from 'react-router-dom';
-import auth from '../services/auth';
+} from "react-router-dom";
+import auth from '../../services/auth';
 import ErrorHandler from '../common/ErrorHandler';
 
-export default function Login(props) {
-  const history = useHistory();
-  const location = useLocation();
+export default function Register() {
+  let history = useHistory();
   const [message, setMessage] = useState();
   const [data, setData] = useState({});
 
-
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
-
-    const { from } = location.state || { from: { pathname: '/contact' } };
-
-    auth.authenticate(data.email, data.password)
-      .then(() => history.replace(from))
-      .catch((error) => {
-        setMessage(<ErrorHandler error={error} />);
-      });
-  }, [data.email, data.password, history, location.state]);
+    auth.register(data).then((isAuthenticated) => {
+      if (isAuthenticated) {
+        history.push('/contact');
+      }
+    }).catch((error) => {
+      setMessage(<ErrorHandler error={error} redirect={false} />);
+    });
+  }, [data, history]);
 
   const handleChange = useCallback((event, { name, value }) => {
     setData((data) => ({
@@ -50,9 +46,27 @@ export default function Login(props) {
       <Grid.Column style={{ maxWidth: 450 }}>
         <div style={{ textAlign: 'left' }}>{message}</div>
         <Header as='h2' attached='top'>
-          Log-in to your account
+          Register
         </Header>
-        <Form className='attached fluid segment' style={{ textAlign: 'left' }} size='large' onSubmit={handleSubmit}>
+        <Form
+          style={{ textAlign: 'left' }}
+          className='attached fluid segment'
+          size='large'
+          onSubmit={handleSubmit}>
+          <Form.Field
+            control={Input}
+            label='First name'
+            placeholder='First Name'
+            name='first_name'
+            onChange={handleChange}
+          />
+          <Form.Field
+            control={Input}
+            label='Last name'
+            placeholder='Last Name'
+            name='last_name'
+            onChange={handleChange}
+          />
           <Form.Field
             control={Input}
             label='E-mail address'
@@ -61,6 +75,7 @@ export default function Login(props) {
             placeholder='E-mail address'
             name='email'
             onChange={handleChange}
+            required
           />
           <Form.Field
             control={Input}
@@ -69,16 +84,17 @@ export default function Login(props) {
             iconPosition='left'
             placeholder='Password'
             type='password'
-            name='password'
+            name='new_password'
             onChange={handleChange}
+            required
           />
-          <Button primary fluid size='large'>
-            Log in
+          <Button color='blue' fluid size='large'>
+            Continue
           </Button>
         </Form>
         <Message attached='bottom' warning style={{ textAlign: 'left' }}>
           <Icon name='help' />
-          Need an account? <Link to='/register'>Register here</Link>&nbsp;instead.
+          Already have an account? <Link to='/login'>Log in here </Link> instead.
         </Message>
       </Grid.Column>
     </Grid>

@@ -15,7 +15,7 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import isFunction from 'lodash.isfunction';
-import * as data from '../services/data';
+import * as data from '../../services/data';
 import columns from '../common/contactTableColumns';
 import DataTable from 'react-data-table-component';
 import ErrorHandler from '../common/ErrorHandler';

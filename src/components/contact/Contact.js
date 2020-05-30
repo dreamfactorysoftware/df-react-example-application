@@ -8,7 +8,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import Layout from '../layout/Layout';
-import * as data from '../services/data';
+import * as data from '../../services/data';
 import ContactView from './ContactView';
 import ErrorHandler from '../common/ErrorHandler';
 

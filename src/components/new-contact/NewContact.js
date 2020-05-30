@@ -15,7 +15,7 @@ import {
 import Layout from '../layout/Layout';
 import ContactForm from '../common/ContactForm';
 import ContactInfoFormList from './ContactInfoFormList';
-import * as data from '../services/data';
+import * as data from '../../services/data';
 import ErrorHandler from '../common/ErrorHandler';
 
 export default function NewContact() {
