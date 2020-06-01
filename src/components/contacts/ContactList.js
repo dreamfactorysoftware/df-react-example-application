@@ -16,12 +16,11 @@ import Layout from '../layout/Layout';
 import * as data from '../../services/data';
 import Table from '../common/Table';
 import columns from '../common/contactTableColumns';
-import ErrorHandler from '../common/ErrorHandler';
 
 export default function ContactList() {
   const history = useHistory();
   const [filter, setFilter] = useState('');
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
 
   const setFilterDebounced = useCallback(debounce(setFilter, 500));
 
@@ -35,14 +34,16 @@ export default function ContactList() {
   }, [setFilterDebounced]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name') => {
-    setMessage('');
+    setError();
 
     return data.contact.getAll({
       offset,
       limit,
       order,
       filter,
-    }).catch((error) => setMessage(<ErrorHandler error={error} />));
+    }).catch((error) => {
+      setError(error);
+    });
   }, [filter]);
 
   const handleRowClick = useCallback((selectedRow) => {
@@ -50,7 +51,7 @@ export default function ContactList() {
   }, [history]);
 
   return (
-    <Layout active='contacts' message={message}>
+    <Layout active='contacts' error={error}>
       <Button floated='right' icon='add' content='New' as={Link} to='/new-contact' />
       <h1>Contacts</h1>
       <Divider clearing />

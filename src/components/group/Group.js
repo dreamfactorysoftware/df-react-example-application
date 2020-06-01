@@ -20,19 +20,18 @@ import columns from '../common/contactTableColumns';
 import AddContactModal from './AddContactModal';
 import ConfirmActionModal from '../common/ConfirmActionModal';
 import GroupName from './GroupName';
-import ErrorHandler from '../common/ErrorHandler';
 
 export default function Contact() {
   let { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [group, setGroup] = useState({});
   const [newName, setNewName] = useState();
   const [groupContacts, setGroupContacts] = useState();
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
-    setMessage('');
+    setError();
 
     return Promise.all([
       data.contact_group.getOne(id),
@@ -48,19 +47,19 @@ export default function Contact() {
       setLoading(false);
     }).catch((error) => {
       setLoading(false);
-      setMessage(<ErrorHandler error={error} />)
+      setError(error)
     });
   }, [id]);
 
   const handleRemoveContactClick = useCallback(({ connection_id }) => {
     console.log(connection_id);
-    setMessage('');
+    setError();
     setLoading(true);
     data.contact_group_relationship.delete(connection_id)
       .then(getData)
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error)
       });
   }, [getData]);
 
@@ -93,21 +92,21 @@ export default function Contact() {
   ]), [handleRemoveContactClick]);
 
   const handleDeleteClick = useCallback(() => {
-    setMessage('');
+    setError();
     setLoading(true);
     data.contact_group.delete(id).then(() => {
         history.push('/group');
       })
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error)
       });
   }, [id, history]);
 
   const handleRenameSubmit = useCallback((event) => {
     event.preventDefault();
     if (group.name !== newName) {
-      setMessage('');
+      setError();
       setLoading(true);
       data.contact_group.update(id, newName)
         .then(() => {
@@ -119,14 +118,14 @@ export default function Contact() {
         })
         .catch((error) => {
           setLoading(false);
-          setMessage(<ErrorHandler error={error} />)
+          setError(error)
         });
     }
   } , [id, group.name, newName]);
 
   const handleAddClick = useCallback((selectedRows) => {
     if (selectedRows && selectedRows.length) {
-      setMessage('');
+      setError();
       setLoading(true);
       data.contact_group_relationship.create(selectedRows.map((contact) => {
           return {
@@ -137,7 +136,7 @@ export default function Contact() {
         .then(getData)
         .catch((error) => {
           setLoading(false);
-          setMessage(<ErrorHandler error={error} />)
+          setError(error)
         });
     }
   }, [id, getData]);
@@ -157,7 +156,7 @@ export default function Contact() {
   const filterContacts = useMemo(() => groupContacts && groupContacts.map((contact) => contact.id), [groupContacts]);
 
   return (
-    <Layout loading={loading} message={message}>
+    <Layout loading={loading} error={error}>
       {group &&
       <Segment.Group>
         {group.name &&

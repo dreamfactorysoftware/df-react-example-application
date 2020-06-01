@@ -20,7 +20,7 @@ import ErrorHandler from '../common/ErrorHandler';
 
 export default function Register() {
   let history = useHistory();
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [data, setData] = useState({});
 
   const handleSubmit = useCallback((event) => {
@@ -30,7 +30,7 @@ export default function Register() {
         history.push('/contact');
       }
     }).catch((error) => {
-      setMessage(<ErrorHandler error={error} redirect={false} />);
+      setError(error);
     });
   }, [data, history]);
 
@@ -44,7 +44,9 @@ export default function Register() {
   return (
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
-        <div style={{ textAlign: 'left' }}>{message}</div>
+        <div style={{ textAlign: 'left' }}>
+          {error && <ErrorHandler error={error} redirect={false} />}
+        </div>
         <Header as='h2' attached='top'>
           Register
         </Header>

@@ -10,13 +10,12 @@ import {
 import Layout from '../layout/Layout';
 import * as data from '../../services/data';
 import ContactView from './ContactView';
-import ErrorHandler from '../common/ErrorHandler';
 
 export default function Contact() {
   let { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [contact, setContact] = useState({});
   const [contactForm, setContactForm] = useState({});
   const [contactInfo, setContactInfo] = useState();
@@ -24,7 +23,7 @@ export default function Contact() {
   const [groups, setGroups] = useState([]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
-    setMessage('');
+    setError();
 
     return data.contact.getOneWithInfoAndGroups(id)
       .then((response) => {
@@ -43,7 +42,7 @@ export default function Contact() {
       })
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, [history, id]);
 
@@ -59,7 +58,7 @@ export default function Contact() {
         .then(getData)
         .catch((error) => {
           setLoading(false);
-          setMessage(<ErrorHandler error={error} />)
+          setError(error);
         });
     }
   }, [id, getData]);
@@ -74,7 +73,7 @@ export default function Contact() {
       .then(getData)
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, [getData, contact.contact_group_relationship_by_contact_id]);
 
@@ -88,7 +87,7 @@ export default function Contact() {
     data.contact_info.delete(contactInfoToDelete.id)
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, []);
 
@@ -105,7 +104,7 @@ export default function Contact() {
     event.preventDefault();
     console.log(contactForm);
     window.scrollTo(0, 0);
-    setMessage('');
+    setError();
     setLoading(true);
 
     data.contact.update(id, contactForm)
@@ -118,14 +117,14 @@ export default function Contact() {
       })
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, [contactForm, id]);
 
   const handleEditContactInfoSubmit = useCallback((event, index) => {
     event.preventDefault();
     window.scrollTo(0, 0);
-    setMessage('');
+    setError();
     setLoading(true);
 
     data.contact_info.update(contactInfo[index].id, {
@@ -134,14 +133,14 @@ export default function Contact() {
     }).then(() => setLoading(false))
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, [contactInfo, id]);
 
   const handleNewContactInfoSubmit = useCallback((event, index) => {
     event.preventDefault();
     window.scrollTo(0, 0);
-    setMessage('');
+    setError();
     setLoading(true);
 
     data.contact_info.create({
@@ -161,7 +160,7 @@ export default function Contact() {
       })
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, [newContactInfo, id]);
 
@@ -186,12 +185,12 @@ export default function Contact() {
     getData()
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error);
       });
   }, [getData]);
 
   return (
-    <Layout loading={loading} message={message}>
+    <Layout loading={loading} error={error}>
       <ContactView
         contact={contact}
         contactInfo={contactInfo}

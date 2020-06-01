@@ -16,11 +16,10 @@ import Layout from '../layout/Layout';
 import ContactForm from '../common/ContactForm';
 import ContactInfoFormList from './ContactInfoFormList';
 import * as data from '../../services/data';
-import ErrorHandler from '../common/ErrorHandler';
 
 export default function NewContact() {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [contactData, setContactData] = useState({});
   const [contactInfoData, setContactInfoData] = useState([]);
   const history = useHistory();
@@ -62,7 +61,7 @@ export default function NewContact() {
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
     window.scrollTo(0, 0);
-    setMessage('');
+    setError();
     setLoading(true);
 
     const contact = {
@@ -82,12 +81,12 @@ export default function NewContact() {
       })
       .catch((error) => {
         setLoading(false);
-        setMessage(<ErrorHandler error={error} />)
+        setError(error)
       });
   }, [history, contactData, contactInfoData]);
 
   return (
-    <Layout loading={loading} message={message}>
+    <Layout loading={loading} error={error}>
       <Header as='h1'>
         <Icon name='user' />
         New Contact

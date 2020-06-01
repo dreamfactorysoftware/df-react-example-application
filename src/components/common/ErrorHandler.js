@@ -14,13 +14,15 @@ import { removeToken } from '../../services/auth';
 
 export default function ErrorHandler({ error, redirect }) {
   const history = useHistory();
-  const [message, setMessage] = useState('');
-  const [header, setHeader] = useState('');
+  const [message, setMessage] = useState([]);
+  const [header, setHeader] = useState();
 
   useEffect(() => {
+    if (!error) {
+      return null;
+    }
+
     const { status, data } = error.response;
-    let errorMessage;
-    let errorHeader;
 
     if  (status === 401 && redirect !== false) {
       removeToken();
@@ -28,46 +30,53 @@ export default function ErrorHandler({ error, redirect }) {
       return null;
     }
 
-    if (data.error) {
-      if(!!data.error.message && !!data.error.context) {
-        errorMessage = [];
+    const parseMessages = (messages) => {
+      const parser = new DOMParser();
 
-        for (const property in data.error.context) {
-          if (typeof data.error.context[property] === 'string') {
-            errorMessage = errorMessage.concat(data.error.context[property]);
-          }
-        }
-
-        if (errorMessage.length) {
-          errorHeader = data.error.message;
-        } else {
-          errorMessage = data.error.message;
-          errorHeader = `Error ${status}`;
-        }
-      } else if (data.error.message) {
-        errorMessage = data.error.message;
-        errorHeader = `Error ${status}`;
-      } else {
-        errorMessage = 'An unexpected error occurred.';
-        errorHeader = 'Error';
-      }
-    } else if(error.message) {
-        errorMessage = error.message;
-        errorHeader = 'Error';
-    } else {
-        errorMessage = 'An unexpected error occurred.';
-        errorHeader = 'Error';
+      return messages.map((encodedStr) => {
+        const dom = parser.parseFromString(
+          '<!doctype html><body>' + encodedStr,
+          'text/html');
+        return dom.body.textContent;
+      });
     }
 
-    setMessage(errorMessage);
-    setHeader(errorHeader);
+    const getErrorMessages = (error) => {
+      let errorMessages = [];
+
+      if (error.message) {
+        errorMessages.push(error.message);
+      }
+
+      if (error.context) {
+        if (error.context.error && error.context.resource) {
+          error.context.resource.forEach((item) => {
+            errorMessages = errorMessages.concat(getErrorMessages(item));
+          });
+        } else {
+          for (const property in error.context) {
+            errorMessages = errorMessages.concat(error.context[property]);
+          }
+        }
+      }
+
+      return errorMessages;
+    }
+
+    if (data.error) {
+      let errorMessages = parseMessages(getErrorMessages(data.error));
+      setMessage(errorMessages);
+      setHeader(data.error.code ? `Error ${data.error.code}` : 'Error');
+    } else {
+
+    }
   }, [error, history, redirect]);
 
   return (
     !!error &&
     <Fragment>
       <ScrollToTop />
-      {Array.isArray(message) ? (
+      {message.length > 1 ? (
         <Message
           negative
           header={header}
@@ -76,7 +85,7 @@ export default function ErrorHandler({ error, redirect }) {
         <Message
           negative
           header={header}
-          content={message} />
+          content={message[0]} />
       )}
     </Fragment>
   );

@@ -14,12 +14,11 @@ import Layout from '../layout/Layout';
 import * as data from '../../services/data';
 import Table from '../common/Table';
 import GroupNameModal from './GroupNameModal';
-import ErrorHandler from '../common/ErrorHandler';
 import columns from '../common/groupTableColumns';
 
 export default function GroupList() {
   const [refresh, setRefresh] = useState(true);
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [filter, setFilter] = useState('');
   const [newName, setNewName] = useState();
   const history = useHistory();
@@ -36,14 +35,14 @@ export default function GroupList() {
   }, [setFilterDebounced]);
 
   const getData = useCallback((offset = 0, limit = 10, order = 'name asc') => {
-    setMessage('');
+    setError();
 
     return data.contact_group.getAll({
       offset,
       limit,
       order,
       filter,
-    }).catch((error) => setMessage(<ErrorHandler error={error} />));
+    }).catch((error) => setError(error));
   }, [filter]);
 
 
@@ -61,7 +60,7 @@ export default function GroupList() {
         setNewName();
         refreshTable();
       })
-      .catch((error) => setMessage(<ErrorHandler error={error} />));
+      .catch((error) => setError(error));
   }, [newName]);
 
   const handleNameChange = useCallback((event, { name, value }) => {
@@ -69,7 +68,7 @@ export default function GroupList() {
   }, []);
 
   return (
-    <Layout active='groups' message={message}>
+    <Layout active='groups' error={error}>
       <GroupNameModal
         trigger={{
           floated:'right',

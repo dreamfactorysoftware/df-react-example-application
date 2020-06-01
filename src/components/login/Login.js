@@ -22,7 +22,7 @@ import ErrorHandler from '../common/ErrorHandler';
 export default function Login(props) {
   const history = useHistory();
   const location = useLocation();
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [data, setData] = useState({});
 
 
@@ -34,7 +34,7 @@ export default function Login(props) {
     auth.authenticate(data.email, data.password)
       .then(() => history.replace(from))
       .catch((error) => {
-        setMessage(<ErrorHandler error={error} />);
+        setError(error);
       });
   }, [data.email, data.password, history, location.state]);
 
@@ -48,7 +48,9 @@ export default function Login(props) {
   return (
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
-        <div style={{ textAlign: 'left' }}>{message}</div>
+        <div style={{ textAlign: 'left' }}>
+          {error && <ErrorHandler error={error} redirect={false} />}
+        </div>
         <Header as='h2' attached='top'>
           Log-in to your account
         </Header>

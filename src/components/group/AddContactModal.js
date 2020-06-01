@@ -7,10 +7,10 @@ import {
   Button,
   Input,
   Modal,
-  Message,
   Checkbox,
   Icon,
   Loader,
+  Message,
   Segment,
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
@@ -20,27 +20,9 @@ import columns from '../common/contactTableColumns';
 import DataTable from 'react-data-table-component';
 import ErrorHandler from '../common/ErrorHandler';
 
-const SelectedElementsMessage = (props) => {
-  let message;
-
-  if (!props.selectedCount) {
-    message = `Please select contacts you would like to add to "${props.groupName}" group.`;
-  } else if (props.selectedCount === 1) {
-    message = '1 contact selected.'
-  } else {
-    message = `${props.selectedCount} contacts selected.`
-  }
-
-  return (
-    <Message info>
-      <p>{message}</p>
-    </Message>
-  );
-}
-
 export default function AddContactModal({ groupName, onAddClick, filterContacts }) {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState([]);
@@ -66,7 +48,7 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
       }
       setLoading(false);
     }).catch((error) => {
-      setMessage(<ErrorHandler error={error} />);
+      setError(error);
     }), [filter, filterContacts]);
 
   const open = useCallback(() => {
@@ -102,6 +84,16 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
     close();
   }, [onAddClick, selected, close]);
 
+  let message;
+
+  if (!selected.length) {
+    message = `Please select contacts you would like to add to "${groupName}" group.`;
+  } else if (selected.length === 1) {
+    message = '1 contact selected.';
+  } else {
+    message = `${selected.length} contacts selected.`;
+  }
+
   return (
     <Fragment>
       <Button
@@ -122,8 +114,10 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
             icon='search'
             size='large'
             onChange={handleInputChange} />
-          {!!message && message}
-          {!message && <SelectedElementsMessage selectedCount={selected.length} groupName={groupName} />}
+          {!!error && <ErrorHandler error={error} />}
+          {!error && <Message info>
+            <p>{message}</p>
+          </Message>}
           <DataTable
             columns={columns}
             data={contacts}

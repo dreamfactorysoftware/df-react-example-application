@@ -20,27 +20,9 @@ import columns from '../common/groupTableColumns';
 import DataTable from 'react-data-table-component';
 import ErrorHandler from '../common/ErrorHandler';
 
-const SelectedElementsMessage = (props) => {
-  let message;
-
-  if (!props.selectedCount) {
-    message = `Please select groups you would like this contact to be added to.`;
-  } else if (props.selectedCount === 1) {
-    message = '1 group selected.'
-  } else {
-    message = `${props.selectedCount} groups selected.`
-  }
-
-  return (
-    <Message info>
-      <p>{message}</p>
-    </Message>
-  );
-}
-
 export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState([]);
@@ -48,7 +30,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
 
   const getData = useCallback((offset = 0, limit = 10, order = 'name') => {
     setLoading(true);
-    setMessage();
+    setError();
     return data.contact_group.getAll({
       offset,
       limit,
@@ -71,7 +53,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
     })
     .catch((error) => {
       setLoading(false);
-      setMessage(<ErrorHandler error={error} />);
+      setError(error);
       setGroups([]);
     });
   }, [filter, disabledGroups]);
@@ -110,6 +92,16 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
     close();
   }, [onAddClick, selected, close]);
 
+  let message;
+
+  if (!selected.length) {
+    message = `Please select groups you would like this contact to be added to.`;
+  } else if (selected.length === 1) {
+    message = '1 group selected.';
+  } else {
+    message = `${selected.length} groups selected.`;
+  }
+
   return (
     <Fragment>
       <Button
@@ -131,8 +123,10 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
             icon='search'
             size='large'
             onChange={handleInputChange} />
-          {!!message && message}
-          {!message && <SelectedElementsMessage selectedCount={selected.length} />}
+          {!!error && <ErrorHandler error={error} />}
+          {!error && <Message info>
+            <p>{message}</p>
+          </Message>}
           <DataTable
             columns={columns}
             data={groups}

@@ -9,9 +9,10 @@ import {
 } from 'semantic-ui-react';
 import Footer from './Footer';
 import LogInAndOutButton from '../common/LogInAndOutButton';
+import ErrorHandler from '../common/ErrorHandler';
 import logo from '../../logo.svg';
 
-const Layout = ({ children, active, loading, message }) =>
+const Layout = ({ children, active, loading, error }) =>
 	(<div>
     <Menu fixed='top' inverted style={{ zIndex: 10000 }}>
       <Container>
@@ -39,7 +40,7 @@ const Layout = ({ children, active, loading, message }) =>
       <Dimmer inverted active={loading}>
         <Loader size='big' content='Loading' />
       </Dimmer>
-      { message }
+      { error  && <ErrorHandler error={error} /> }
     	{ children }
     </Container>
 
