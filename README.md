@@ -14,11 +14,22 @@ Every DreamFactory instance includes a SQLite database exposed through an API na
 
 Talk about creating a role for `db` service here and corresponding API key.
 
-For Role access be sure to select All because the application is CRUD-capable.
+- In the admin console, click the Roles tab then click Create in the left sidebar.
+- Enter a name for the role and check the Active box.
+- Go to the Access tab.
+- Add a new entry under Service Access (you can make it more restrictive later).
+    - set Service = All
+    - set Component = *
+    - check all HTTP verbs under Access
+    - set Requester = API
+- Click Create Role.
 
 ### Configuring the Users Service
 
-https://share.getcloudapp.com/YEu1L9wN
+- Click the Services tab, then edit the user service. Go to Config and enable Allow Open Registration.
+- Set the Open Reg Role Id to the name of the role you just created.
+- Make sure Open Reg Email Service Id is blank, so that new users can register without email confirmation.
+- Save changes.
 
 ### Adding Your DreamFactory URL and API Key
 
