@@ -14,7 +14,7 @@ import logo from '../../logo.svg';
 
 const Layout = ({ children, active, loading, error }) =>
 	(<div>
-    <Menu fixed='top' inverted style={{ zIndex: 10000 }}>
+    <Menu fixed='top' style={{ zIndex: 10000 }}>
       <Container>
         <Menu.Item as={Link} to='/' header>
           <Image size='mini' src={logo} />
@@ -31,7 +31,7 @@ const Layout = ({ children, active, loading, error }) =>
           active={active === 'groups'}
         >Groups</Menu.Item>
         <Menu.Item position='right'>
-          <LogInAndOutButton inverted />
+          <LogInAndOutButton />
         </Menu.Item>
       </Container>
     </Menu>

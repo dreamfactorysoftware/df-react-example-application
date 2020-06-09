@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
@@ -18,7 +18,6 @@ import NoMatch from './NoMatch';
 
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
-
 
 export default function App() {
   return (

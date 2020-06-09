@@ -2,6 +2,6 @@
 	"name":"Address Book for React",
 	"description":"An address book app for React showing user registration, user login, and CRUD.",
 	"type": 1,
-	"path": "df-react-example-application/public/index.html",
+	"path": "index.html",
 	"is_active": true
 }
