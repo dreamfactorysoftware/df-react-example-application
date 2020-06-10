@@ -4,7 +4,7 @@ import React, {
   Fragment,
 } from 'react';
 import {
-  useHistory,
+  Redirect,
 } from "react-router-dom";
 import {
   Message,
@@ -13,21 +13,32 @@ import ScrollToTop from './ScrollToTop';
 import { removeToken } from '../../services/auth';
 
 export default function ErrorHandler({ error, redirect }) {
-  const history = useHistory();
   const [message, setMessage] = useState([]);
   const [header, setHeader] = useState();
+  const [forceRedirect, setForceRedirect] = useState(false);
 
   useEffect(() => {
     if (!error) {
+      return;
+    }
+
+    if (!error.response) {
+      setHeader('Error');
+
+      if (error.isAxiosError) {
+        setMessage(error.toJSON().message);
+      }
+
+      setMessage(['Unexpected error.']);
       return null;
     }
 
     const { status, data } = error.response;
 
-    if  (status === 401 && redirect !== false) {
+    if (status === 401 && redirect !== false) {
       removeToken();
-      history.replace('/login');
-      return null;
+      setForceRedirect(true);
+      return;
     }
 
     const parseMessages = (messages) => {
@@ -63,17 +74,25 @@ export default function ErrorHandler({ error, redirect }) {
       return errorMessages;
     }
 
+    setHeader(data.error && data.error.code ? `Error ${data.error.code}` : 'Error');
+
     if (data.error) {
       let errorMessages = parseMessages(getErrorMessages(data.error));
       setMessage(errorMessages);
-      setHeader(data.error.code ? `Error ${data.error.code}` : 'Error');
     } else {
-
+      setMessage(['Unexpected error. Please make sure APP_API_KEY and INSTANCE_URL are set in the config.js file.']);
     }
-  }, [error, history, redirect]);
+  }, [error, redirect]);
+
+  if (!error) {
+    return null;
+  }
+
+  if (forceRedirect) {
+    return <Redirect to='/login' />;
+  }
 
   return (
-    !!error &&
     <Fragment>
       <ScrollToTop />
       {message.length > 1 ? (
