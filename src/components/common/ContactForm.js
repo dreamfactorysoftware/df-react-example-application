@@ -1,6 +1,4 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
   Form,
   Input,
@@ -9,7 +7,7 @@ import {
 
 export default function ContactForm(props) {
   return (
-    <Fragment>
+    <>
         <Form.Group widths='equal'>
           <Form.Field
             name='first_name'
@@ -61,5 +59,5 @@ export default function ContactForm(props) {
           placeholder='Notes'
           defaultValue={props.notes}
         />
-    </Fragment>);
+    </>);
   }

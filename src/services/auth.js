@@ -7,18 +7,15 @@ const http = axios.create({
 const onAuthenticationSuccess = (response) => {
   if (response.data.session_token) {
     localStorage.setItem('session_token', response.data.session_token);
+    // eslint-disable-next-line no-use-before-define
     auth.isAuthenticated = true;
   }
 
+  // eslint-disable-next-line no-use-before-define
   return auth.isAuthenticated;
-}
+};
 
-export const removeToken = () => {
-  auth.isAuthenticated = false;
-  localStorage.removeItem('session_token');
-}
-
-const auth = {
+export const auth = {
   isAuthenticated: !!localStorage.getItem('session_token'),
   authenticate(email, password) {
     return http.post('/api/v2/user/session', {
@@ -30,11 +27,16 @@ const auth = {
         throw error;
       });
   },
+  removeToken: () => {
+    auth.isAuthenticated = false;
+    localStorage.removeItem('session_token');
+  },
   signout() {
     return http.delete('/api/v2/user/session')
-      .then(removeToken)
-      .catch(removeToken);
+      .then(auth.removeToken)
+      .catch(auth.removeToken);
   },
+  // eslint-disable-next-line camelcase
   register({ first_name, last_name, email, new_password }) {
     return http.post('/api/v2/user/register?login=true', {
       first_name,
@@ -43,6 +45,5 @@ const auth = {
       new_password,
     }).then(onAuthenticationSuccess);
   }
-};
 
-export default auth;
+};

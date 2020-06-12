@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useState,
-  Fragment,
 } from 'react';
 import {
   Button,
@@ -14,15 +13,13 @@ export default function ConfirmActionModal(props) {
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
-  const modal = Object.assign({
-    cancel: {
+  const modal = {cancel: {
       content: 'Cancel',
     },
     confirm: {
       icon: 'checkmark',
       content: 'Yes',
-    },
-  }, props.modal);
+    }, ...props.modal};
 
   const handleConfirmClick = useCallback(() => {
     if (
@@ -37,7 +34,7 @@ export default function ConfirmActionModal(props) {
   }, [props.modal]);
 
   return (
-    <Fragment>
+    <>
       <Button
         {...props.trigger}
         onClick={open} />
@@ -60,7 +57,7 @@ export default function ConfirmActionModal(props) {
           />
         </Modal.Actions>
       </Modal>
-    </Fragment>);
+    </>);
 }
 
 

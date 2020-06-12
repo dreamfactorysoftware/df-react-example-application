@@ -7,6 +7,7 @@ import {
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import Footer from './Footer';
 import LogInAndOutButton from '../common/LogInAndOutButton';
 import ErrorHandler from '../common/ErrorHandler';
@@ -40,11 +41,25 @@ const Layout = ({ children, active, loading, error }) =>
       <Dimmer inverted active={loading}>
         <Loader size='big' content='Loading' />
       </Dimmer>
-      { error  && <ErrorHandler error={error} /> }
+      <ErrorHandler error={error} />
     	{ children }
     </Container>
 
     {!loading && <Footer />}
   </div>);
+
+Layout.propTypes = {
+  children: PropTypes.node,
+  active: PropTypes.string,
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+};
+
+Layout.defaultProps = {
+  children: null,
+  active: '',
+  loading: false,
+  error: null,
+};
 
 export default Layout;

@@ -1,6 +1,4 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
   Icon,
   Header,
@@ -10,7 +8,7 @@ import GroupNameModal from '../groups/GroupNameModal';
 
 export default function GroupName(props) {
   return (
-    <Fragment>
+    <>
       <ConfirmActionModal
         trigger={{
           floated: 'right',
@@ -56,6 +54,6 @@ export default function GroupName(props) {
         </Header.Subheader>
         </Header.Content>
       </Header>
-    </Fragment>
+    </>
   );
 }

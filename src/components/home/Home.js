@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+/* eslint-disable react/no-unescaped-entities */
+import React, { Component } from 'react';
 import {
   Button,
   Container,
@@ -17,7 +18,7 @@ import {
   Link,
 } from 'react-router-dom';
 import LogInAndOutButton from '../common/LogInAndOutButton';
-import auth from '../../services/auth';
+import { auth } from '../../services/auth';
 
 const HomePage = () => {
   return (<ResponsiveContainer>
@@ -40,9 +41,7 @@ const HomePage = () => {
               bioengineered.
             </p>
           </Grid.Column>
-          <Grid.Column floated='right' width={6}>
-
-          </Grid.Column>
+          <Grid.Column floated='right' width={6} />
         </Grid.Row>
         <Grid.Row>
           <Grid.Column textAlign='center'>
@@ -93,7 +92,7 @@ const HomePage = () => {
           horizontal
           style={{ margin: '3em 0em', textTransform: 'uppercase' }}
         >
-          <a href='#'>Case Studies</a>
+          <p>Case Studies</p>
         </Divider>
 
         <Header as='h3' style={{ fontSize: '2em' }}>
@@ -149,10 +148,10 @@ const HomePage = () => {
 };
 
 const getWidth = () => {
-  const isSSR = typeof window === 'undefined'
+  const isSSR = typeof window === 'undefined';
 
-  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
-}
+  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
+};
 
 const HomepageHeading = ({ mobile }) => (
   <Container text>
@@ -178,21 +177,27 @@ const HomepageHeading = ({ mobile }) => (
       }}
     />
   </Container>
-)
+);
 
 class DesktopContainer extends Component {
-  state = {
-  	isAuthenticated: auth.isAuthenticated,
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAuthenticated: auth.isAuthenticated,
+    };
   }
+
   hideFixedMenu = () => this.setState({ fixed: false })
+
   showFixedMenu = () => this.setState({ fixed: true })
+
   onLogOut = () => {
-  	this.setState({ isAuthenticated: auth.isAuthenticated });
+    this.setState({ isAuthenticated: auth.isAuthenticated });
   }
 
   render() {
-    const { children } = this.props
-    const { fixed } = this.state
+    const { children } = this.props;
+    const { fixed } = this.state;
 
     return (
       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -203,7 +208,7 @@ class DesktopContainer extends Component {
         >
           <Segment
             inverted
-            textAlign='center'
+            textAlign="center"
             style={{ minHeight: 700, padding: '1em 0em' }}
             vertical
           >
@@ -212,25 +217,38 @@ class DesktopContainer extends Component {
               inverted={!fixed}
               pointing={!fixed}
               secondary={!fixed}
-              size='large'
+              size="large"
             >
               <Container>
                 <Menu.Item as={Link} active>
                   Home
                 </Menu.Item>
                 {this.state.isAuthenticated && (
-              	<React.Fragment>
-                	<Menu.Item as={Link} to='/contact'>Contacts</Menu.Item>
-        					<Menu.Item as={Link} to='/group'>Groups</Menu.Item>
-      					</React.Fragment>
-        				)}
-                <Menu.Item position='right'>
-                  <LogInAndOutButton inverted={!fixed} onLogOut={this.onLogOut} />
-                	{!this.state.isAuthenticated && (
-                  <Button as={Link} to='/register' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
-                    Register
-                  </Button>
-        					)}
+                  <>
+                    <Menu.Item as={Link} to="/contact">
+                      Contacts
+                    </Menu.Item>
+                    <Menu.Item as={Link} to="/group">
+                      Groups
+                    </Menu.Item>
+                  </>
+                )}
+                <Menu.Item position="right">
+                  <LogInAndOutButton
+                    inverted={!fixed}
+                    onLogOut={this.onLogOut}
+                  />
+                  {!this.state.isAuthenticated && (
+                    <Button
+                      as={Link}
+                      to="/register"
+                      inverted={!fixed}
+                      primary={fixed}
+                      style={{ marginLeft: '0.5em' }}
+                    >
+                      Register
+                    </Button>
+                  )}
                 </Menu.Item>
               </Container>
             </Menu>
@@ -240,20 +258,23 @@ class DesktopContainer extends Component {
 
         {children}
       </Responsive>
-    )
+    );
   }
 }
 
 class MobileContainer extends Component {
-  state = {}
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   handleSidebarHide = () => this.setState({ sidebarOpened: false })
 
   handleToggle = () => this.setState({ sidebarOpened: true })
 
   render() {
-    const { children } = this.props
-    const { sidebarOpened } = this.state
+    const { children } = this.props;
+    const { sidebarOpened } = this.state;
 
     return (
       <Responsive
@@ -263,7 +284,7 @@ class MobileContainer extends Component {
       >
         <Sidebar
           as={Menu}
-          animation='push'
+          animation="push"
           inverted
           onHide={this.handleSidebarHide}
           vertical
@@ -282,16 +303,16 @@ class MobileContainer extends Component {
         <Sidebar.Pusher dimmed={sidebarOpened}>
           <Segment
             inverted
-            textAlign='center'
+            textAlign="center"
             style={{ minHeight: 350, padding: '1em 0em' }}
             vertical
           >
             <Container>
-              <Menu inverted pointing secondary size='large'>
+              <Menu inverted pointing secondary size="large">
                 <Menu.Item onClick={this.handleToggle}>
-                  <Icon name='sidebar' />
+                  <Icon name="sidebar" />
                 </Menu.Item>
-                <Menu.Item position='right'>
+                <Menu.Item position="right">
                   <Button as={Link} inverted>
                     Log in
                   </Button>
@@ -307,7 +328,7 @@ class MobileContainer extends Component {
           {children}
         </Sidebar.Pusher>
       </Responsive>
-    )
+    );
   }
 }
 
@@ -316,6 +337,6 @@ const ResponsiveContainer = ({ children }) => (
     <DesktopContainer>{children}</DesktopContainer>
     <MobileContainer>{children}</MobileContainer>
   </div>
-)
+);
 
 export default HomePage;

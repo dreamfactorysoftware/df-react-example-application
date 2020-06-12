@@ -1,6 +1,4 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
   Header,
   Item,
@@ -63,7 +61,7 @@ export default function ContactInfo(props) {
         <Item>
           <Item.Content>
             <Item.Header as='h4'>{info.info_type}</Item.Header>
-            <Item.Meta></Item.Meta>
+            <Item.Meta />
             <Item.Description>
             <List>
               <List.Item>
@@ -92,9 +90,7 @@ export default function ContactInfo(props) {
               </List.Item>
             </List>
             </Item.Description>
-            <Item.Extra>
-
-            </Item.Extra>
+            <Item.Extra />
           </Item.Content>
         </Item>
       </Segment>
@@ -102,9 +98,9 @@ export default function ContactInfo(props) {
   });
 
   return (
-    <Fragment>
+    <>
       {!!items.length &&
-      <Fragment>
+      <>
         <EditContactInfoModal
           trigger={{
             icon:'add',
@@ -130,9 +126,9 @@ export default function ContactInfo(props) {
         <Segment.Group>
           {items}
         </Segment.Group>
-      </Fragment>}
+      </>}
       {!items.length &&
-        <Segment basic textAlign={"center"}>
+        <Segment basic textAlign="center">
           <EditContactInfoModal
             trigger={{
               icon:'add',
@@ -153,5 +149,5 @@ export default function ContactInfo(props) {
             index={0}
             />
         </Segment>}
-    </Fragment>);
+    </>);
   };

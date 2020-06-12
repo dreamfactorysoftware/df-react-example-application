@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useState,
-  Fragment,
 } from 'react';
 import {
   Button,
@@ -29,7 +28,7 @@ export default function EditContactInfoModal(props) {
   }, [props.modal, props.index]);
 
   return (
-    <Fragment>
+    <>
       <Button
         {...props.trigger}
         onClick={open} />
@@ -56,7 +55,7 @@ export default function EditContactInfoModal(props) {
           />
         </Modal.Actions>
       </Modal>
-    </Fragment>);
+    </>);
 }
 
 

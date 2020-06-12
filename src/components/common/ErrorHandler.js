@@ -1,16 +1,15 @@
 import React, {
   useEffect,
   useState,
-  Fragment,
 } from 'react';
 import {
   Redirect,
-} from "react-router-dom";
+} from 'react-router-dom';
 import {
   Message,
 } from 'semantic-ui-react';
 import ScrollToTop from './ScrollToTop';
-import { removeToken } from '../../services/auth';
+import { auth } from '../../services/auth';
 
 export default function ErrorHandler({ error, redirect }) {
   const [message, setMessage] = useState([]);
@@ -30,13 +29,13 @@ export default function ErrorHandler({ error, redirect }) {
       }
 
       setMessage(['Unexpected error.']);
-      return null;
+      return;
     }
 
     const { status, data } = error.response;
 
     if (status === 401 && redirect !== false) {
-      removeToken();
+      auth.removeToken();
       setForceRedirect(true);
       return;
     }
@@ -46,11 +45,11 @@ export default function ErrorHandler({ error, redirect }) {
 
       return messages.map((encodedStr) => {
         const dom = parser.parseFromString(
-          '<!doctype html><body>' + encodedStr,
+          `<!doctype html><body>${  encodedStr}`,
           'text/html');
         return dom.body.textContent;
       });
-    }
+    };
 
     const getErrorMessages = (error) => {
       let errorMessages = [];
@@ -65,19 +64,17 @@ export default function ErrorHandler({ error, redirect }) {
             errorMessages = errorMessages.concat(getErrorMessages(item));
           });
         } else {
-          for (const property in error.context) {
-            errorMessages = errorMessages.concat(error.context[property]);
-          }
+          Object.values(error.context).forEach((value) => { errorMessages = errorMessages.concat(value); });
         }
       }
 
       return errorMessages;
-    }
+    };
 
     setHeader(data.error && data.error.code ? `Error ${data.error.code}` : 'Error');
 
     if (data.error) {
-      let errorMessages = parseMessages(getErrorMessages(data.error));
+      const errorMessages = parseMessages(getErrorMessages(data.error));
       setMessage(errorMessages);
     } else {
       setMessage(['Unexpected error. Please make sure APP_API_KEY and INSTANCE_URL are set in the config.js file.']);
@@ -93,7 +90,7 @@ export default function ErrorHandler({ error, redirect }) {
   }
 
   return (
-    <Fragment>
+    <>
       <ScrollToTop />
       {message.length > 1 ? (
         <Message
@@ -106,6 +103,6 @@ export default function ErrorHandler({ error, redirect }) {
           header={header}
           content={message[0]} />
       )}
-    </Fragment>
+    </>
   );
 }

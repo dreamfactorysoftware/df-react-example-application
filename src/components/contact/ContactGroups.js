@@ -14,9 +14,9 @@ export default function ContactGroups(props) {
     return null;
   }
 
-  const items = props.groups.map((group, index) => (
-    <List.Item key={index}>
-      <List.Icon name='group' size='large' />
+  const items = props.groups.map((group) => (
+    <List.Item key={group.id}>
+      <List.Icon name="group" size="large" />
       <List.Content>
         <ConfirmActionModal
           trigger={{
@@ -26,7 +26,7 @@ export default function ContactGroups(props) {
           }}
           modal={{
             title: 'Delete Contact',
-            message: `Are you sure, you want remove contact from "${group.name}"?`,
+            message: `Are you sure, you want remove contact from &lsquo;${group.name}&rsquo;?`,
             confirm: {
               negative: true,
               icon: 'delete',
@@ -37,7 +37,8 @@ export default function ContactGroups(props) {
                 }
               },
             },
-          }}/>
+          }}
+        />
         {group.name}
       </List.Content>
     </List.Item>
@@ -51,6 +52,6 @@ export default function ContactGroups(props) {
       <Header as='h2' floated='left'>Groups</Header>
       <Divider fitted clearing hidden />
       {!!items.length && <List relaxed>{items}</List>}
-      {!items.length && <p>This contact doesn't belong to any group</p>}
+      {!items.length && <p>This contact does not belong to any group</p>}
     </Segment>);
 }

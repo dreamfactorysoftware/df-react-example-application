@@ -1,4 +1,5 @@
 import axios from 'axios';
+/* eslint-disable camelcase */
 
 const dreamFactory = () => {
   const token = localStorage.getItem('session_token');
@@ -114,4 +115,4 @@ export const contact_group = {
       name,
     });
   }
-}
+};

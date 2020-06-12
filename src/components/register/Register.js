@@ -14,12 +14,12 @@ import {
 import {
   useHistory,
   Link,
-} from "react-router-dom";
-import auth from '../../services/auth';
+} from 'react-router-dom';
+import { auth } from '../../services/auth';
 import ErrorHandler from '../common/ErrorHandler';
 
 export default function Register() {
-  let history = useHistory();
+  const history = useHistory();
   const [error, setError] = useState();
   const [data, setData] = useState({});
 
@@ -29,14 +29,12 @@ export default function Register() {
       if (isAuthenticated) {
         history.push('/contact');
       }
-    }).catch((error) => {
-      setError(error);
-    });
+    }).catch((e) => setError(e));
   }, [data, history]);
 
   const handleChange = useCallback((event, { name, value }) => {
-    setData((data) => ({
-      ...data,
+    setData((currentData) => ({
+      ...currentData,
       [name]: value,
     }));
   }, []);
@@ -45,7 +43,7 @@ export default function Register() {
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <div style={{ textAlign: 'left' }}>
-          {error && <ErrorHandler error={error} redirect={false} />}
+          <ErrorHandler error={error} redirect={false} />
         </div>
         <Header as='h2' attached='top'>
           Register

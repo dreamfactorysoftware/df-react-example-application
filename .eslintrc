@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "react-app",
+    "airbnb",
+    "prettier",
+    "prettier/react"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "semi": [
+      2,
+      "always"
+    ],
+    "import/prefer-default-export": "off",
+    "max-classes-per-file": "off",
+    "react/forbid-prop-types": "off",
+    "quotes": [
+      "error",
+      "single"
+    ],
+
+    "react/destructuring-assignment": "off",
+    "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-shadow": "off",
+
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ]
+  }
+}

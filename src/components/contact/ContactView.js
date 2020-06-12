@@ -1,6 +1,4 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
   Container,
   Divider,
@@ -20,7 +18,7 @@ export default function ContactView(props) {
     }
 
     return (
-      <Fragment>
+      <>
         <Segment.Group>
           <Segment>
             <ConfirmActionModal
@@ -81,12 +79,12 @@ export default function ContactView(props) {
               </Label>}
 
             {props.contact.notes && (
-              <Fragment>
+              <>
                 <Header as='h2'>Notes</Header>
                 <Container>
                   <p>{props.contact.notes}</p>
                 </Container>
-              </Fragment>
+              </>
             )}
           </Segment>
           <ContactGroups
@@ -105,6 +103,6 @@ export default function ContactView(props) {
           onEditContactInfoChange={props.onEditContactInfoChange}
           onNewContactInfoSubmit={props.onNewContactInfoSubmit}
           onNewContactInfoChange={props.onNewContactInfoChange} />
-      </Fragment>
+      </>
     );
   }

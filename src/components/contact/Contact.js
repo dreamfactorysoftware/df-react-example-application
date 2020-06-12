@@ -12,7 +12,7 @@ import * as data from '../../services/data';
 import ContactView from './ContactView';
 
 export default function Contact() {
-  let { id } = useParams();
+  const { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -22,7 +22,7 @@ export default function Contact() {
   const [newContactInfo, setNewContactInfo] = useState({});
   const [groups, setGroups] = useState([]);
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
+  const getData = useCallback(() => {
     setError();
 
     return data.contact.getOneWithInfoAndGroups(id)
@@ -97,12 +97,11 @@ export default function Contact() {
         ...contactForm,
         [name]: value,
       };
-    })
+    });
   }, []);
 
   const handleContactEditSubmit = useCallback((event) => {
     event.preventDefault();
-    console.log(contactForm);
     window.scrollTo(0, 0);
     setError();
     setLoading(true);
@@ -137,7 +136,7 @@ export default function Contact() {
       });
   }, [contactInfo, id]);
 
-  const handleNewContactInfoSubmit = useCallback((event, index) => {
+  const handleNewContactInfoSubmit = useCallback((event) => {
     event.preventDefault();
     window.scrollTo(0, 0);
     setError();
@@ -169,7 +168,7 @@ export default function Contact() {
       const newInfo = info.slice();
       newInfo[index][name] = value;
       return newInfo;
-    })
+    });
   }, []);
 
   const handleNewContactInfoChange = useCallback((index, name, value) => {
@@ -178,7 +177,7 @@ export default function Contact() {
         ...info,
         [name]: value,
       };
-    })
+    });
   }, []);
 
   useEffect(() => {

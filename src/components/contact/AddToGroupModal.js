@@ -1,7 +1,6 @@
 import React, {
   useState,
   useCallback,
-  Fragment,
 } from 'react';
 import {
   Button,
@@ -15,9 +14,9 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import isFunction from 'lodash.isfunction';
+import DataTable from 'react-data-table-component';
 import * as data from '../../services/data';
 import columns from '../common/groupTableColumns';
-import DataTable from 'react-data-table-component';
 import ErrorHandler from '../common/ErrorHandler';
 
 export default function AddToGroupModal({ onAddClick, disabledGroups }) {
@@ -84,7 +83,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
     setSelected(selectedRows);
   }, []);
 
-  const handleAddClick = useCallback((event) => {
+  const handleAddClick = useCallback(() => {
     if (isFunction(onAddClick)) {
       onAddClick(selected);
     }
@@ -95,7 +94,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   let message;
 
   if (!selected.length) {
-    message = `Please select groups you would like this contact to be added to.`;
+    message = 'Please select groups you would like this contact to be added to.';
   } else if (selected.length === 1) {
     message = '1 group selected.';
   } else {
@@ -103,7 +102,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   }
 
   return (
-    <Fragment>
+    <>
       <Button
         floated='right'
         icon='add'
@@ -156,5 +155,5 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
           />
         </Modal.Actions>
       </Modal>
-    </Fragment>);
+    </>);
 }

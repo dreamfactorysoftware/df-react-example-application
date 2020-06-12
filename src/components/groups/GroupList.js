@@ -63,7 +63,7 @@ export default function GroupList() {
       .catch((error) => setError(error));
   }, [newName]);
 
-  const handleNameChange = useCallback((event, { name, value }) => {
+  const handleNameChange = useCallback((event, { value }) => {
     setNewName(value);
   }, []);
 

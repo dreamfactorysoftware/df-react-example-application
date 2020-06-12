@@ -16,10 +16,10 @@ import {
   useLocation,
   Link,
 } from 'react-router-dom';
-import auth from '../../services/auth';
+import { auth } from '../../services/auth';
 import ErrorHandler from '../common/ErrorHandler';
 
-export default function Login(props) {
+export default function Login() {
   const history = useHistory();
   const location = useLocation();
   const [error, setError] = useState();
@@ -33,14 +33,14 @@ export default function Login(props) {
 
     auth.authenticate(data.email, data.password)
       .then(() => history.replace(from))
-      .catch((error) => {
-        setError(error);
+      .catch((e) => {
+        setError(e);
       });
   }, [data.email, data.password, history, location.state]);
 
   const handleChange = useCallback((event, { name, value }) => {
-    setData((data) => ({
-      ...data,
+    setData((currentData) => ({
+      ...currentData,
       [name]: value,
     }));
   }, []);

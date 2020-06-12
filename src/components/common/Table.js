@@ -38,9 +38,9 @@ export default function Table(props) {
   }, []);
 
   useEffect(() => {
-    const getData = (offset = 0, limit = 10, order) => {
+    const getData = (skip = 0, limit = 10, order) => {
       setLoading(true);
-      return getDataAsync(offset, limit, order).then((response) => {
+      return getDataAsync(skip, limit, order).then((response) => {
         if (isMounted.current) {
           if (response && response.data && response.data.resource) {
             setData(response.data.resource);
@@ -55,8 +55,8 @@ export default function Table(props) {
     getData(offset, rowsPerPage, sort);
 
     return () => {
-      isMounted.current = false
-    }
+      isMounted.current = false;
+    };
   }, [offset, rowsPerPage, sort, getDataAsync, refresh]);
 
   return (

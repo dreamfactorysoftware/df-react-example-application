@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Container,
   Image,
@@ -7,7 +7,7 @@ import {
 } from 'semantic-ui-react';
 import logo from '../../logo.svg';
 
-const Footer = ({ children }) =>
+const Footer = () =>
 	(<Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
     <Container textAlign='center'>
       <Image centered size='mini' src={logo} />

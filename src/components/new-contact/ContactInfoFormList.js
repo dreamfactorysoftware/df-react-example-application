@@ -1,6 +1,4 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
   Button,
   Header,
@@ -15,7 +13,7 @@ export default function ContactInfoFormList(props) {
   }
 
   return (
-    <Fragment>
+    <>
     <Header as='h2'>Info</Header>
     <Segment.Group>
       {props.data.map((contactInfoData, index) => (<NewContactInfoForm
@@ -24,13 +22,13 @@ export default function ContactInfoFormList(props) {
         onChange={props.onChange}
         onRemoveInfoClick={props.onRemoveInfoClick} />))}
     </Segment.Group>
-    <Segment basic textAlign={"center"}>
+    <Segment basic textAlign="center">
       <Button
         onClick={props.onAddInfoClick}
         content='Add Info'
         icon='add'
-        style={{textAlign: "center"}} />
+        style={{textAlign: 'center'}} />
     </Segment>
-    </Fragment>
+    </>
   );
 }

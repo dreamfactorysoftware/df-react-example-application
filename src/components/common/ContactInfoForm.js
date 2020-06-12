@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  Fragment,
 } from 'react';
 import {
   Form,
@@ -13,7 +12,7 @@ const options = [
   { key: 'h', text: 'Home', value: 'home' },
   { key: 'm', text: 'Mobile', value: 'mobile' },
   { key: 'o', text: 'Other', value: 'other' },
-]
+];
 
 export default function ContactInfoForm({ data , index , onChange, }) {
   const handleChange = useCallback((event, { value, name }) => {
@@ -24,7 +23,7 @@ export default function ContactInfoForm({ data , index , onChange, }) {
   }, [onChange, index]);
 
   return (
-    <Fragment>
+    <>
       <Form.Select
         name={`info_type[${index}]`}
         id={`form-select-control-type-${index}`}
@@ -108,6 +107,6 @@ export default function ContactInfoForm({ data , index , onChange, }) {
         value={data.phone}
         required
       />
-    </Fragment>
+    </>
   );
 }

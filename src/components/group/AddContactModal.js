@@ -1,7 +1,6 @@
 import React, {
   useState,
   useCallback,
-  Fragment,
 } from 'react';
 import {
   Button,
@@ -15,9 +14,9 @@ import {
 } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import isFunction from 'lodash.isfunction';
+import DataTable from 'react-data-table-component';
 import * as data from '../../services/data';
 import columns from '../common/contactTableColumns';
-import DataTable from 'react-data-table-component';
 import ErrorHandler from '../common/ErrorHandler';
 
 export default function AddContactModal({ groupName, onAddClick, filterContacts }) {
@@ -76,7 +75,7 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
 
   const handleRowSelected = useCallback(({ selectedRows }) => setSelected(selectedRows), []);
 
-  const handleAddClick = useCallback((event) => {
+  const handleAddClick = useCallback(() => {
     if (isFunction(onAddClick)) {
       onAddClick(selected);
     }
@@ -95,29 +94,29 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
   }
 
   return (
-    <Fragment>
+    <>
       <Button
-        floated='right'
-        icon='add user'
-        content='Add contact'
-        onClick={open} />
-      <Modal
-        centered={false}
-        size='small'
-        open={isOpen}
-        onClose={close}>
-        <Modal.Header>Add Contacts to "{groupName}"</Modal.Header>
+        floated="right"
+        icon="add user"
+        content="Add contact"
+        onClick={open}
+      />
+      <Modal centered={false} size="small" open={isOpen} onClose={close}>
+        <Modal.Header>Add Contacts to &ldquo;{groupName}&rdquo;</Modal.Header>
         <Modal.Content>
           <Input
             fluid
-            placeholder='Search...'
-            icon='search'
-            size='large'
-            onChange={handleInputChange} />
+            placeholder="Search..."
+            icon="search"
+            size="large"
+            onChange={handleInputChange}
+          />
           {!!error && <ErrorHandler error={error} />}
-          {!error && <Message info>
-            <p>{message}</p>
-          </Message>}
+          {!error && (
+            <Message info>
+              <p>{message}</p>
+            </Message>
+          )}
           <DataTable
             columns={columns}
             data={contacts}
@@ -126,26 +125,34 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
             pointerOnHover
             pagination
             progressPending={loading}
-            progressComponent={<Segment basic padded='very'><Loader active className='workaround' size='big' inline='centered' content='Loading' /></Segment>}
-            sortIcon={<Icon name='angle down' />}
+            progressComponent={
+              <Segment basic padded="very">
+                <Loader
+                  active
+                  className="workaround"
+                  size="big"
+                  inline="centered"
+                  content="Loading"
+                />
+              </Segment>
+            }
+            sortIcon={<Icon name="angle down" />}
             selectableRows
             selectableRowsComponent={Checkbox}
             onSelectedRowsChange={handleRowSelected}
-            defaultSortField='name'
+            defaultSortField="name"
           />
         </Modal.Content>
         <Modal.Actions>
-          <Button
-            content='Cancel'
-            onClick={close}
-          />
+          <Button content="Cancel" onClick={close} />
           <Button
             positive
-            icon='add user'
-            content='Add'
+            icon="add user"
+            content="Add"
             onClick={handleAddClick}
           />
         </Modal.Actions>
       </Modal>
-    </Fragment>);
+    </>
+  );
 }

@@ -1,11 +1,9 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import {
   Route,
   Redirect,
-} from "react-router-dom";
-import auth from '../../services/auth';
+} from 'react-router-dom';
+import { auth } from '../../services/auth';
 
 export default function PrivateRoute({ children, ...rest }) {
   const render = ({ location }) => {
@@ -16,10 +14,10 @@ export default function PrivateRoute({ children, ...rest }) {
     }
 
     return (
-      <Fragment>
+      <>
         {children}
-      </Fragment>
-    )
+      </>
+    );
   };
 
   return (

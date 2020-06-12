@@ -10,7 +10,7 @@ import {
   Button,
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
-import auth from '../../services/auth';
+import { auth } from '../../services/auth';
 
 export default function LogInAndOutButton({ onLogOut, inverted }) {
   const history = useHistory();

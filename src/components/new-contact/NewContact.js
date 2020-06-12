@@ -55,7 +55,7 @@ export default function NewContact() {
         ...contact,
         [name]: value,
       };
-    })
+    });
   }, []);
 
   const handleSubmit = useCallback((event) => {
@@ -79,9 +79,9 @@ export default function NewContact() {
         const { data: { resource: [{ id }] } } = response;
         history.push(`/contact/${id}`);
       })
-      .catch((error) => {
+      .catch((e) => {
         setLoading(false);
-        setError(error)
+        setError(e);
       });
   }, [history, contactData, contactInfoData]);
 

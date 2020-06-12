@@ -22,7 +22,7 @@ import ConfirmActionModal from '../common/ConfirmActionModal';
 import GroupName from './GroupName';
 
 export default function Contact() {
-  let { id } = useParams();
+  const { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -30,7 +30,7 @@ export default function Contact() {
   const [newName, setNewName] = useState();
   const [groupContacts, setGroupContacts] = useState();
 
-  const getData = useCallback((offset = 0, limit = 10, order = 'last_name asc') => {
+  const getData = useCallback(() => {
     setError();
 
     return Promise.all([
@@ -39,27 +39,28 @@ export default function Contact() {
     ]).then((responses) => {
       const [{ data: group }, { data: { resource: contactsByGroupId } }] = responses;
       const groupContacts = contactsByGroupId.map((contact) => {
-        contact.contact_by_contact_id.connection_id = contact.id;
-        return contact.contact_by_contact_id;
+        const newContact = { ...contact.contact_by_contact_id };
+        newContact.connection_id = contact.id;
+        return newContact;
       });
       setGroup(group);
       setGroupContacts(groupContacts);
       setLoading(false);
     }).catch((error) => {
       setLoading(false);
-      setError(error)
+      setError(error);
     });
   }, [id]);
 
-  const handleRemoveContactClick = useCallback(({ connection_id }) => {
-    console.log(connection_id);
+  const handleRemoveContactClick = useCallback(({ connectionId }) => {
     setError();
     setLoading(true);
-    data.contact_group_relationship.delete(connection_id)
+    data.contact_group_relationship
+      .delete(connectionId)
       .then(getData)
       .catch((error) => {
         setLoading(false);
-        setError(error)
+        setError(error);
       });
   }, [getData]);
 
@@ -99,7 +100,7 @@ export default function Contact() {
       })
       .catch((error) => {
         setLoading(false);
-        setError(error)
+        setError(error);
       });
   }, [id, history]);
 
@@ -118,7 +119,7 @@ export default function Contact() {
         })
         .catch((error) => {
           setLoading(false);
-          setError(error)
+          setError(error);
         });
     }
   } , [id, group.name, newName]);
@@ -136,12 +137,12 @@ export default function Contact() {
         .then(getData)
         .catch((error) => {
           setLoading(false);
-          setError(error)
+          setError(error);
         });
     }
   }, [id, getData]);
 
-  const handleNameChange = useCallback((event, { name, value }) => {
+  const handleNameChange = useCallback((event, { value }) => {
     setNewName(value);
   }, []);
 
