@@ -17,7 +17,7 @@ const options = [
 export default function ContactInfoForm({ data, index, onChange }) {
   const handleChange = useCallback((event, { value, name }) => {
     if (isFunction(onChange)) {
-      const fieldName = name.replace(/\[\d+\]$/, '');
+      const fieldName = name.replace(/-\d+$/, '');
       onChange(index, fieldName, value);
     }
   }, [onChange, index]);
@@ -25,7 +25,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
   return (
     <>
       <Form.Select
-        name={`info_type[${index}]`}
+        name={`info_type-${index}`}
         id={`form-select-control-type-${index}`}
         onChange={handleChange}
         fluid
@@ -36,7 +36,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
         required
       />
       <Form.Field
-        name={`address[${index}]`}
+        name={`address-${index}`}
         id={`form-input-control-address-${index}`}
         onChange={handleChange}
         control={Input}
@@ -47,7 +47,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
       />
       <Form.Group widths='equal'>
         <Form.Field
-          name={`city[${index}]`}
+          name={`city-${index}`}
           id={`form-input-control-city-${index}`}
           onChange={handleChange}
           control={Input}
@@ -57,7 +57,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
           required
         />
         <Form.Field
-          name={`state[${index}]`}
+          name={`state-${index}`}
           id={`form-input-control-state-${index}`}
           onChange={handleChange}
           control={Input}
@@ -67,7 +67,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
           required
         />
         <Form.Field
-          name={`zip[${index}]`}
+          name={`zip-${index}`}
           id={`form-input-control-zip-${index}`}
           onChange={handleChange}
           control={Input}
@@ -78,7 +78,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
         />
       </Form.Group>
      <Form.Field
-        name={`country[${index}]`}
+        name={`country-${index}`}
         id={`form-input-control-country-${index}`}
         onChange={handleChange}
         control={Input}
@@ -88,7 +88,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
         required
       />
       <Form.Field
-        name={`email[${index}]`}
+        name={`email-${index}`}
         id={`form-input-control-email-${index}`}
         onChange={handleChange}
         control={Input}
@@ -98,7 +98,7 @@ export default function ContactInfoForm({ data, index, onChange }) {
         required
       />
       <Form.Field
-        name={`phone[${index}]`}
+        name={`phone-${index}`}
         id={`form-input-control-phone-${index}`}
         onChange={handleChange}
         control={Input}

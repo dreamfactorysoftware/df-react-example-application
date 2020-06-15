@@ -25,7 +25,7 @@ export default function NewContactInfoForm({
   return (
     <Segment>
       <Button
-        name={`delete[${index}]`}
+        name={`delete-${index}`}
         size='mini'
         floated='right'
         icon='delete'
