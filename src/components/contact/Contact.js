@@ -210,119 +210,119 @@ export default function Contact() {
       });
   }, [getData]);
 
-  if (!contact || !contact.first_name) {
-    return null;
-  }
-
   return (
     <Layout loading={loading} error={error}>
-      <Segment.Group>
-        <Segment>
-          <ConfirmActionModal
-            trigger={{
-              floated: 'right',
-              icon: 'delete',
-              content: 'Delete',
-              size: 'small',
-            }}
-            modal={{
-              title: 'Delete Contact',
-              message: `Are you sure, you want to delete "${contact.first_name} ${contact.last_name}"?`,
-              confirm: {
-                negative: true,
-                icon: 'delete',
-                content: 'Delete',
-                onClick: handleDeleteContactClick,
-              },
-            }} />
-          <EditContactModal
-            trigger={{
-              size: 'small',
-              floated: 'right',
-              icon: 'edit',
-              content: 'Edit',
-            }}
-            modal={{
-              title: 'Edit contact',
-              confirm: {
-                primary: true,
-                icon: 'save',
-                content: 'Save',
-              },
-              onChange: handleEditContactChange,
-              onSubmit: handleEditContactSubmit,
-            }}
-            contact={contact} />
-          <Header as='h1' floated='left'>
-            <Icon name='user' />
-            <Header.Content>
-              {contact.first_name} {contact.last_name}
-            </Header.Content>
-          </Header>
-          <Divider fitted clearing hidden />
+      {contact && contact.first_name && (
+        <>
+          <Segment.Group>
+            <Segment>
+              <ConfirmActionModal
+                trigger={{
+                  floated: 'right',
+                  icon: 'delete',
+                  content: 'Delete',
+                  size: 'small',
+                }}
+                modal={{
+                  title: 'Delete Contact',
+                  message: `Are you sure, you want to delete "${contact.first_name} ${contact.last_name}"?`,
+                  confirm: {
+                    negative: true,
+                    icon: 'delete',
+                    content: 'Delete',
+                    onClick: handleDeleteContactClick,
+                  },
+                }} />
+              <EditContactModal
+                trigger={{
+                  size: 'small',
+                  floated: 'right',
+                  icon: 'edit',
+                  content: 'Edit',
+                }}
+                modal={{
+                  title: 'Edit contact',
+                  confirm: {
+                    primary: true,
+                    icon: 'save',
+                    content: 'Save',
+                  },
+                  onChange: handleEditContactChange,
+                  onSubmit: handleEditContactSubmit,
+                }}
+                contact={contact} />
+              <Header as='h1' floated='left'>
+                <Icon name='user' />
+                <Header.Content>
+                  {contact.first_name} {contact.last_name}
+                </Header.Content>
+              </Header>
+              <Divider fitted clearing hidden />
 
-          {contact.twitter &&
-            <Label as='a' color='teal'>
-              <Icon name='twitter' />
-                Twitter
-                <Label.Detail>{contact.twitter}</Label.Detail>
-            </Label>}
+              {contact.twitter &&
+                <Label as='a' color='teal'>
+                  <Icon name='twitter' />
+                    Twitter
+                    <Label.Detail>{contact.twitter}</Label.Detail>
+                </Label>}
 
-          {contact.skype &&
-            <Label as='a' color='blue'>
-              <Icon name='skype' />
-                Skype
-                <Label.Detail>{contact.skype}</Label.Detail>
-            </Label>}
+              {contact.skype &&
+                <Label as='a' color='blue'>
+                  <Icon name='skype' />
+                    Skype
+                    <Label.Detail>{contact.skype}</Label.Detail>
+                </Label>}
 
-          {contact.notes && (
-            <>
-              <Header as='h2'>Notes</Header>
-              <Container>
-                <p>{contact.notes}</p>
-              </Container>
-            </>
+              {contact.notes && (
+                <>
+                  <Header as='h2'>Notes</Header>
+                  <Container>
+                    <p>{contact.notes}</p>
+                  </Container>
+                </>
+              )}
+            </Segment>
+            <ContactGroups
+              onAddClick={handleAddGroupClick}
+              onDeleteClick={openConfirmDeleteGroupModal}
+              groups={groups} />
+          </Segment.Group>
+
+          <Divider clearing hidden />
+
+          <ContactInfo
+            data={contactInfo}
+            newContactInfo={newContactInfo}
+            onDeleteInfoClick={handleDeleteInfoClick}
+            onEditContactInfoSubmit={handleEditContactInfoSubmit}
+            onEditContactInfoChange={handleEditContactInfoChange}
+            onNewContactInfoSubmit={handleNewContactInfoSubmit}
+            onNewContactInfoChange={handleNewContactInfoChange} />
+
+          {!!groupToDelete && (
+            <Modal
+              size='small'
+              open={!!groupToDelete}
+              onClose={closeConfirmDeleteGroupModal}>
+              <Modal.Header>Delete Group</Modal.Header>
+              <Modal.Content>
+                <p>Are you sure, you want remove contact from &lsquo;{groupToDelete.name}&rsquo;?</p>
+              </Modal.Content>
+              <Modal.Actions>
+                <Button
+                  content='Cancel'
+                  onClick={closeConfirmDeleteGroupModal}
+                />
+                <Button
+                  negative
+                  icon='delete'
+                  content='Delete'
+                  onClick={() => handleDeleteGroupClick(groupToDelete)}
+                />
+              </Modal.Actions>
+            </Modal>
           )}
-        </Segment>
-        <ContactGroups
-          onAddClick={handleAddGroupClick}
-          onDeleteClick={openConfirmDeleteGroupModal}
-          groups={groups} />
-      </Segment.Group>
-
-      <Divider clearing hidden />
-
-      <ContactInfo
-        data={contactInfo}
-        newContactInfo={newContactInfo}
-        onDeleteInfoClick={handleDeleteInfoClick}
-        onEditContactInfoSubmit={handleEditContactInfoSubmit}
-        onEditContactInfoChange={handleEditContactInfoChange}
-        onNewContactInfoSubmit={handleNewContactInfoSubmit}
-        onNewContactInfoChange={handleNewContactInfoChange} />
-
-      {!!groupToDelete && (
-        <Modal
-          size='small'
-          open={!!groupToDelete}
-          onClose={closeConfirmDeleteGroupModal}>
-          <Modal.Header>Delete Group</Modal.Header>
-          <Modal.Content>
-            <p>Are you sure, you want remove contact from &lsquo;{groupToDelete.name}&rsquo;?</p>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button
-              content='Cancel'
-              onClick={closeConfirmDeleteGroupModal}
-            />
-            <Button
-              negative
-              icon='delete'
-              content='Delete'
-              onClick={() => handleDeleteGroupClick(groupToDelete)}
-            />
-          </Modal.Actions>
-        </Modal>
+        </>
       )}
     </Layout>
   );
