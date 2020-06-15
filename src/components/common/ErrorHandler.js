@@ -51,20 +51,20 @@ export default function ErrorHandler({ error, redirect }) {
       });
     };
 
-    const getErrorMessages = (error) => {
+    const getErrorMessages = (err) => {
       let errorMessages = [];
 
-      if (error.message) {
-        errorMessages.push(error.message);
+      if (err.message) {
+        errorMessages.push(err.message);
       }
 
-      if (error.context) {
-        if (error.context.error && error.context.resource) {
-          error.context.resource.forEach((item) => {
+      if (err.context) {
+        if (err.context.error && err.context.resource) {
+          err.context.resource.forEach((item) => {
             errorMessages = errorMessages.concat(getErrorMessages(item));
           });
         } else {
-          Object.values(error.context).forEach((value) => { errorMessages = errorMessages.concat(value); });
+          Object.values(err.context).forEach((value) => { errorMessages = errorMessages.concat(value); });
         }
       }
 

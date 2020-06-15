@@ -41,8 +41,8 @@ export default function ContactList() {
       limit,
       order,
       filter,
-    }).catch((error) => {
-      setError(error);
+    }).catch((err) => {
+      setError(err);
     });
   }, [filter]);
 

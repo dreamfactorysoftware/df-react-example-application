@@ -50,9 +50,9 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
       }
       setLoading(false);
     })
-    .catch((error) => {
+    .catch((err) => {
       setLoading(false);
-      setError(error);
+      setError(err);
       setGroups([]);
     });
   }, [filter, disabledGroups]);

@@ -42,7 +42,7 @@ export default function GroupList() {
       limit,
       order,
       filter,
-    }).catch((error) => setError(error));
+    }).catch((err) => setError(err));
   }, [filter]);
 
 
@@ -53,14 +53,14 @@ export default function GroupList() {
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
 
-    const refreshTable = () => setRefresh((refresh) => !refresh);
+    const refreshTable = () => setRefresh((currentRefresh) => !currentRefresh);
 
     data.contact_group.create(newName)
       .then(() => {
         setNewName();
         refreshTable();
       })
-      .catch((error) => setError(error));
+      .catch((err) => setError(err));
   }, [newName]);
 
   const handleNameChange = useCallback((event, { value }) => {

@@ -45,18 +45,18 @@ export default function Contact() {
       data.contact_group.getOne(id),
       data.contact_group_relationship.getContactsByGroupId(id),
     ]).then((responses) => {
-      const [{ data: group }, { data: { resource: contactsByGroupId } }] = responses;
-      const groupContacts = contactsByGroupId.map((contact) => {
+      const [{ data: nextGroup }, { data: { resource: contactsByGroupId } }] = responses;
+      const nextGroupContacts = contactsByGroupId.map((contact) => {
         const newContact = { ...contact.contact_by_contact_id };
         newContact.connection_id = contact.id;
         return newContact;
       });
-      setGroup(group);
-      setGroupContacts(groupContacts);
+      setGroup(nextGroup);
+      setGroupContacts(nextGroupContacts);
       setLoading(false);
-    }).catch((error) => {
+    }).catch((err) => {
       setLoading(false);
-      setError(error);
+      setError(err);
     });
   }, [id]);
 
@@ -66,9 +66,9 @@ export default function Contact() {
     data.contact_group_relationship
       .delete(connection_id)
       .then(getData)
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
     setContactToDelete();
   }, [getData]);
@@ -96,9 +96,9 @@ export default function Contact() {
     data.contact_group.delete(id).then(() => {
       history.push('/group');
     })
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, [id, history]);
 
@@ -109,15 +109,15 @@ export default function Contact() {
       setLoading(true);
       data.contact_group.update(id, newName)
         .then(() => {
-          setGroup((group) => ({
-            ...group,
+          setGroup((currentGroup) => ({
+            ...currentGroup,
             name: newName,
           }));
           setLoading(false);
         })
-        .catch((error) => {
+        .catch((err) => {
           setLoading(false);
-          setError(error);
+          setError(err);
         });
     }
   }, [id, group.name, newName]);
@@ -133,9 +133,9 @@ export default function Contact() {
         };
       }))
         .then(getData)
-        .catch((error) => {
+        .catch((err) => {
           setLoading(false);
-          setError(error);
+          setError(err);
         });
     }
   }, [id, getData]);

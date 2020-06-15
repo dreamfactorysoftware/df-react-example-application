@@ -60,9 +60,9 @@ export default function Contact() {
       .then(() => {
         history.push('/contact');
       })
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, [history, id]);
 
@@ -76,9 +76,9 @@ export default function Contact() {
           };
         }))
         .then(getData)
-        .catch((error) => {
+        .catch((err) => {
           setLoading(false);
-          setError(error);
+          setError(err);
         });
     }
   }, [id, getData]);
@@ -91,9 +91,9 @@ export default function Contact() {
 
     data.contact_group_relationship.delete(relationToRemove.id)
       .then(getData)
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
 
     setGroupToDelete();
@@ -107,16 +107,16 @@ export default function Contact() {
     });
 
     data.contact_info.delete(contactInfoToDelete.id)
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, []);
 
   const handleEditContactChange = useCallback((event, { name, value }) => {
-    setContactForm((contactForm) => {
+    setContactForm((currentContactForm) => {
       return {
-        ...contactForm,
+        ...currentContactForm,
         [name]: value,
       };
     });
@@ -130,15 +130,15 @@ export default function Contact() {
 
     data.contact.update(id, contactForm)
       .then(() => {
-        setContact((contact) => ({
-          ...contact,
+        setContact((currentContact) => ({
+          ...currentContact,
           ...contactForm,
         }));
         setLoading(false);
       })
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, [contactForm, id]);
 
@@ -152,9 +152,9 @@ export default function Contact() {
       ...contactInfo[index],
       contact_id: id,
     }).then(() => setLoading(false))
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, [contactInfo, id]);
 
@@ -179,9 +179,9 @@ export default function Contact() {
         setNewContactInfo({});
         setLoading(false);
       })
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, [newContactInfo, id]);
 
@@ -204,9 +204,9 @@ export default function Contact() {
 
   useEffect(() => {
     getData()
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        setError(error);
+        setError(err);
       });
   }, [getData]);
 

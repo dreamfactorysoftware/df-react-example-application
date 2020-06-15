@@ -46,8 +46,8 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
         setContacts(filteredContacts);
       }
       setLoading(false);
-    }).catch((error) => {
-      setError(error);
+    }).catch((err) => {
+      setError(err);
     }), [filter, filterContacts]);
 
   const open = useCallback(() => {
