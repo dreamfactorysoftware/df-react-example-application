@@ -4,9 +4,8 @@ import {
   Header,
   List,
   Divider,
+  Button,
 } from 'semantic-ui-react';
-import isFunction from 'lodash.isfunction';
-import ConfirmActionModal from '../common/ConfirmActionModal';
 import AddToGroupModal from './AddToGroupModal';
 
 export default function ContactGroups(props) {
@@ -18,26 +17,11 @@ export default function ContactGroups(props) {
     <List.Item key={group.id}>
       <List.Icon name="group" size="large" />
       <List.Content>
-        <ConfirmActionModal
-          trigger={{
-            icon: 'delete',
-            size: 'mini',
-            floated: 'right',
-          }}
-          modal={{
-            title: 'Delete Contact',
-            message: `Are you sure, you want remove contact from &lsquo;${group.name}&rsquo;?`,
-            confirm: {
-              negative: true,
-              icon: 'delete',
-              content: 'Delete',
-              onClick: () => {
-                if (isFunction(props.onDeleteClick)) {
-                  props.onDeleteClick(group);
-                }
-              },
-            },
-          }}
+        <Button
+          icon='delete'
+          size='mini'
+          floated='right'
+          onClick={() => props.onDeleteClick(group)}
         />
         {group.name}
       </List.Content>
