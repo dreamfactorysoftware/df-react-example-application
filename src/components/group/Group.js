@@ -12,13 +12,14 @@ import {
   Segment,
   Divider,
   Icon,
+  Modal,
+  Button,
 } from 'semantic-ui-react';
 import DataTable from 'react-data-table-component';
 import Layout from '../layout/Layout';
 import * as data from '../../services/data';
 import columns from '../common/contactTableColumns';
 import AddContactModal from './AddContactModal';
-import ConfirmActionModal from '../common/ConfirmActionModal';
 import GroupName from './GroupName';
 
 export default function Contact() {
@@ -29,6 +30,13 @@ export default function Contact() {
   const [group, setGroup] = useState({});
   const [newName, setNewName] = useState();
   const [groupContacts, setGroupContacts] = useState();
+  const [contactToDelete, setContactToDelete] = useState();
+
+  const openConfirmRemoveContactModal = useCallback((rowData) => {
+    setContactToDelete(rowData);
+  }, []);
+
+  const closeConfirmRemoveContactModal = useCallback(() => setContactToDelete(), []);
 
   const getData = useCallback(() => {
     setError();
@@ -52,52 +60,42 @@ export default function Contact() {
     });
   }, [id]);
 
-  const handleRemoveContactClick = useCallback(({ connectionId }) => {
+  const handleRemoveContactClick = useCallback(({ connection_id }) => {
     setError();
     setLoading(true);
     data.contact_group_relationship
-      .delete(connectionId)
+      .delete(connection_id)
       .then(getData)
       .catch((error) => {
         setLoading(false);
         setError(error);
       });
+    setContactToDelete();
   }, [getData]);
 
   const columnsWithActionButton = useMemo(() => columns.concat([
     {
       cell: (rowData) => {
         return (
-          <ConfirmActionModal
-            trigger={{
-              size: 'mini',
-              icon: 'remove user',
-              content: 'Remove',
-            }}
-            modal={{
-              title: 'Remove Contact',
-              message: `Are you sure, you want to remove ${rowData.first_name} ${rowData.last_name} from this group?`,
-              confirm: {
-                negative: true,
-                icon: 'remove user',
-                content: 'Remove',
-                onClick: () => handleRemoveContactClick(rowData),
-              },
-            }} />
+          <Button
+            size='mini'
+            icon='remove user'
+            content='Remove'
+            onClick={() => openConfirmRemoveContactModal(rowData)} />
         );
       },
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
     }
-  ]), [handleRemoveContactClick]);
+  ]), [openConfirmRemoveContactModal]);
 
   const handleDeleteClick = useCallback(() => {
     setError();
     setLoading(true);
     data.contact_group.delete(id).then(() => {
-        history.push('/group');
-      })
+      history.push('/group');
+    })
       .catch((error) => {
         setLoading(false);
         setError(error);
@@ -122,18 +120,18 @@ export default function Contact() {
           setError(error);
         });
     }
-  } , [id, group.name, newName]);
+  }, [id, group.name, newName]);
 
   const handleAddClick = useCallback((selectedRows) => {
     if (selectedRows && selectedRows.length) {
       setError();
       setLoading(true);
       data.contact_group_relationship.create(selectedRows.map((contact) => {
-          return {
-            contact_id: contact.id,
-            contact_group_id: id,
-          };
-        }))
+        return {
+          contact_id: contact.id,
+          contact_group_id: id,
+        };
+      }))
         .then(getData)
         .catch((error) => {
           setLoading(false);
@@ -159,36 +157,59 @@ export default function Contact() {
   return (
     <Layout loading={loading} error={error}>
       {group &&
-      <Segment.Group>
-        {group.name &&
-          (<Segment>
-            <GroupName
-              name={group.name}
-              onNameChange={handleNameChange}
-              onDeleteClick={handleDeleteClick}
-              onRenameSubmit={handleRenameSubmit} />
-            <Divider fitted clearing hidden />
-          </Segment>)}
+        <Segment.Group>
+          {group.name &&
+            (<Segment>
+              <GroupName
+                name={group.name}
+                onNameChange={handleNameChange}
+                onDeleteClick={handleDeleteClick}
+                onRenameSubmit={handleRenameSubmit} />
+              <Divider fitted clearing hidden />
+            </Segment>)}
 
-        {groupContacts &&
-        <Segment>
-          <AddContactModal
-            groupName={group.name}
-            filterContacts={filterContacts}
-            onAddClick={handleAddClick} />
-          <DataTable
-            columns={columnsWithActionButton}
-            data={groupContacts}
-            noHeader
-            defaultSortField='last_name'
-            pagination
-            highlightOnHover
-            pointerOnHover
-            sortIcon={<Icon name='angle down' />}
-            onRowClicked={handleRowClick}
-          />
-        </Segment>}
-      </Segment.Group>}
+          {groupContacts &&
+            <Segment>
+              <AddContactModal
+                groupName={group.name}
+                filterContacts={filterContacts}
+                onAddClick={handleAddClick} />
+              <DataTable
+                columns={columnsWithActionButton}
+                data={groupContacts}
+                noHeader
+                defaultSortField='last_name'
+                pagination
+                highlightOnHover
+                pointerOnHover
+                sortIcon={<Icon name='angle down' />}
+                onRowClicked={handleRowClick}
+              />
+              {!!contactToDelete && (
+                <Modal
+                  size='small'
+                  open={!!contactToDelete}
+                  onClose={closeConfirmRemoveContactModal}>
+                  <Modal.Header>Remove Contact</Modal.Header>
+                  <Modal.Content>
+                    <p>Are you sure, you want to remove {contactToDelete.first_name} {contactToDelete.last_name} from this group?</p>
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button
+                      content='Cancel'
+                      onClick={closeConfirmRemoveContactModal}
+                    />
+                    <Button
+                      negative
+                      icon='remove user'
+                      content='Remove'
+                      onClick={() => handleRemoveContactClick(contactToDelete)}
+                    />
+                  </Modal.Actions>
+                </Modal>
+              )}
+            </Segment>}
+        </Segment.Group>}
     </Layout>
   );
 }

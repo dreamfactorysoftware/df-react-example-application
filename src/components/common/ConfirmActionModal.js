@@ -13,13 +13,15 @@ export default function ConfirmActionModal(props) {
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
-  const modal = {cancel: {
+  const modal = {
+    cancel: {
       content: 'Cancel',
     },
     confirm: {
       icon: 'checkmark',
       content: 'Yes',
-    }, ...props.modal};
+    }, ...props.modal
+  };
 
   const handleConfirmClick = useCallback(() => {
     if (
@@ -43,9 +45,9 @@ export default function ConfirmActionModal(props) {
         open={isOpen}
         onClose={close}>
         <Modal.Header>{modal.title}</Modal.Header>
-          <Modal.Content>
-            <p>{modal.message}</p>
-          </Modal.Content>
+        <Modal.Content>
+          <p>{modal.message}</p>
+        </Modal.Content>
         <Modal.Actions>
           <Button
             {...modal.cancel}
