@@ -8,9 +8,12 @@ import {
 import isFunction from 'lodash.isfunction';
 import ContactInfoForm from '../common/ContactInfoForm';
 
-export default function NewContactInfoForm(props) {
-  const { index, onRemoveInfoClick } = props;
-
+export default function NewContactInfoForm({
+  onRemoveInfoClick,
+  data,
+  index,
+  onChange
+}) {
   const handleRemoveInfoClick = useCallback((event) => {
     event.preventDefault();
 
@@ -28,7 +31,7 @@ export default function NewContactInfoForm(props) {
         icon='delete'
         content='remove'
         onClick={handleRemoveInfoClick} />
-      <ContactInfoForm {...props} />
+      <ContactInfoForm data={data} index={index} onChange={onChange} />
     </Segment>
   );
 }

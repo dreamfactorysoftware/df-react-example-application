@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react';
 import isFunction from 'lodash.isfunction';
 
-export default function GroupNameModal(props) {
+export default function GroupNameModal({ trigger, modal }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const open = useCallback(() => setIsOpen(true), []);
@@ -21,17 +21,20 @@ export default function GroupNameModal(props) {
   }, []);
 
   const handleSubmit = useCallback((event) => {
-    if (isFunction(props.modal.onSubmit)) {
-      props.modal.onSubmit(event);
+    if (isFunction(modal.onSubmit)) {
+      modal.onSubmit(event);
     }
 
     setIsOpen(false);
-  }, [props.modal]);
+  }, [modal]);
 
   return (
     <>
       <Button
-        {...props.trigger}
+        floated={trigger.floated}
+        icon={trigger.icon}
+        size={trigger.size}
+        content={trigger.content}
         onClick={open} />
       <Modal
         as={Form}
@@ -39,7 +42,7 @@ export default function GroupNameModal(props) {
         open={isOpen}
         onSubmit={handleSubmit}
         onClose={close}>
-        <Modal.Header>{props.modal.title}</Modal.Header>
+        <Modal.Header>{modal.title}</Modal.Header>
         <Modal.Content>
           <Form.Field
             id='form-input-control-name'
@@ -48,18 +51,19 @@ export default function GroupNameModal(props) {
             placeholder='Name'
             autoComplete='off'
             name='name'
-            defaultValue={props.modal.defaultValue}
-            onChange={props.modal.onChange}
+            defaultValue={modal.defaultValue}
+            onChange={modal.onChange}
             required
             autoFocus
           />
         </Modal.Content>
         <Modal.Actions>
           <Button
-            icon='add'
-            content='Add'
             type='submit'
-            {...props.modal.confirm}
+            positive={modal.confirm.positive}
+            primary={modal.confirm.primary}
+            icon={modal.confirm.icon}
+            content={modal.confirm.content}
           />
           <Button
             content='Cancel'

@@ -6,39 +6,40 @@ import {
   Button,
   Modal,
 } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import isFunction from 'lodash.isfunction';
 
-export default function ConfirmActionModal(props) {
+function ConfirmActionModal({modal: propsModal, trigger}) {
   const [isOpen, setIsOpen] = useState(false);
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
   const modal = {
-    cancel: {
-      content: 'Cancel',
-    },
     confirm: {
       icon: 'checkmark',
       content: 'Yes',
-    }, ...props.modal
+    }, ...propsModal
   };
 
   const handleConfirmClick = useCallback(() => {
     if (
-      props.modal &&
-      props.modal.confirm &&
-      isFunction(props.modal.confirm.onClick)
+      propsModal &&
+      propsModal.confirm &&
+      isFunction(propsModal.confirm.onClick)
     ) {
-      props.modal.confirm.onClick();
+      propsModal.confirm.onClick();
     }
 
     setIsOpen(false);
-  }, [props.modal]);
+  }, [propsModal]);
 
   return (
     <>
       <Button
-        {...props.trigger}
+        floated={trigger.floated}
+        icon={trigger.icon}
+        content={trigger.content}
+        size={trigger.size}
         onClick={open} />
       <Modal
         size='small'
@@ -50,11 +51,12 @@ export default function ConfirmActionModal(props) {
         </Modal.Content>
         <Modal.Actions>
           <Button
-            {...modal.cancel}
+            content='Cancel'
             onClick={close}
           />
           <Button
-            {...modal.confirm}
+            content={modal.confirm.content}
+            icon={modal.confirm.icon}
             onClick={handleConfirmClick}
           />
         </Modal.Actions>
@@ -62,4 +64,20 @@ export default function ConfirmActionModal(props) {
     </>);
 }
 
+ConfirmActionModal.propTypes = {
+  modal: PropTypes.shape({
+    confirm: PropTypes.shape({
+      content: PropTypes.string,
+      icon: PropTypes.string,
+      onClick: PropTypes.func.isRequired,
+    }),
+  }).isRequired,
+  trigger: PropTypes.shape({
+    icon: PropTypes.string,
+    content: PropTypes.string,
+    floated: PropTypes.string,
+    size: PropTypes.string,
+  }).isRequired,
+};
 
+export default ConfirmActionModal;

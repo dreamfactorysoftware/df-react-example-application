@@ -14,7 +14,7 @@ const options = [
   { key: 'o', text: 'Other', value: 'other' },
 ];
 
-export default function ContactInfoForm({ data , index , onChange, }) {
+export default function ContactInfoForm({ data, index, onChange }) {
   const handleChange = useCallback((event, { value, name }) => {
     if (isFunction(onChange)) {
       const fieldName = name.replace(/\[\d+\]$/, '');
