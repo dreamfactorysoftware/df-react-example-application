@@ -13,13 +13,14 @@
       2,
       "always"
     ],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+
     "import/prefer-default-export": "off",
     "max-classes-per-file": "off",
     "react/forbid-prop-types": "off",
-    "quotes": [
-      "error",
-      "single"
-    ],
 
     "react/destructuring-assignment": "off",
     "react/prop-types": "off",

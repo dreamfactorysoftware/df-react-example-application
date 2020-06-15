@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.10",
     "lodash.debounce": "^4.0.8",
     "lodash.isfunction": "^3.0.9",
     "prop-types": "^15.7.2",
@@ -20,6 +27,11 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "styled-components": "^5.1.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "scripts": {
     "start": "react-scripts start",
