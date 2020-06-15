@@ -1,6 +1,7 @@
 import React, {
   useState,
   useCallback,
+  useEffect,
 } from 'react';
 import {
   Button,
@@ -60,17 +61,14 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
   const close = useCallback(() => {
     setIsOpen(false);
     setSelected([]);
+    setFilter('');
   }, []);
 
-  const setFilterDebounced = useCallback(debounce(setFilter, 500), []);
+  const setFilterDebounced = useCallback(debounce((nextFilter) => setFilter(nextFilter), 500), []);
 
   const handleInputChange = useCallback((event) => {
     const { target: { value } } = event;
-    if (value) {
-      setFilterDebounced(`(first_name like ${value}%) or (last_name like ${value}%)`);
-    } else {
-      setFilterDebounced('');
-    }
+    setFilterDebounced(value ? `(first_name like ${value}%) or (last_name like ${value}%)` : '');
   }, [setFilterDebounced]);
 
   const handleRowSelected = useCallback(({ selectedRows }) => setSelected(selectedRows), []);
@@ -82,6 +80,12 @@ export default function AddContactModal({ groupName, onAddClick, filterContacts 
 
     close();
   }, [onAddClick, selected, close]);
+
+  useEffect(() => {
+    if (isOpen) {
+      getData();
+    }
+  }, [getData, isOpen]);
 
   let message;
 

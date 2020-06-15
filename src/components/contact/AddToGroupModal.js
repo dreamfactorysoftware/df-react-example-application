@@ -1,6 +1,7 @@
 import React, {
   useState,
   useCallback,
+  useEffect,
 } from 'react';
 import {
   Button,
@@ -58,13 +59,16 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   }, [filter, disabledGroups]);
 
   const open = useCallback(() => {
+    setGroups([]);
     getData();
+    setLoading(true);
     setIsOpen(true);
   }, [getData]);
 
   const close = useCallback(() => {
     setIsOpen(false);
     setSelected([]);
+    setFilter('');
   }, []);
 
   const setFilterDebounced = useCallback(debounce(setFilter, 500), []);
@@ -72,11 +76,7 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
   const handleInputChange = useCallback((event) => {
     const { target: { value } } = event;
 
-    if (value) {
-      setFilterDebounced(`(name like ${value}%)`);
-    } else {
-      setFilterDebounced('');
-    }
+    setFilterDebounced(value ? `(name like ${value}%)` : '');
   }, [setFilterDebounced]);
 
   const handleRowSelected = useCallback(({ selectedRows }) => {
@@ -90,6 +90,12 @@ export default function AddToGroupModal({ onAddClick, disabledGroups }) {
 
     close();
   }, [onAddClick, selected, close]);
+
+  useEffect(() => {
+    if (isOpen) {
+      getData();
+    }
+  }, [getData, isOpen]);
 
   let message;
 
