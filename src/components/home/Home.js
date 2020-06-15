@@ -191,9 +191,7 @@ class DesktopContainer extends Component {
 
   showFixedMenu = () => this.setState({ fixed: true })
 
-  onLogOut = () => {
-    this.setState({ isAuthenticated: auth.isAuthenticated });
-  }
+  onLogOut = () => this.setState({ isAuthenticated: auth.isAuthenticated })
 
   render() {
     const { children } = this.props;
@@ -220,7 +218,7 @@ class DesktopContainer extends Component {
               size="large"
             >
               <Container>
-                <Menu.Item as={Link} active>
+                <Menu.Item as='span' active>
                   Home
                 </Menu.Item>
                 {this.state.isAuthenticated && (
@@ -265,12 +263,21 @@ class DesktopContainer extends Component {
 class MobileContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      isAuthenticated: auth.isAuthenticated,
+    };
   }
 
   handleSidebarHide = () => this.setState({ sidebarOpened: false })
 
   handleToggle = () => this.setState({ sidebarOpened: true })
+
+  onLogOut = () => this.setState({ isAuthenticated: auth.isAuthenticated })
+
+  logOut = () => auth.signout().then(() => {
+    this.onLogOut();
+  })
 
   render() {
     const { children } = this.props;
@@ -290,14 +297,21 @@ class MobileContainer extends Component {
           vertical
           visible={sidebarOpened}
         >
-          <Menu.Item as={Link} active>
+          <Menu.Item as='span' active>
             Home
           </Menu.Item>
-          <Menu.Item as={Link}>Work</Menu.Item>
-          <Menu.Item as={Link}>Company</Menu.Item>
-          <Menu.Item as={Link}>Careers</Menu.Item>
-          <Menu.Item as={Link}>Log in</Menu.Item>
-          <Menu.Item as={Link}>Sign Up</Menu.Item>
+          {this.state.isAuthenticated ? (
+            <>
+              <Menu.Item as={Link} to='/contact'>Contacts</Menu.Item>
+              <Menu.Item as={Link} to='/group'>Groups</Menu.Item>
+              <Menu.Item as={Link} onClick={this.logOut}>Log out</Menu.Item>
+            </>
+          ) : (
+            <>
+              <Menu.Item as={Link} to="/login">Log in</Menu.Item>
+              <Menu.Item as={Link} to="/register">Register</Menu.Item>
+            </>
+          )}
         </Sidebar>
 
         <Sidebar.Pusher dimmed={sidebarOpened}>
@@ -313,12 +327,22 @@ class MobileContainer extends Component {
                   <Icon name="sidebar" />
                 </Menu.Item>
                 <Menu.Item position="right">
-                  <Button as={Link} inverted>
-                    Log in
-                  </Button>
-                  <Button as={Link} inverted style={{ marginLeft: '0.5em' }}>
-                    Sign Up
-                  </Button>
+                  <Menu.Item position="right">
+                    <LogInAndOutButton
+                      inverted
+                      onLogOut={this.onLogOut}
+                    />
+                    {!this.state.isAuthenticated && (
+                      <Button
+                        as={Link}
+                        to="/register"
+                        inverted
+                        style={{ marginLeft: '0.5em' }}
+                      >
+                        Register
+                      </Button>
+                    )}
+                  </Menu.Item>
                 </Menu.Item>
               </Menu>
             </Container>

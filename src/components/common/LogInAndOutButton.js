@@ -17,7 +17,7 @@ export default function LogInAndOutButton({ onLogOut, inverted }) {
   const location = useLocation();
   const redirectTo = '/';
 
-  const logIn = useCallback(() => auth.signout().then(() => {
+  const logOut = useCallback(() => auth.signout().then(() => {
   	if (location.pathname !== redirectTo) {
   		history.push(redirectTo);
   	} else if (isFunction(onLogOut)) {
@@ -26,7 +26,7 @@ export default function LogInAndOutButton({ onLogOut, inverted }) {
 	}), [onLogOut, history, location.pathname]);
 
   return auth.isAuthenticated ? (
-  	<Button inverted={inverted} onClick={logIn}>
+    <Button inverted={inverted} onClick={logOut}>
       Log out
     </Button>
   ) : (
