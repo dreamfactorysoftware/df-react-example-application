@@ -43,9 +43,10 @@ You can create a free [trial account](http://www.dreamfactory.com/register) or a
 
 ### Using the Application
 
-To start the application go to the `Apps` tab and click `play` next to the `Address Book for React`.
+- To start the application go to the `Apps` tab and click `play` next to the `Address Book for React`.
+- Click the `Register` button to create a new account.
 
-Application users will need to first register before interacting with the address book. These accounts are managed inside the DreamFactory `Users` tab. For security purposes, user registration is disabled by default therefore we had to enable the `Allow Open Registration` in the `user` service `config` tab as descirbed in the instalation process.
+These accounts are managed inside the DreamFactory `Users` tab. For security purposes, user registration is disabled by default therefore we had to enable the `Allow Open Registration` in the `user` service `config` tab as descirbed in the instalation process.
 
 ## Configuring the Application Locally
 
@@ -54,6 +55,7 @@ Application users will need to first register before interacting with the addres
 ```
     $ git clone git@github.com:dreamfactorysoftware/df-react-example-application.git
     $ cd df-react-example-application
+    $ yarn
 ```
 - Edit `public/config.js` and set `APP_API_KEY` to the key for your new app. The API key is shown in the app details in the Apps tab of the admin console.  `INSTANCE_URL` should point to your instance.
 ```
@@ -64,7 +66,7 @@ Application users will need to first register before interacting with the addres
 ```
 - Start the application with `yarn start`.
 ```
-    $ yarn && yarn start
+    $ yarn start
 ```
 - Next, open your browser and navigate to `http://localhost:3000/`. Click the `Register` button to create a new account.
 
