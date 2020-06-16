@@ -1,6 +1,6 @@
 # DreamFactory Example React Application
 
-This repo contains a sample address book application made with React that demonstrates how to use the DreamFactory REST API. It includes new user registration, user login, and CRUD for related tables.
+This repo contains a sample address book application that demonstrates how to use the [DreamFactory](https://www.dreamfactory.com/) REST API. It includes new user registration, user login, and CRUD for related tables. Made using using [Creat React App](https://create-react-app.dev/) boierplate, [Semantic UI React](https://react.semantic-ui.com/) and [React Data Table Component](https://github.com/jbetancur/react-data-table-component).
 There are two ways to interact with this application. You can either import it using the DreamFactory Admin Panel or run it locally from your hard drive. In both of those cases you will need a working DreamFactory instance.
 
 ## Getting a DreamFactory instance
